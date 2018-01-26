@@ -18,7 +18,7 @@
             <!--轮播开始-->
             {volist name="data" id="tp"}
             <div class="banner swiper-slide">
-                <a href="{:Url('News/detail?id='.$tp['id'])}">
+                <a href="{:Url('News/detail?type='.$tp['type'].'&id='.$tp['id'])}">
                     <img src="{$tp.front_cover}" alt="">
                     <div class="title_ limit">
                         <span>{$tp.title}</span>
