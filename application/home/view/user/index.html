@@ -2,7 +2,7 @@
 
 {block name="style"}
 <link rel="stylesheet" href="/home/sass/stylesheets/user/index.css">
-<title>个人中心</title>
+<title></title>
 {/block}
 
 {block name="body"}
@@ -59,6 +59,7 @@
 
 {block name="script"}
 <script>
+	$("title").text("个人中心");
 $(function(){
     var u = navigator.userAgent, app = navigator.appVersion;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器

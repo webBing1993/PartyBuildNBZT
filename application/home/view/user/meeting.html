@@ -2,7 +2,7 @@
 
 {block name="style"}
 <link rel="stylesheet" href="/home/sass/stylesheets/user/meeting.css">
-<title>会议纪要</title>
+<title></title>
 {/block}
 
 {block name="body"}
@@ -40,7 +40,7 @@
 
 {block name="script"}
 <script>
-
+    $("title").text("会议纪要");
 //首页加载是否需要上拉加载
 window.onload = function() {
         if ($(".meeting ul a").length < 12) {

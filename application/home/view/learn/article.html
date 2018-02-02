@@ -1,7 +1,7 @@
 {extend name="public/common"}
 
 {block name="style"}
-<title>两学一做</title>
+<title></title>
 <link rel="stylesheet" href="/home/sass/stylesheets/details-template/detail.css">
 <style>
 	.lists {
@@ -75,6 +75,7 @@
 
 {block name="script"}
 <script>
+	$("title").text("两学一做");
 	window.onload = function(){
 		if($(".list").length<10){
 			mui('#refreshContainer').pullRefresh().disablePullupToRefresh();

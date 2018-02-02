@@ -1,7 +1,7 @@
 {extend name="public/common"}
 
 {block name="style"}
-<title>红色电影</title>
+<title></title>
 <link rel="stylesheet" href="/home/sass/stylesheets/details-template/detail.css">
 <style>
 	.mui-pull-bottom-pocket {
@@ -37,7 +37,7 @@
 					{eq name="detail.is_like" value="1"}
 					<span class="isgood good_ notvisitor"  data-type="5" data-id="{$detail.id}">{$detail.likes}</span>
 					{else/}
-					<span class="isgood good notvisitor"  data-type="5" data-id="{$detail.id}">{$detail.likes}</span>
+					<span class="isgood go  od notvisitor"  data-type="5" data-id="{$detail.id}">{$detail.likes}</span>
 					{/eq}
 					{else/}
 					<span class="isgood good">{$detail.likes}</span>
@@ -85,6 +85,7 @@
 {block name="script"}
 <script src="/home/js/reset.js"></script>
 <script>
+    $("title").text("红色电影");
     window.onload = function(){
         if($(".list").length<10){
             mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
@@ -104,7 +105,7 @@
     //点赞
     var isGood = function(e,type,id){
         //样式变化，移到suc
-        var n = $(e ).text();
+        var n = $(e).text();
         $(e).toggleClass('good' ).toggleClass('good_');
         $(e ).hasClass('good')?n--:n++;
         $(e ).text(n);

@@ -23,6 +23,11 @@
 }
 
 .mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
+  background: #e31b1b !important;
+  text-decoration: none !important;
+}
+
+.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
   color: #fff;
 }
 
@@ -165,11 +170,6 @@
 .notice a span:nth-child(4) {
   position: inherit;
   float: right;
-}
-
-.mui-segmented-control.mui-segmented-control-inverted .mui-control-item.mui-active {
-  background: #e31b1b !important;
-  text-decoration: none !important;
 }
 
 .list ul a {

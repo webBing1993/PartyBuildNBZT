@@ -1,7 +1,7 @@
 {extend name="public/pure"}
 
 {block name="style"}
-<title>消息审核</title>
+<title></title>
 <link rel="stylesheet" href="/home/sass/stylesheets/review/index.css">
 {/block}
 
@@ -83,6 +83,7 @@
 {block name="script"}
 <script src="/home/js/reset.js"></script>
 <script>
+    $("title").text("消息审核");
 $(function(){
     c = getCookie("c")?getCookie("c"):0;
     $("#tab a").eq(c).addClass('mui-active');

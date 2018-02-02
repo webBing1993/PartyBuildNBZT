@@ -1,7 +1,7 @@
 {extend name="public/common"}
 {block name="style"}
 <link rel="stylesheet" href="/home/sass/stylesheets/activity/index.css">
-<title>支部活动</title>
+<title></title>
 {/block}
 
 {block name="body"}
@@ -135,6 +135,7 @@
 <script src="/home/js/reset.js"></script>
 <script>
     $(function(){
+        $("title").text("支部活动");
         //tab初始化和数据存储
         c = getCookie("c")?getCookie("c"):0;
         if(c==1){

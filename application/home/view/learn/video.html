@@ -10,6 +10,9 @@
 	.content .video{
 		text-align: center;
 	}
+	.none{
+		display: none!important;
+	}
 </style>
 {/block}
 
@@ -137,6 +140,7 @@
 	};
 	//发送评论
 	var send = function(e,type,id){
+		$(".content").hide();
 		swal({
 					title: "",
 					text: "请输入评论内容！",

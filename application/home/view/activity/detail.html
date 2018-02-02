@@ -91,38 +91,6 @@
     }else if(type==2){
         $("title").text("固定活动");
     }
-    $(function(){
-        function IsPC() {
-            var userAgentInfo = navigator.userAgent;
-            var Agents = ["Android", "iPhone",
-                "SymbianOS", "Windows Phone",
-                "iPad", "iPod"];
-            var flag = true;
-            for (var v = 0; v < Agents.length; v++) {
-                if (userAgentInfo.indexOf(Agents[v]) > 0) {
-                    flag = false;
-                    break;
-                }
-            }
-            return flag;
-        }
-
-         flag = IsPC();
-        if(flag){
-            $(".main").css({"width":"640px","left":"50%","height":"90vh","margin-top":"5vh","margin-left":"-320px","position":"relative"});
-            $(".article .title p").css("font-size","17px");
-            $(".article .note").css("font-size","14px");
-            $(".comment .sum").css({"font-size":"14px","height":"30px","line-height":"30px"});
-            $(".article-content p, .article-content p span, .article-content").css("font-size","16px");
-            $(".comment .lists .list .fl img").css({"width":"60px","height":"60px"});
-            $(".comment .lists .list .mid .name").css({"margin-left":"0","font-size":"16px"});
-            $(".comment .lists .list .mid .content").css({"padding-left":"0","font-size":"14px","margin-top":"5px","margin-bottom":"5px"});
-            $(".comment .lists .list .mid .time").css({"margin-left":"0","font-size":"14px","line-height":"20px"});
-            $(".bottom").css({"width":"640px","height":"70px","padding":"15px","left":"50%","margin-left":"-320px"});
-            $(".bottom .myword input").css({"width":"600px", "font-size":"14px","margin-top":"5px"});
-            $(".lists").css("padding-bottom","30px");
-        }
-    });
 
     window.onload = function(){
         if(flag){

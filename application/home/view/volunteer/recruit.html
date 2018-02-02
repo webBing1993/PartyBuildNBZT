@@ -1,7 +1,7 @@
 {extend name="public/common"}
 
 {block name="style"}
-<title>志愿风采展</title>
+<title></title>
 <link rel="stylesheet" href="/static/swiper/swiper-3.3.1.min.css">
 <link rel="stylesheet" href="/home/sass/stylesheets/volunteer/recruit.css">
 {/block}
@@ -53,6 +53,7 @@
 {block name="script"}
 <script src="/static/swiper/swiper-3.3.1.jquery.min.js"></script>
 <script>
+    $("title").text("志愿风采展");
     var pid =  parseInt(window.location.href.split("recruit/pid/")[1]);
     $(function () {
         var mySwiper = new Swiper('.swiper-container', {

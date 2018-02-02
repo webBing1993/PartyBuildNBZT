@@ -15,7 +15,7 @@
     <!--文字logo-->
     <div class="logo">
       <img src="/home/images/award/1.png" class="animated img1">
-     <img src="/home/images/award/2.png"  class="animated img2">
+      <img src="/home/images/award/2.png" class="animated img2">
       <img src="/home/images/award/3.png" class="animated img3">
       <img src="/home/images/award/4.png" class="animated img4">
       <img src="/home/images/award/5.png" class="animated img5">
@@ -43,7 +43,7 @@
             $(".img3").removeClass("flipOutX").addClass("flipInX").show();
         },600);
         setTimeout(function(){
-            $(".img4").removeClass("flipOutX").addClass("flipInX").show();
+            $(".img4").removeClass("flipOutX").addClass("flipSInX").show();
         },900);
         setTimeout(function(){
             $(".img5").removeClass("flipOutX").addClass("flipInX").show();
@@ -76,14 +76,13 @@ var offset2 = 0;
 var offsetbg = 0;
 
 $(document).ready(
-
-        function () {
-            $main = $(".main");
-            $body = $("body");
-            $cloud1 = $("#cloud1");
-            $cloud2 = $("#cloud2");
-            mainwidth = $main.outerWidth();
-        }
+    function () {
+        $main = $(".main");
+        $body = $("body");
+        $cloud1 = $("#cloud1");
+        $cloud2 = $("#cloud2");
+        mainwidth = $main.outerWidth();
+    }
 );
 
 setInterval(function flutter() {

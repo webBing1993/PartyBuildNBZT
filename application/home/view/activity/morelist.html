@@ -1,7 +1,7 @@
 {extend name="public/common"}
 
 {block name="style"}
-<title>三会一课</title>
+<title></title>
 <link rel="stylesheet" href="/home/sass/stylesheets/activity/morelist.css">
 {/block}
 {block name="body"}
@@ -29,6 +29,7 @@
 {/block}
 {block name="script"}
 <script>
+    $("title").text("三会一课");
     //首页加载是否需要上拉加载
     window.onload = function() {
         if ($(".list ul a").length < 7) {

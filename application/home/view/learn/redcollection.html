@@ -1,6 +1,6 @@
 {extend name="public/common"}
 {block name="style"}
-<title>红色珍藏</title>
+<title></title>
 <link rel="stylesheet" href="/static/swiper/swiper-3.3.1.min.css">
 <link rel="stylesheet" href="/home/sass/stylesheets/redcollection/index.css">
 {/block}
@@ -125,6 +125,7 @@
 <script src="/home/js/reset.js"></script>
 <script src="/static/swiper/swiper-3.3.1.jquery.min.js"></script>
 <script>
+    $("title").text("红色珍藏");
        $(function(){
            //tab初始化和数据存储
            c = getCookie("c")?getCookie("c"):0;

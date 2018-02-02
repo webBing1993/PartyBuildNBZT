@@ -1,7 +1,7 @@
 {extend name="public/common"}
 
 {block name="style"}
-<title>志愿风采展</title>
+<title></title>
 <link rel="stylesheet" href="/home/sass/stylesheets/volunteer/mien.css">
 
 {/block}
@@ -39,7 +39,7 @@
 {block name="script"}
 <script>
 
-
+    $("title").text("志愿风采展");
     window.onload = function () {
         if ($(".lists .list").length < 6) {
             mui('#refreshContainer').pullRefresh().disablePullupToRefresh();

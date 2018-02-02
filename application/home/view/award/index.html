@@ -124,7 +124,7 @@
          $(".next").hide();
      }
      if( $(".question-order span").text()==7){
-         $(".question-order span").text(6)
+         $(".question-order span").text(6);
          $(".question-content").eq(order-1).removeClass("fadeOutRight");
          $(".question-content").eq(order).removeClass("fadeInLeft");
      }
@@ -227,14 +227,11 @@
             audio.play();
         },4000)
        }else{
-           console.log(answer)
-           console.log(standard)
           for(i=0;i<answer.length;i++){
                   if(answer[i]==standard[i]){
                       arr.push(answer[i]);
                   }
           }
-           console.log(arr.length)
            $(".error-bg p span").text(arr.length);
            $(".question").addClass("bounceOut").hide();
            setTimeout(function(){
@@ -259,7 +256,6 @@
     })
 
     $(".detail").on("click",function(){
-        console.log(answer)
         for(i=0;i<answer.length;i++) {
             if (answer[i]!=null) {
                 $(".detail-content").eq(i).find(".question-answer").eq(answer[i]-1).css("background", "#ccc");

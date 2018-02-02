@@ -1,7 +1,7 @@
 {extend name="public/common"}
 
 {block name="style"}
-<title>个人中心</title>
+<title></title>
 <link rel="stylesheet" href="/home/sass/stylesheets/user/personal.css">
 {/block}
 
@@ -35,4 +35,7 @@
 
 {block name="script"}
 <script src="/static/code/jquery.qrcode.min.js"></script>
+<script>
+	$("title").text("个人中心");
+</script>
 {/block}

@@ -3,7 +3,7 @@
 {block name="style"}
 
 
-<title>箬横动态</title>
+<title></title>
 
 
 <link rel="stylesheet" href="/static/swiper/swiper-3.3.1.min.css">
@@ -97,6 +97,7 @@
     <script src="/home/js/reset.js"></script>
     <script src="/static/swiper/swiper-3.3.1.jquery.min.js"></script>
     <script>
+        $("title").text("箬横动态");
         $(function(){
             var height = $("#tab").height() + $(".banners").height();
             $("#refreshContainer").css("margin-top",height);

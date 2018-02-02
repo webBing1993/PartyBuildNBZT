@@ -1,7 +1,7 @@
 {extend name="public/pure"}
 
 {block name="style"}
-<title>网上党校</title>
+<title></title>
 <style>
     body{
         background: #f1f1f1;
@@ -54,6 +54,7 @@
 
 {block name="script"}
 <script>
+    $("title").text("网上党校");
     mui(".content").on("touchstart","a",function(){
         $(this).css("backgroundColor","rgba(0,0,0,.1)");
     }).on("touchend","a", function () {

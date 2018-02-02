@@ -1,7 +1,7 @@
 {extend name="public/common"}
 
 {block name="style"}
-<title>在线答题</title>
+<title></title>
 <link rel="stylesheet" href="/home/sass/stylesheets/learn/answer.css">
 {/block}
 
@@ -58,6 +58,7 @@
 
 {block name="script"}
 <script>
+    $("title").text("在线答题");
 $(function(){
     var u = navigator.userAgent;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;

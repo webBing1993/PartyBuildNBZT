@@ -1,7 +1,7 @@
 {extend name="public/common"}
 
 {block name="style"}
-<title>红色音乐</title>
+<title></title>
 <link rel="stylesheet" href="/home/sass/stylesheets/learn/musicdetail.css">
 {/block}
 
@@ -78,6 +78,7 @@
 
 {block name="script"}
 <script>
+    $("title").text("红色歌曲");
 //iframe替换
 function iframe(){
 	//	var body = document.getElementById('content');
