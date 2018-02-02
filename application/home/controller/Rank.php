@@ -12,6 +12,7 @@ use app\home\model\Comment;
 use app\home\model\Like;
 use app\home\model\Answer;
 use app\home\model\WechatUser;
+use app\home\model\WechatUserTag;
 use think\Controller;
 use think\Db;
 
@@ -48,6 +49,12 @@ class Rank extends Base {
             $value['score'] += 10;  // 关注企业号  基础分10
             if($value['userid'] == $userId){
                 $personal['rank'] = $k+1;
+            }
+            $Tag = WechatUserTag::where(['tag' => 6,'userid' => $value['userid']])->find();
+            if ($Tag){
+                $this->assign('tag',1);
+            }else{
+                $this->assign('tag',0);
             }
         }
         $this->assign('all',$all);
@@ -186,6 +193,12 @@ class Rank extends Base {
                 $user = WechatUser::where('userid',$value['userid'])->find();
                 $value['name'] = $user['name'];
                 $final[$key] = $value;
+                $Tag = WechatUserTag::where(['tag' => 6,'userid' => $value['userid']])->find();
+                if ($Tag){
+                    $this->assign('tag',1);
+                }else{
+                    $this->assign('tag',0);
+                }
             }
         }
         $this->assign('week',$final);
@@ -305,6 +318,12 @@ class Rank extends Base {
                 $user = WechatUser::where('userid',$value['userid'])->find();
                 $value['name'] = $user['name'];
                 $final_m[$key] = $value;
+                $Tag = WechatUserTag::where(['tag' => 6,'userid' => $value['userid']])->find();
+                if ($Tag){
+                    $this->assign('tag',1);
+                }else{
+                    $this->assign('tag',0);
+                }
             }
         }
         $this->assign('month',$final_m);
