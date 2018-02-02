@@ -50,7 +50,7 @@ class Rank extends Base {
             if($value['userid'] == $userId){
                 $personal['rank'] = $k+1;
             }
-            $Tag = WechatUserTag::where(['tag' => 6,'userid' => $value['userid']])->find();
+            $Tag = WechatUserTag::where(['tagid' => 6,'userid' => $value['userid']])->find();
             if ($Tag){
                 $this->assign('tag',1);
             }else{
@@ -193,7 +193,7 @@ class Rank extends Base {
                 $user = WechatUser::where('userid',$value['userid'])->find();
                 $value['name'] = $user['name'];
                 $final[$key] = $value;
-                $Tag = WechatUserTag::where(['tag' => 6,'userid' => $value['userid']])->find();
+                $Tag = WechatUserTag::where(['tagid' => 6,'userid' => $value['userid']])->find();
                 if ($Tag){
                     $this->assign('tag',1);
                 }else{
@@ -318,7 +318,7 @@ class Rank extends Base {
                 $user = WechatUser::where('userid',$value['userid'])->find();
                 $value['name'] = $user['name'];
                 $final_m[$key] = $value;
-                $Tag = WechatUserTag::where(['tag' => 6,'userid' => $value['userid']])->find();
+                $Tag = WechatUserTag::where(['tagid' => 6,'userid' => $value['userid']])->find();
                 if ($Tag){
                     $this->assign('tag',1);
                 }else{
