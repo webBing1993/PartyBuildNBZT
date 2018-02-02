@@ -78,6 +78,16 @@
         line-height: 1.5;
         font-size: 0.34rem;
     }
+    .flowing{
+        border: 1px solid #52bde3;
+        color: #52bde3;
+        border-radius: 5px;
+        height: 6vw;
+        line-height: 5.8vw;
+        width: 16vw;
+        text-align: center;
+        margin-left: 4vw;
+    }
 </style>
 {/block}
 
@@ -173,6 +183,7 @@
                     <span class="ranking">{$k}</span>
                     <img src="{$fi.userid|get_header}">
                     <span class="department">{$fi.name}</span>
+                    <span class="flowing">流动党员</span>
                     <span class="int">积分{$fi.score}分</span>
                 </li>
                 {/volist}
@@ -185,6 +196,7 @@
                     <span class="ranking">{$k}</span>
                     <img src="{$mo.userid|get_header}">
                     <span class="department">{$mo.name}</span>
+                    <span class="flowing">流动党员</span>
                     <span class="int">积分{$mo.score}分</span>
                 </li>
                 {/volist}
@@ -197,6 +209,7 @@
                     <span class="ranking">{$k}</span>
                     <img src="{$vo.userid|get_header}">
                     <span class="department">{$vo.name}</span>
+                    <span class="flowing">流动党员</span>
                     <span class="int">积分{$vo.score}分</span>
                 </li>
                 {/volist}
