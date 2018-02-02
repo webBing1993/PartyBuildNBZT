@@ -52,9 +52,9 @@ class Rank extends Base {
             }
             $Tag = WechatUserTag::where(['tagid' => 6,'userid' => $value['userid']])->find();
             if ($Tag){
-                $this->assign('tag',1);
+                $all[$k]['tag'] = 1;
             }else{
-                $this->assign('tag',0);
+                $all[$k]['tag'] = 0;
             }
         }
         $this->assign('all',$all);
@@ -195,9 +195,9 @@ class Rank extends Base {
                 $final[$key] = $value;
                 $Tag = WechatUserTag::where(['tagid' => 6,'userid' => $value['userid']])->find();
                 if ($Tag){
-                    $this->assign('tag',1);
+                    $final[$key]['tag'] = 1;
                 }else{
-                    $this->assign('tag',0);
+                    $final[$key]['tag'] = 0;
                 }
             }
         }
@@ -320,9 +320,9 @@ class Rank extends Base {
                 $final_m[$key] = $value;
                 $Tag = WechatUserTag::where(['tagid' => 6,'userid' => $value['userid']])->find();
                 if ($Tag){
-                    $this->assign('tag',1);
+                    $final_m[$key]['tag'] = 1;
                 }else{
-                    $this->assign('tag',0);
+                    $final_m[$key]['tag'] = 0;
                 }
             }
         }

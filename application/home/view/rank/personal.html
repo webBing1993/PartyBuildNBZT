@@ -87,6 +87,7 @@
         width: 16vw;
         text-align: center;
         margin-left: 4vw;
+        font-size: 0.32rem;
     }
 </style>
 {/block}
@@ -183,7 +184,7 @@
                     <span class="ranking">{$k}</span>
                     <img src="{$fi.userid|get_header}">
                     <span class="department">{$fi.name}</span>
-                    {eq name="tag" value="1"}
+                    {eq name="$fi.tag" value="1"}
                     <span class="flowing">流动党员</span>
                     {/eq}
                     <span class="int">积分{$fi.score}分</span>
@@ -198,7 +199,7 @@
                     <span class="ranking">{$k}</span>
                     <img src="{$mo.userid|get_header}">
                     <span class="department">{$mo.name}</span>
-                    {eq name="tag" value="1"}
+                    {eq name="mo.tag" value="1"}
                     <span class="flowing">流动党员</span>
                     {/eq}
                     <span class="int">积分{$mo.score}分</span>
@@ -213,7 +214,7 @@
                     <span class="ranking">{$k}</span>
                     <img src="{$vo.userid|get_header}">
                     <span class="department">{$vo.name}</span>
-                    {eq name="tag" value="1"}
+                    {eq name="vo.tag" value="1"}
                     <span class="flowing">流动党员</span>
                     {/eq}
                     <span class="int">积分{$vo.score}分</span>
