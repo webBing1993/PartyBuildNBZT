@@ -1,17 +1,11 @@
 {extend name="public/common"}
 
 {block name="style"}
-<title>两学一做</title>
+<title></title>
 <link rel="stylesheet" href="/home/sass/stylesheets/details-template/detail.css">
 <style>
 	.lists {
 		padding-bottom: 1.2rem;
-	}
-	.content .video{
-		text-align: center;
-	}
-	.none{
-		display: none!important;
 	}
 </style>
 {/block}
@@ -22,20 +16,10 @@
 	<div class="article">
 		<div class="title"><p>{$detail.title}</p></div>
 		<div class="note clear">
-			<span class="fl">{$detail.publisher}</span>
-			<span class="fr">{$detail.create_time|time_format='Y-m-d'}</span>
+			<span class="publish">{$detail.publisher}</span>
+			<span class="time">{$detail.create_time|time_format="Y-m-d"}</span>
 		</div>
 		<div class="content">
-			<div class="video">
-				<!--本地视频-->
-				{neq name="$detail.video_path" value=""}
-				<video class="videocon" src="{$video.video_path}"></video>
-				<img src="/home/images/learn/video.png" class="play" alt="播放">
-				{else/}
-				<!--链接视频-->
-				<iframe class="videocon" frameborder="0" src="{$detail.net_path}" allowfullscreen></iframe>
-				{/neq}
-			</div>
 			<div class="article-content">{$detail.content}</div>
 			<div class="like">
 				<span class="read">{$detail.views +1}</span>
@@ -49,7 +33,7 @@
 				<span class="isgood good">{$detail.likes}</span>
 				{/eq}
 			</div>
-	</div>
+		</div>
 	</div>
 		<div class="comment">
 			<div class="sum">共<span>{$detail.comments}</span>条评论</div>
@@ -77,7 +61,7 @@
 				{/volist}
 			</div>
 		</div>
-</div>
+	</div>
 </div>
 
 {eq name="visit" value="0"}
@@ -90,18 +74,8 @@
 {/block}
 
 {block name="script"}
-<script src="/home/js/reset.js"></script>
 <script>
-	$(function(){
-//	播放视频
-//	hideplay();
-//	videoPlay();
-	//ios fix兼容
-//	tofixed();
-	//ue限定
-//	ueLimit();
-	});
-
+	$("title").text("两学一做");
 	window.onload = function(){
 		if($(".list").length<10){
 			mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
@@ -140,7 +114,6 @@
 	};
 	//发送评论
 	var send = function(e,type,id){
-		$(".content").hide();
 		swal({
 					title: "",
 					text: "请输入评论内容！",
@@ -194,7 +167,7 @@
 										'</div>';
 								$('.lists' ).prepend(html);
 								inputValue="";
-								var sum = $('.sum span');
+								var sum = $('.sum span' );
 								sum.text(parseInt(sum.text())+1);
 								swal({
 									title: ' ',
@@ -307,7 +280,7 @@
 		//分享到朋友圈
 		wx.onMenuShareTimeline({
 			title: '{$detail.title}',
-			link: '{$detail.link}',
+			link: "{$detail.link}",
 			imgUrl: '{$detail.share_image}',
 			success: function () {
 				// 用户确认分享后执行的回调函数
