@@ -181,7 +181,6 @@
     });
 
 
-
     //去上传
     $(".goreview").click(function(){
         var single = false;
@@ -264,7 +263,8 @@
                         processData : false, // 告诉jQuery不要去处理发送的数据
                         contentType : false,  // 告诉jQuery不要去设置Content-Type请求头
                         beforeSend: function(XMLHttpRequest){
-							 $(".showbox").show();
+
+
                             $('.swal2-confirm' ).css({'background-color':'#c1c1c1','border-left-color':'#c1c1c1','border-right-color':'#c1c1c1'})
                         },
                         success:function(data){
@@ -278,13 +278,12 @@
                                     if(arrIndex.length!==0){
                                         $('.img').eq(arrIndex[arrIndex.length-1] -1).removeClass('hide' )
                                         .after("<span class='closed'></span>")
-                                        .append('<img src='+msg.data.path+' alt="图片" data-tab='+msg.data.id+'>')
+                                        .append('<img src='+msg.data.path+' alt="图片" data-tab='+msg.data.id+'>');
                                         arrIndex.pop();
                                     }else{
                                         $('.img').eq(imglen).removeClass('hide')
                                          .after("<span class='closed'></span>")
                                          .append('<img src='+msg.data.path+' alt="图片" data-tab='+msg.data.id+'>')
-                                         
                                     }
 
                                 }else{
@@ -323,6 +322,9 @@
 
             $(".imgs").on("click",".closed",function(e){
                 var This = $(this);
+                console.log(This);
+                console.log(This.parent().index()+1);
+                console.log(This.parent());
                 swal({
                     title: "是否删除当前图片",
                     showConfirmButton: true,
