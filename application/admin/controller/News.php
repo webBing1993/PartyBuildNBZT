@@ -46,8 +46,9 @@ class News extends Admin {
                 unset($data['id']);
             }
             $newModel = new NewsModel();
-            $info = $newModel->validate('news')->save($data);
+            $info = $newModel->validate('news')->create($data);
             if($info) {
+                $this->publish($info['id']);
                 return $this->success("新增成功",Url('News/index'));
             }else{
                 return $this->error($newModel->getError());
@@ -65,10 +66,17 @@ class News extends Admin {
     public function edit(){
         if(IS_POST) {
             $data = input('post.');
+            $id = input('id');
             $data['create_time'] = time();
             $newModel = new NewsModel();
             $info = $newModel->validate('news')->save($data,['id'=>input('id')]);
             if($info){
+                $re = NewsModel::where('id',$id)->field('check')->find();
+                if($re['check'] == 1) {
+                    $this->publish($id,true);//已经审核好了.直接推送
+                } else {
+                    $this->publish($id);
+                }
                 return $this->success("修改成功",Url("News/index"));
             }else{
                 return $this->get_update_error_msg($newModel->getError());
@@ -259,6 +267,68 @@ class News extends Admin {
             }else{
                 return $this->error('发送失败');
             }
+        }else{
+            return $this->error('发送失败');
+        }
+    }
+
+    /*
+     * 发布推送
+     */
+    public function publish($arr1,$type=null){
+        $info1 = NewsModel::where('id',$arr1)->find();
+        $title1 = $info1['title'];
+        $str1 = strip_tags($info1['content']);
+        $des1 = mb_substr($str1,0,40);
+        $content1 = str_replace("&nbsp;","",$des1);  //空格符替换成空
+        $pre = '【发布-箬横动态】';
+        $url1 = hostUrl."/home/News/detail/id/".$info1['id'].".html";
+        $image1 = Picture::get($info1['front_cover']);
+        $path1 = hostUrl.$image1['path'];
+        $information1 = array(
+            'title' => $pre.$title1,
+            'description' => $content1,
+            'url'  => $url1,
+            'picurl' => $path1
+        );
+        $information = array();
+        $information[0] = $information1;
+        //重组成article数据
+        $send = array();
+        $re[] = $information;
+        foreach($re as $key => $value){
+            $key = "articles";
+            $send[$key] = $value;
+        }
+
+        //发送给企业号
+        if($type) {
+            $Wechat = new TPQYWechat(Config::get('user'));
+        } else {
+            $Wechat = new TPQYWechat(Config::get('review'));
+        }
+        if($type) {
+            $message = array(
+                "touser" => toUser,
+                "msgtype" => 'news',
+                "agentid" => 1000005,  // 个人中心
+                "news" => $send,
+                "safe" => "0"
+            );
+        } else {
+            $message = array(
+                "touser" => toUser,
+                "msgtype" => 'news',
+                "agentid" => agentId,  // 消息审核
+                "news" => $send,
+                "safe" => "0"
+            );
+        }
+        
+        $msg = $Wechat->sendMessage($message);  // 推送至审核
+
+        if($msg['errcode'] == 0){
+            return $this->success('发送成功');
         }else{
             return $this->error('发送失败');
         }
