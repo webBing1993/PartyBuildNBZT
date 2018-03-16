@@ -27,15 +27,7 @@
 		</div>
 		<div class="content">
 			<div class="video">
-				<!--本地视频-->
-				{neq name="$detail.video_path" value=""}
-				<video class="videocon" src="{$video.video_path}"></video>
-				<img src="/home/images/learn/video.png" class="play" alt="播放">
-				{else/}
-				<!--链接视频-->
-				<iframe class="videocon" frameborder="0" src="{$detail.net_path}" allowfullscreen></iframe>
-				{/neq}
-			</div>
+				<video id="video" poster="http://p1.img.cctvpic.com/fmspic/2018/01/23/1b3c1437a6154a1bbd3350f5a69dce2e-180.jpg?p=2&amp;h=120" preload="none" webkit-playsinline="" playsinline="" x-webkit-airplay="isHtml5UseAirPlay" controls="" src="http://122.228.240.95/asp/hls/main/0303000a/3/default/e0a0a479fa4d42bbb9e1b4629a20b161/main.m3u8?maxbr=2048&amp;minbr=400"></video>
 			<div class="article-content">{$detail.content}</div>
 			<div class="like">
 				<span class="read">{$detail.views +1}</span>
@@ -100,6 +92,52 @@
 //	tofixed();
 	//ue限定
 //	ueLimit();
+		var u = navigator.userAgent;
+		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+		var once = true;
+		var vConsole = new VConsole();
+		var vid = document.getElementById("video");
+		vid.onloadedmetadata = function(){
+			if(isiOS){
+				if(once){
+					duration = vid.duration;
+					q_timer = setInterval(timer,1000);
+				}
+			}
+		};
+		vid.addEventListener('play',function() {
+			if(!once){
+				q_timer = setInterval(timer,1000);
+			}
+		});
+
+		vid.addEventListener('pause',function(){
+			clearInterval(q_timer);
+			once = false;
+		});
+
+		video.addEventListener('ended', function (e) {
+				alert("需要完整观看视频才能获得积分")
+		})
+
+		function timer() {
+			console.log(duration)
+			duration--;
+			if(duration == 486){
+				clearInterval(q_timer);
+				vid.pause();
+				swal({
+					title: ' ',
+					text: '您已学习大部分内容，请继续努力',
+					type: 'success',
+					confirmButtonText:'确定',
+				});
+			}
+			if(duration<=0){
+				clearInterval(q_timer);
+			}
+		}
 	});
 
 	window.onload = function(){
@@ -140,7 +178,6 @@
 	};
 	//发送评论
 	var send = function(e,type,id){
-		$(".content").hide();
 		swal({
 					title: "",
 					text: "请输入评论内容！",

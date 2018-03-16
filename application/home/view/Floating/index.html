@@ -13,14 +13,14 @@
         {else/}
         {notempty name="$top"}
         <div class="banner">
-            <div class="tag">—— 精品推荐 ——</div>
+            <div class="tag">—— 本月文章 ——</div>
             <!--精彩专题-->
             {volist name="top" id="re"}
             <div class="box">
                 {eq name="re.type" value="2"}
-                <a href="{:Url('Learn/article?id='.$re['id'])}" class="box_up">
+                <a href="{:Url('Floating/article?id='.$re['id'])}" class="box_up">
                     {else/}
-                    <a href="{:Url('Learn/video?id='.$re['id'])}" class="box_up">
+                    <a href="{:Url('Floating/video?id='.$re['id'])}" class="box_up">
                         {/eq}
                         <img src="{$re.front_cover}" alt="图片">
                         <div class="title">{$re.title}</div>
@@ -43,14 +43,14 @@
         {/notempty}
         <!--课程列表-->
         <div class="lists">
-            <div class="tag"> —— 更多课程 —— </div>
+            <div class="tag"> —— 往期回顾 —— </div>
             <!--图文课程-->
             {volist name="list" id="vo"}
             {eq name="vo.type" value="2"}
-            <a href="{:Url('Learn/article?id='.$vo['id'])}" class="list lesson">
+            <a href="{:Url('Floating/article?id='.$vo['id'])}" class="list lesson">
                 <div class="tab">图文</div>
                 {else/}
-                <a href="{:Url('Learn/video?id='.$vo['id'])}" class="list lesson">
+                <a href="{:Url('Floating/video?id='.$vo['id'])}" class="list lesson">
                     <div class="tab">视频</div>
                     {/eq}
                     <img src="{$vo.front_cover}" alt="图片" class="img">
@@ -66,7 +66,7 @@
 
 {block name="script"}
 <script>
-    $("title").text("两学一做");
+    $("title").text("流动党员");
     $(function(){
         $('.box').eq(0).show();
     });

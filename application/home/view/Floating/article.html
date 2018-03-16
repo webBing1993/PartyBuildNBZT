@@ -75,7 +75,7 @@
 
 {block name="script"}
 <script>
-	$("title").text("两学一做");
+	$("title").text("流动党员");
 	window.onload = function(){
 		if($(".list").length<10){
 			mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
@@ -208,7 +208,6 @@
 			beforeSend: function(XMLHttpRequest){
 			},
 			success:function(data){
-				console.log(data)
 				if(data.code == 1){
 					addComment(data);
 					var dataLen =data.data.length;
