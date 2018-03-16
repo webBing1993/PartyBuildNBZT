@@ -1,0 +1,276 @@
+{extend name="public/pure"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/sass/stylesheets/volunteer/rank.css">
+<title>志愿者排行</title>
+<style>
+    .banner{
+        background: -webkit-gradient(linear,top,from(#2CE9FE),to(#479AFE));
+        background: -webkit-linear-gradient(top, #2CE9FE, #479AFE);
+    }
+    .rule span{
+        color: #fff;
+    }
+    .rule:after{
+        display: inline-block;
+        content:'';
+        border-radius: 7vw;
+        width:21.33vw;
+        height:6.93vw;
+        /*position: absolute;*/
+        right:0;
+        background:#479AFE;
+        opacity: 0.3;
+    }
+    #tab .mui-control-item.mui-active {
+        color: #479AFE;
+        background: #fff;
+    }
+    .ranking-number-one{
+        position: absolute;
+        top:6.13vw;
+        z-index: 999999;
+        left:50vw;
+        width:40vw;
+        margin-left: -20vw;
+        text-align: center;
+    }
+    .ranking-number-two{
+        position: absolute;
+        top:18.13vw;
+        z-index: 999999;
+        width:40vw;
+        text-align: center;
+    }
+    .ranking-number-three{
+        position: absolute;
+        top:18.13vw;
+        z-index: 999999;
+        width:40vw;
+        right:0;
+        text-align: center;
+    }
+
+    .ranking-number-one p,.ranking-number-two p,.ranking-number-three p{
+        font-size: 0.32rem;
+        color: #D4D4D4;
+        font-family: 'PingFang-SC-Regular';
+        margin-top: 1.33vw;
+    }
+
+    @media screen and (min-width:768px){
+        .ranking-number-one p,.ranking-number-two p,.ranking-number-three p{
+            margin-top: 3.33vw;
+        }
+    }
+
+
+    .ranking-number-one p span,.ranking-number-two p span,.ranking-number-three p span{
+        color: #fff;
+        letter-spacing: 1px;
+    }
+    .ranking-number-one p:before{
+        display: inline-block;
+        content: '';
+        background: url("/home/images/volunteer/No_1.png");
+        width:4vw;
+        height:7.13vw;
+        background-size: cover;
+        position: absolute;
+        top:16.93vw;
+        left:17.8vw;
+        margin-top: -2.065vw;
+        z-index: 9999999;
+    }
+    .ranking-number-two p:before{
+        display: inline-block;
+        content: '';
+        background: url("/home/images/volunteer/No_2.png");
+        width:4vw;
+        height:7.13vw;
+        background-size: cover;
+        position: absolute;
+        top:16.93vw;
+        left:17.8vw;
+        margin-top: -2.065vw;
+        z-index: 9999999;
+    }
+    .ranking-number-three p:before{
+        display: inline-block;
+        content: '';
+        background: url("/home/images/volunteer/No_3.png");
+        width:4vw;
+        height:7.13vw;
+        background-size: cover;
+        position: absolute;
+        top:16.93vw;
+        left:17.8vw;
+        margin-top: -2.065vw;
+        z-index: 9999999;
+    }
+    .ranking-number-one p span:first-child,.ranking-number-two p span:first-child,.ranking-number-three p span:first-child{
+        margin-left: -2.8vw;
+    }
+    @media screen and (device-width:1080px){
+        .ranking-number-one p span:first-child,.ranking-number-two p span:first-child,.ranking-number-three p span:first-child{
+            margin-left: -2vw;
+        }
+    }
+    .ranking-number-one .box,.ranking-number-two .box,.ranking-number-three .box {
+        width: 16.4vw;
+        height: 18.93vw;
+        background:#479AFE;
+        /*position: absolute;*/
+        /*top:6.13vw;*/
+        z-index:999;
+        /*left:50%;*/
+        /*margin-left:-8.3vw;*/
+    }
+    .ranking-number-one .box1,.ranking-number-two .box1,.ranking-number-three .box1 {
+        width: 14.4vw;
+        height: 16.93vw;
+        background-size: cover;
+        position: absolute;
+        top:1vw;
+        z-index:999;
+        margin-left:1vw;
+        z-index: 999999;
+    }
+
+    .clipPolygon {
+        -webkit-clip-path:
+                polygon( 0 25%, 50% 0, 100% 25%,
+                100% 75%, 50% 100%, 0 75%, 0 25%);
+        clip-path: polygon( 0 25%, 50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+</style>
+{/block}
+
+{block name="body"}
+<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="banner">
+            <div class="rule"><span>积分规则</span></div>
+        </div>
+
+        <div class="ranking-number-one">
+        <img class="box1 clipPolygon" src="/home/images/floating/rule.png">
+        <img class="box clipPolygon" src="/home/images/floating/ranking.png">
+        <p><span>王赛英</span> | <span>98分</span></p>
+        </div>
+
+        <div class="ranking-number-two">
+            <img class="box1 clipPolygon" src="/home/images/floating/rule.png">
+            <img class="box clipPolygon" src="/home/images/floating/ranking.png">
+            <p><span>王赛英</span> | <span>98分</span></p>
+        </div>
+
+        <div class="ranking-number-three">
+            <img class="box1 clipPolygon" src="/home/images/floating/rule.png">
+            <img class="box clipPolygon" src="/home/images/floating/ranking.png">
+            <p><span>王赛英</span> | <span>98分</span></p>
+        </div>
+
+
+        <div id="tab" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+            <a class="mui-control-item" href="#item1mobile" data-index="0">
+                <span>月榜</span>
+            </a>
+            <a class="mui-control-item" href="#item2mobile" data-index="1">
+                <span>总榜</span>
+            </a>
+        </div>
+
+        <div class="mui-slider-group">
+            <div id="item1mobile" class="mui-slider-item mui-control-content">
+                <div class="list">
+                    <ul>
+                        <li>
+                            <span class="number">4</span>
+                            <img src="">
+                            <span class="name">大胜多负少</span>
+                            <span class="score">33分</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="item2mobile" class="mui-slider-item mui-control-content">
+                <div class="list">
+                    <ul>
+                        <li>
+                            <span class="number">1</span>
+                            <img src="">
+                            <span class="name">飞蛾</span>
+                            <span class="score">333分</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mask"></div>
+<div class="rule-mask" style="top: 25vw;">
+    <img src="/home/images/floating/rule.png">
+    <div class="rule-text">
+        <p class="rule-text-title">积分规则</p>
+        <p>完成1个视频学习计1分;</p>
+        <p>完成1篇文章学习计1分;</p>
+        <p>每月对平台发布的学习视频（文章）首次有效点评计0.5分;</p>
+        <p>管理员可针对该评论内容酌情加分。</p>
+
+        <p>温馨提示：视频需要同时完成视频观看和文章学习才能获得积分。未完成学习不给分，超过月份未学习的内容其他月份学习不再给分。</p>
+    </div>
+    <img src="/home/images/floating/cancel.png" class="rule-cancel">
+</div>
+{/block}
+
+{block name="script"}
+<script src="/home/js/reset.js"></script>
+<script>
+    $(function(){
+        c = getCookie("c")?getCookie("c"):0;
+        $("#tab a").eq(c).addClass('mui-active');
+        $(".mui-slider-group>div").eq(c).addClass('mui-active');
+    });
+
+    //首页加载是否需要上拉加载
+    window.onload = function() {
+        mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+    };
+
+    //初始化下拉加载
+    mui.init({
+        pullRefresh: {
+            container: '#refreshContainer',
+            up: {
+                callback: loadScroll
+            }
+        }
+    });
+
+    function loadScroll(){
+        mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+    }
+
+    mui('#tab').on('tap', 'a', function(e) {
+        mui('#refreshContainer').pullRefresh().scrollTo(0,0);
+        mui('#refreshContainer').scroll().scrollTo(0,0);
+        mui('#refreshContainer').pullRefresh().refresh(true);
+        c = this.getAttribute("data-index");
+        setCookie("c",c);
+    });
+
+    $("#refreshContainer").on("tap",'.rule',function(){
+        $(".mask").show();
+        $(".rule-mask").show();
+    })
+
+    $(".rule-mask").on("tap",'.rule-cancel',function(){
+        $(".mask").hide();
+        $(".rule-mask").hide();
+    })
+</script>
+{/block}

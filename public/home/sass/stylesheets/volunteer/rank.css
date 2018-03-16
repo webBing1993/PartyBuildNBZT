@@ -104,3 +104,118 @@ body {
   right: 2vw;
   font-size: 0.38rem;
 }
+.myself{
+  margin-top: 2.5vh;
+}
+.myself:before,.myself:after{
+  display: inline-block;
+  content: '';
+  background: #f1f1f1;
+  width:100vw;
+  height:2.66vw;
+}
+.myself ul li{
+  border:none;
+  height:8.78vh;
+}
+.rule{
+  position: absolute;
+  z-index: 999;
+  top:5.33vw;
+  right:4vw;
+  color: #E91616;
+  font-size: 0.32rem;
+  display: flex;
+  align-items:center;
+  text-align: center;
+}
+.rule span{
+  width:21.33vw;
+  letter-spacing: 1px;
+}
+.rule:after{
+  display: inline-block;
+  content:'';
+  border-radius: 7vw;
+  width:21.33vw;
+  height:6.93vw;
+  position: absolute;
+  right:0;
+  background: #E91616;
+  opacity: 0.1;
+}
+
+
+.mask{
+  display: none;
+  position: absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0;
+  background: #000;
+  opacity:0.5;
+  z-index: 9;
+}
+.rule-mask{
+  display: none;
+  position: absolute;
+  z-index:99;
+  width:84vw;
+  /*height:88.4vw;*/
+  margin-left: 8vw;
+  top: calc((100vh - 96.4vw) / 2);
+}
+.rule-mask img{
+  width:84vw;
+  height:26.66vw;
+  vertical-align: top;
+}
+.rule-mask .rule-text{
+  width:84vw;
+  /*height:61.74vw;*/
+  background: #fff;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.rule-text p:not(.rule-text-title){
+  width:67.86vw;
+  color: #333!important;
+  margin-left:8.035vw;
+  font-size: 0.32rem;
+}
+.rule-text p:last-child{
+  padding-bottom: 5vw;
+}
+.rule-text-title{
+  color: #333;
+  font-size: 0.4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 6.4vw;
+}
+.rule-text-title:before{
+  display: inline-block;
+  content: '';
+  background: url("/home/images/floating/left.png");
+  background-size: 13.5vw 2.8vw;
+  width:13.5vw;
+  height:2.8vw;
+  margin-right: 4vw;
+}
+.rule-text-title:after{
+  display: inline-block;
+  content: '';
+  background: url("/home/images/floating/right.png");
+  background-size: 13.5vw 2.8vw;
+  width:13.5vw;
+  height:2.8vw;
+  margin-left: 4vw;
+}
+.rule-mask .rule-cancel{
+  width:8vw;
+  height:8vw;
+  margin-left: 38vw;
+  margin-top: 4vw;
+}

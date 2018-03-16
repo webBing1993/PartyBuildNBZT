@@ -10,6 +10,7 @@
     <div class="mui-scroll">
         <div class="banner">
             <img src="/home/images/volunteer/rankbanner.png">
+            <div class="rule"><span>积分规则</span></div>
         </div>
         <div id="tab" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
             <a class="mui-control-item" href="#item1mobile" data-index="0">
@@ -33,6 +34,16 @@
                     <a class="mui-control-item" href="#item4mobile" data-index="1">
                         <span>总榜</span>
                     </a>
+                </div>
+                <div class="list myself">
+                    <ul>
+                        <li>
+                            <img src="" style="margin-left: 14vw">
+                            <span class="name" style="margin-top: -5vw;">chengjiabo</span>
+                            <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第24名</span>
+                            <span class="score">3分</span>
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="mui-slider-group">
@@ -176,6 +187,18 @@
         </div>
     </div>
 </div>
+
+<div class="mask"></div>
+<div class="rule-mask">
+    <img src="/home/images/floating/rule.png">
+    <div class="rule-text">
+        <p class="rule-text-title">积分规则</p>
+        <p>志愿服务时间每1小时，计积分1分，一天内最高积2分；</p>
+        <p>志愿服务重大活动视工作性质由组织酌情赋分；</p>
+        <p>温馨提示：党员干部积分为评先评优的重要参与依据。群众积分为推优入党的重要参与依据。</p>
+    </div>
+    <img src="/home/images/floating/cancel.png" class="rule-cancel">
+</div>
 {/block}
 
 {block name="script"}
@@ -254,6 +277,16 @@
         index = this.getAttribute("data-index");
         setCookie("index",index)
     });
+
+    $("#refreshContainer").on("tap",'.rule',function(){
+        $(".mask").show();
+        $(".rule-mask").show();
+    })
+
+    $(".rule-mask").on("tap",'.rule-cancel',function(){
+        $(".mask").hide();
+        $(".rule-mask").hide();
+    })
 
 </script>
 {/block}
