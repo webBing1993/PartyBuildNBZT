@@ -19,9 +19,9 @@ class Notice extends Base {
      */
     public function index(){
         $Special = new Special();
-        $map = ['status' => ['egt',0],'type' => 1];
+        $map = ['status' => 1,'type' => 1];
         $left = $Special->get_list($map);
-        $mapp = ['status' => ['egt',0],'type' => 2];
+        $mapp = ['status' => 1,'type' => 2];
         $right = $Special->get_list($mapp);
         $this->assign('left',$left); // 政策解读
         $this->assign('right',$right);  // 通知公告
@@ -39,7 +39,7 @@ class Notice extends Base {
         }else{
             $type = 2; //通知公告
         }
-        $map = ['status' => ['egt',0] , 'type' => $type];
+        $map = ['status' => 1, 'type' => $type];
         $list = $Special->get_list($map,$len);
         if ($list){
             return $this->success('加载成功','',$list);

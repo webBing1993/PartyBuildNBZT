@@ -20,11 +20,11 @@ class News extends Base {
      */
     public function index(){
         $NewsModel = new NewsModel();
-        $map = ['status' => ['eq',0],'type' => 1];
+        $map = ['status' => ['eq',1],'type' => 1];
         $left = $NewsModel->get_list($map);
-        $mapp = ['status' => ['eq',0],'type' => 2];
+        $mapp = ['status' => ['eq',1],'type' => 2];
         $right = $NewsModel->get_list($mapp);
-        $data=Db::table('pb_news')->where('status',0)->order('create_time desc')->limit(3)->select();
+        $data=Db::table('pb_news')->where('status',1)->order('create_time desc')->limit(3)->select();
         foreach ($data as $key=>$v) {
             $list = Db::table('pb_picture')->where('id', $v['front_cover'])->find();
             $data[$key]['front_cover'] = $list['path'];
@@ -60,7 +60,7 @@ class News extends Base {
         }else{
             $type = 2; //党建动态
         }
-        $map = ['status' => ['egt',0] , 'type' => $type];
+        $map = ['status' => 1, 'type' => $type];
         $list = $NewsModel->get_list($map,$len);
         if ($list){
             return $this->success('加载成功','',$list);
