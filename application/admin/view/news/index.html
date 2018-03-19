@@ -47,6 +47,7 @@
                                 <th>创建人 </th>
                                 <th>创建时间</th>
                                 <th>是否推荐</th>
+                                <th>是否推送</th>
                                 <th>状态</th>
                                 <th>操作</th>
                             </tr>
@@ -61,9 +62,12 @@
                                 <td>{$vo->user->nickname}</td>
                                 <td>{$vo.create_time|time_format='Y-m-d'}</td>
                                 <td>{$vo.recommend_text}</td>
+                                <td>{$vo.push_text}</td>
                                 <td>{$vo.status_text}</td>
                                 <td>
+                                    {neq name="$vo.status" value="2"}
                                     <a href="{:Url('News/edit?id='.$vo['id'])}">修改</a>
+                                    {/neq}
                                     &emsp;<a href="{:Url('News/del?id='.$vo['id'])}" class="confirm ajax-del">删除</a>
                                 </td>
                             </tr>
