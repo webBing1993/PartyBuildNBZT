@@ -110,6 +110,7 @@ class Wechat extends Admin
      * 同步部门
      */
     public function synchronizeDp(){
+        ini_set('max_execution_time', '60');
         $Wechat = new QYWechat(Config::get('party'));
         if($Wechat->errCode != 40001) {
             return $this->error("同步出错");
