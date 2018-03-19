@@ -25,7 +25,7 @@ class Floating extends Base {
         $flaw = new SelfFlaw();
         //本月最新的两条文章
 
-        $month = Db::table('pb_self_flaw') ->whereTime('create_time','m')-> order('id','desc') ->limit(2)->select();
+        $month = db('self_flaw') ->whereTime('create_time','m')-> order('id','desc') ->limit(2)->select();
 
         //展示列表页
         $map = [
