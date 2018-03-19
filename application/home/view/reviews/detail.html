@@ -1,0 +1,38 @@
+{extend name="public/common"}
+
+{block name="style"}
+<title></title>
+<link rel="stylesheet" href="/home/sass/stylesheets/details-template/detail.css">
+<style>
+    .mui-pull-bottom-pocket {
+        height: 1.06rem;
+        bottom: 0.8rem;
+    }
+    .comment{
+        padding-bottom: 1rem;
+    }
+</style>
+{/block}
+{block name="body"}
+<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="article">
+            <div class="title"><p>{$detail.title}</p></div>
+            <div class="note clear">
+                <span class="publish">{$detail.publisher}</span>
+                <span class="time">{$detail.create_time|time_format="Y-m-d"}</span>
+            </div>
+            <div class="content">
+                <div class="article-content">{$detail.content}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script>
+    $("title").text("消息审核");
+</script>
+{/block}

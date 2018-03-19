@@ -113,7 +113,7 @@ class Special extends Admin
         $des = mb_substr($str,0,40);
         $content = str_replace("&nbsp;","",$des);  //空格符替换成空
         $pre = '【通知公告】';
-        $url = hostUrl."/home/Notice/detail/id/".$info['id'].".html";
+        $url = hostUrl."/home/Reviews/detail/class/1/id/".$info['id'].".html";
         $image = Picture::get($info['front_cover']);
         $path = hostUrl.$image['path'];
         $send = [

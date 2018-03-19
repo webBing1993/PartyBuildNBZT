@@ -1,0 +1,388 @@
+{extend name="public/pure"}
+
+{block name="style"}
+<title></title>
+<link rel="stylesheet" href="/home/sass/stylesheets/review/index.css">
+{/block}
+
+{block name="body"}
+    <div id="tab" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
+        <a class="mui-control-item" href="#item1mobile" data-index="0">
+            <span>待审核</span>
+        </a>
+        <a class="mui-control-item" href="#item2mobile" data-index="1">
+            <span>已审核</span>
+        </a>
+    </div>
+    <div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <div class="mui-slider-group">
+                <div id="item1mobile" class="mui-slider-item mui-control-content">
+                    <!--待审核-->
+                    <div class="list publish">
+                        {notempty name="$left"}
+                        <ul>
+                            {volist name="$left" id="lo"}
+                            <li >
+                                <a  href="{:Url('Reviews/detail?class='.$lo['class'].'&id='.$lo['id'])}" class="list clear">
+                                    <img src="{$lo.front_cover}">
+                                    <span>{$lo.title}</span>
+                                    <span>{eq name="$lo.class" value="1"}[通知公告]{/eq} {eq name="$lo.class" value="2"}[箬横动态]{/eq}  发布人：{$lo.publish}</span>
+                                    <span>{$lo.create_time}</span>
+                                    <span class="mui-icon mui-icon-forward"></span>
+                                    <i class="fail" data-fid="{$lo.fid}" data-id="{$lo.id}" data-class="{$lo.class}">不通过</i><i class="pass" data-id="{$lo.id}" data-fid="{$lo.fid}" data-class="{$lo.class}" >通&nbsp;过</i>
+                                </a>
+                            </li>
+                            {/volist}
+                        </ul>
+                        {else/}
+                        <div class="default"><img src="/home/images/common/nomessage.png"></div>
+                        {/notempty}
+                    </div>
+                </div>
+                <div id="item2mobile" class="mui-slider-item mui-control-content">
+                    <!--已审核-->
+                    <div class="Audited">
+                        {empty name="right"}
+                        <div class="default"><img src="/home/images/common/nomessage.png"></div>
+                        {else/}
+                        <ul>
+                            {volist name="right" id="ls"}
+                            <li >
+                                <a href="javascript:;" class="list clear">
+                                    <img src="{$ls.front_cover}">
+                                    <span>{$ls.title}</span>
+                                    {eq name="ls.class" value="1"}
+                                        <p>[通知公告]</p>
+                                    {/eq}
+                                    {eq name="ls.class" value="2"}
+                                    <p>[箬横动态]</p>
+                                    {/eq}
+                                    <p>审核人：{$ls.name}</p>
+                                    <span>{$ls.review_time}</span>
+                                    {eq name="ls.status" value="1"}
+                                    <i class="pass"></i>
+                                    {else/}
+                                    <i class="refuse"></i>
+                                    {/eq}
+                                </a>
+                            </li>
+                            {/volist}
+                        </ul>
+                        {/empty}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
+
+{block name="script"}
+<script src="/home/js/reset.js"></script>
+<script>
+    $("title").text("消息审核");
+$(function(){
+    c = getCookie("c")?getCookie("c"):0;
+    $("#tab a").eq(c).addClass('mui-active');
+    $(".mui-slider-group>div").eq(c).addClass('mui-active');
+});
+
+//首页加载是否需要上拉加载
+window.onload = function() {
+    skidding();
+    if(c==0){
+        if ($(".publish ul a").length < 12) {
+            mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+        } else {
+            mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+        }
+    }else if(c==1){
+        if ($(".Audited ul a").length < 12) {
+            mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+        } else {
+            mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+        }
+    }
+};
+
+//初始化下拉加载
+mui.init({
+    pullRefresh: {
+        container: '#refreshContainer',
+        up: {
+            callback: loadScroll
+        }
+    }
+});
+
+
+function loadScroll(){
+    var len;
+    if (c == 0){
+        len = $(".publish ul a").length;
+    }else{
+        len = $(".Audited ul a").length;
+    }
+    $.ajax({
+        type:"post",
+        url:"{:Url('Reviews/more')}",
+        data:{
+            len:len,
+            type:c
+        },
+        beforeSend: function(XMLHttpRequest){
+        },
+        success:function(data){
+            addCourse(data,c);
+            if(data.code == 1){
+                if(data.data.length == 12){
+                    mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+                }else{
+                    mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+                }
+            }else{
+                mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+            }
+        }
+    })
+};
+
+
+function addCourse(data,type) {
+    var html = '';
+    var lists = data.data;
+    var len = lists.length;
+    for (var i = 0; i < len; i++) {
+        var list = lists[i];
+        var link ='';
+        if(list.class == 1){
+            class_name = "[会议纪要]";
+        }else if(list.class == 2) {
+            class_name = "[微心愿]";
+        }
+        link = '/home/reviews/detail/class/'+list.class+'/id/'+list.id;
+        if (type == 0) {
+                html +=
+                    '<li>' +
+                    '<a href="' + link + '"  class="list clear">' +
+                    '<img src="' + list.front_cover+ '">' +
+                    '<span>' + list.title + '</span>' +
+                    '<span>' + class_name + ' 发布人：' + list.publish + '</span>' +
+                    '<span>' + list.create_time + '</span>' +
+                    '<span class="mui-icon mui-icon-forward"></span>' +
+                    '<i class="fail" data-fid="'+list.fid+'" data-id="' + list.id + '" data-class="' + list.class + '">不通过</i><i class="pass" data-fid="'+list.fid+'"  data-id="' + list.id + '" data-class="' + list.class + '">通&nbsp;过</i>' +
+                    '</a>' +
+                    '</li>';
+        } else if (type == 1) {
+            html +=
+                    '<li>'+
+                    '<a href="#" class="list clear">'+
+                    '<img src="'+list.front_cover+'">'+
+                    '<span>'+ list.title + '</span>'+
+                    '<p>'+ class_name+ '</p>'+
+                    '<p>'+
+                    '	审核人：  '+list.name+''+
+                    '</p>'+
+                    '<span> '+list.review_time+'</span>';
+                    if (list.status == 1){
+                        html+='<i class="pass"></i>';
+                    }else if (list.status == 2){
+                        html+='<i class="refuse"></i>';
+                    }
+                    html +='</a>'+
+                    '</li>';
+        }
+    }
+    if (type == 0) {
+        $(".publish ul").append(html);
+    } else if (type == 1) {
+        $(".Audited ul").append(html);
+    }
+    skidding();
+};
+
+
+//tab点击事件
+mui('#tab').on('tap', 'a', function(e) {
+    mui('#refreshContainer').pullRefresh().scrollTo(0,0);
+    mui('#refreshContainer').scroll().scrollTo(0,0);
+    mui('#refreshContainer').pullRefresh().refresh(true);
+    c = this.getAttribute("data-index");
+    if(c==0){
+        if($(".publish ul li").length<12){
+            mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+        }else{
+            mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+        }
+    }else if(c==1){
+        if($(".Audited ul li").length<12){
+            mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+        }else{
+            mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+        }
+    }
+    setCookie('c',c);
+});
+
+//点击背景触发active
+mui("#refreshContainer").on("touchstart","a",function(){
+    $(this).css("backgroundColor","rgba(0,0,0,.1)");
+}).on("touchend","a", function () {
+    $(this).css("backgroundColor","#fff");
+});
+
+//页面点击事件
+mui("#refreshContainer").on("tap","a",function(){
+    var url = this.getAttribute("href");
+    window.location.href = url;
+});
+
+
+
+//发布审核
+mui('#item1mobile').on('tap', '.pass', function(e) {
+    event.stopPropagation();
+    event.preventDefault();
+    var element = this.parentNode.parentNode;
+    var id = this.getAttribute("data-id");
+    var _class = this.getAttribute("data-class");
+    var fid = this.getAttribute("data-fid");
+    swal({
+        title: "",
+        text: "确定通过审核？",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        confirmButtonColor: "#ec6c62"
+    }, function() {
+        pass(element,id,_class,1,fid);
+    });
+});
+
+mui('#item1mobile').on('tap', '.fail', function(e) {
+    event.stopPropagation();
+    event.preventDefault();
+    var element = this.parentNode.parentNode;
+    var id = this.getAttribute("data-id");
+    var _class = this.getAttribute("data-class");
+    var fid = this.getAttribute("data-fid");
+    swal({
+        title: "",
+        text: "确定不通过审核？",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        confirmButtonColor: "#ec6c62"
+    }, function() {
+        pass(element,id,_class,2,fid);
+    });
+});
+
+
+mui('#refreshContainer').on('tap', 'a', function(e) {
+    var url = this.getAttribute("href");
+    window.location.href = url;
+});
+
+mui("#refreshContainer").on("touchstart","a",function(){
+    $(this).css("backgroundColor","rgba(0,0,0,.1)");
+}).on("touchend","a", function () {
+    $(this).css("backgroundColor","#fff");
+});
+
+//审核ajax
+var  pass = function(element,id,_class,status,fid){
+    $.ajax({
+        type:"post",
+        url: "{:Url('Reviews/review')}",
+        data:{
+            id:id,
+            type:_class,
+            status:status,
+            fid:fid
+        },
+        success:function(data){
+            if(data.code==1){
+//                        $(element).remove();
+                swal({
+                    title: "",
+                    text: "审核成功",
+                    type: "success",
+                    confirmButtonText: "确认"
+                });
+                setTimeout(function(){
+                    location.reload();
+                },1500);
+            }else{
+                swal({
+                    title: "",
+                    text: data.msg,
+                    type: "error",
+                    confirmButtonText: "确认",
+                    timer:1500
+                });
+            }
+        },
+        error:function(data){
+            swal({
+                title: "",
+                text: data.msg,
+                type: "error",
+                confirmButtonText: "确认",
+                timer:1500
+            });
+        }
+    })
+}
+
+
+
+var skidding = function() {
+    //侧滑显示删除按钮
+    var expansion = null; //是否存在展开的list
+    var container = document.querySelectorAll('.list li a');
+    for (var i = 0; i < container.length; i++) {
+        var x, y, X, Y, swipeX, swipeY;
+        container[i].addEventListener('touchstart', function (event) {
+            x = event.changedTouches[0].pageX;
+            y = event.changedTouches[0].pageY;
+            swipeX = true;
+            swipeY = true;
+        });
+        container[i].addEventListener('touchmove', function (event) {
+
+            X = event.changedTouches[0].pageX;
+            Y = event.changedTouches[0].pageY;
+            if (expansion) {   //判断是否展开，如果展开则收起
+                expansion.className = "";
+            }
+            // 左右滑动
+            if (swipeX && Math.abs(X - x) - Math.abs(Y - y) > 0) {
+                // 阻止事件冒泡
+                event.stopPropagation();
+                if (X - x > 50) {   //右滑
+                    event.preventDefault();
+                    this.className = "";    //右滑收起
+                }
+                if (x - X > 50) {   //左滑
+                    event.preventDefault();
+                    this.className = "swipeleft";   //左滑展开
+                    expansion = this;
+                }
+                swipeY = false;
+            }
+            // 上下滑动
+            if (swipeY && Math.abs(X - x) - Math.abs(Y - y) < 0) {
+                swipeX = false;
+            }
+        });
+    }
+};
+
+</script>
+
+{/block}
