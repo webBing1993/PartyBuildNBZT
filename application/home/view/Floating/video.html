@@ -18,7 +18,7 @@
 
 {block name="body"}
 <div id="refreshContainer" class="mui-content mui-scroll-wrapper">
-	<div class="mui-scroll">
+	<div class="mui-scroll" id="scrollDiv">
 		<div class="article">
 			<div class="title"><p>{$detail.title}</p></div>
 			<div class="note clear">
@@ -96,8 +96,8 @@
 //	ueLimit();
 	});
 
+	var videoEnd=false,articleEnd=false;
 	window.onload = function(){
-
 		var u = navigator.userAgent;
 		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
 		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
@@ -142,6 +142,8 @@
 		video.addEventListener('ended', function (e) {
 			if(duration==0){
 				alert('恭喜您，您已经完成全部内容学习！');
+				videoEnd=true;
+				integral_ajax();
 			}else{
 				alert('需要完成观看完视频才能获得积分！');
 			}
@@ -163,7 +165,6 @@
 			}
 		}
 
-
 		if($(".list").length<10){
 			mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
 		}else{
@@ -171,6 +172,28 @@
 		}
 	};
 
+	 var scrollDiv = document.getElementById('scrollDiv');
+	 scrollDiv.addEventListener('scroll',function(){
+	 var translate3d = this.style.webkitTransform;
+	 var scrollData = translate3d.substring(12,translate3d.length-17);
+	 var scrollTop = scrollData.split(", ")[1].substring(0,scrollData.split(", ")[1].length-2);
+	 var eleHeigth = scrollDiv.offsetHeight;
+	 var erfHeight = $("#refreshContainer").height();
+		 if(eleHeigth<erfHeight){
+			 articleEnd=true;
+			 integral_ajax();
+		 }else if(Number(eleHeigth)+Number(scrollTop)==erfHeight){
+			 articleEnd=true;
+			 integral_ajax();
+		 }
+
+	 });
+
+	var integral_ajax = function(){
+		if(videoEnd && articleEnd){
+
+		}
+	};
 
 	//tab点击事件
 	mui('#refreshContainer').on('tap', '.notvisitor', function(e) {
