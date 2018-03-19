@@ -19,30 +19,32 @@
 {block name="body"}
 <div id="refreshContainer" class="mui-content mui-scroll-wrapper">
 	<div class="mui-scroll">
-	<div class="article">
-		<div class="title"><p>{$detail.title}</p></div>
-		<div class="note clear">
-			<span class="fl">{$detail.publisher}</span>
-			<span class="fr">{$detail.create_time|time_format='Y-m-d'}</span>
-		</div>
-		<div class="content">
-			<div class="video">
-				<video id="video" poster="http://p1.img.cctvpic.com/fmspic/2018/01/23/1b3c1437a6154a1bbd3350f5a69dce2e-180.jpg?p=2&amp;h=120" preload="none" webkit-playsinline="" playsinline="" x-webkit-airplay="isHtml5UseAirPlay" controls="" src="http://122.228.240.95/asp/hls/main/0303000a/3/default/e0a0a479fa4d42bbb9e1b4629a20b161/main.m3u8?maxbr=2048&amp;minbr=400"></video>
-			<div class="article-content">{$detail.content}</div>
-			<div class="like">
-				<span class="read">{$detail.views +1}</span>
-				{eq name="visit" value="0"}
-				{eq name="detail.is_like" value="1"}
-				<span class="isgood good_ notvisitor"  data-type="3" data-id="{$detail.id}">{$detail.likes}</span>
-				{else/}
-				<span class="isgood good notvisitor"  data-type="3" data-id="{$detail.id}">{$detail.likes}</span>
-				{/eq}
-				{else/}
-				<span class="isgood good">{$detail.likes}</span>
-				{/eq}
+		<div class="article">
+			<div class="title"><p>{$detail.title}</p></div>
+			<div class="note clear">
+				<span class="fl">{$detail.publisher}</span>
+				<span class="fr">{$detail.create_time|time_format='Y-m-d'}</span>
 			</div>
-	</div>
-	</div>
+			<div class="content">
+				<div class="video">
+					<!--<video id="video" style="width: 80vw;" poster="http://p1.img.cctvpic.com/fmspic/2018/01/23/1b3c1437a6154a1bbd3350f5a69dce2e-180.jpg?p=2&amp;h=120" preload="none" webkit-playsinline="" playsinline="" x-webkit-airplay="isHtml5UseAirPlay" controls="" src="http://122.228.240.95/asp/hls/main/0303000a/3/default/e0a0a479fa4d42bbb9e1b4629a20b161/main.m3u8?maxbr=2048&amp;minbr=400"></video>-->
+					<video id="video" style="width: 80vw;" poster="http://p1.img.cctvpic.com/fmspic/2018/01/23/1b3c1437a6154a1bbd3350f5a69dce2e-180.jpg?p=2&amp;h=120" controls="" x5-playsinline="" playsinline="" webkit-playsinline="" poster="" preload="auto" src="http://122.228.240.95/asp/hls/main/0303000a/3/default/e0a0a479fa4d42bbb9e1b4629a20b161/main.m3u8?maxbr=2048&amp;minbr=400"></video>
+				</div>
+				<div class="article-content">{$detail.content}</div>
+				<div class="like">
+					<span class="read">{$detail.views +1}</span>
+					{eq name="visit" value="0"}
+					{eq name="detail.is_like" value="1"}
+					<span class="isgood good_ notvisitor"  data-type="3" data-id="{$detail.id}">{$detail.likes}</span>
+					{else/}
+					<span class="isgood good notvisitor"  data-type="3" data-id="{$detail.id}">{$detail.likes}</span>
+					{/eq}
+					{else/}
+					<span class="isgood good">{$detail.likes}</span>
+					{/eq}
+				</div>
+			</div>
+		</div>
 		<div class="comment">
 			<div class="sum">共<span>{$detail.comments}</span>条评论</div>
 			<div class="lists">
@@ -69,7 +71,7 @@
 				{/volist}
 			</div>
 		</div>
-</div>
+	</div>
 </div>
 
 {eq name="visit" value="0"}
@@ -88,28 +90,48 @@
 //	播放视频
 //	hideplay();
 //	videoPlay();
-	//ios fix兼容
+		//ios fix兼容
 //	tofixed();
-	//ue限定
+		//ue限定
 //	ueLimit();
+	});
+
+	window.onload = function(){
+
 		var u = navigator.userAgent;
 		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
 		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 		var once = true;
 		var vConsole = new VConsole();
 		var vid = document.getElementById("video");
+		var pausetime;
 		vid.onloadedmetadata = function(){
 			if(isiOS){
 				if(once){
+					pausetime = vid.duration;
 					duration = vid.duration;
 					q_timer = setInterval(timer,1000);
 				}
 			}
 		};
 		vid.addEventListener('play',function() {
-			if(!once){
-				q_timer = setInterval(timer,1000);
-			}
+				if(!isiOS){
+					if(once){
+						setTimeout(function(){
+							pausetime = vid.duration;
+							duration = vid.duration;
+							q_timer = setInterval(timer,1000);
+						},1000)
+					}else{
+						setTimeout(function(){
+							q_timer = setInterval(timer,1000);
+						},1000)
+					}
+				}else{
+					if(!once){
+						q_timer = setInterval(timer,1000);
+					}
+				}
 		});
 
 		vid.addEventListener('pause',function(){
@@ -118,29 +140,30 @@
 		});
 
 		video.addEventListener('ended', function (e) {
-				alert("需要完整观看视频才能获得积分")
-		})
+			if(duration==0){
+				alert('恭喜您，您已经完成全部内容学习！');
+			}else{
+				alert('需要完成观看完视频才能获得积分！');
+			}
+
+		});
 
 		function timer() {
-			console.log(duration)
 			duration--;
-			if(duration == 486){
+			console.log(parseInt(pausetime / 2))
+			if(duration == parseInt(pausetime / 2) && pausetime > 300){
 				clearInterval(q_timer);
 				vid.pause();
-				swal({
-					title: ' ',
-					text: '您已学习大部分内容，请继续努力',
-					type: 'success',
-					confirmButtonText:'确定',
-				});
+				if(!isiOS) {
+					alert('您已学习大部分内容，请继续努力');
+				}
 			}
 			if(duration<=0){
 				clearInterval(q_timer);
 			}
 		}
-	});
 
-	window.onload = function(){
+
 		if($(".list").length<10){
 			mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
 		}else{
@@ -370,8 +393,8 @@
 		});
 
 	});
-//	wx.error(function (res) {
-//		alert('wx.error: '+JSON.stringify(res));
-//	});
+	//	wx.error(function (res) {
+	//		alert('wx.error: '+JSON.stringify(res));
+	//	});
 </script>
 {/block}

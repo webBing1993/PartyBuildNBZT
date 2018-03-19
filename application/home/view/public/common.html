@@ -23,6 +23,7 @@
     <!--<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
     <script src="/static/bootstrap/js/bootstrap.min.js"></script>
     <script src="/static/sweetalert/sweetalert.min.js"></script>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
     <link rel="stylesheet" href="/static/sweetalert/sweetalert.css">
     <link rel="stylesheet" href="/home/sass/stylesheets/screen.css">
     <!--<script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>-->
@@ -48,4 +49,9 @@
 </div>
 <!-- /底部 -->
 </body>
+<script>
+    document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+    });
+</script>
 </html>
