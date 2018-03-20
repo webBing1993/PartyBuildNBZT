@@ -11,18 +11,18 @@
         {empty name="$list"}
         <div class="default"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>
         {else/}
-        {notempty name="$top"}
+        {notempty name="$month"}
         <div class="banner">
             <div class="tag">—— 本月文章 ——</div>
             <!--精彩专题-->
-            {volist name="top" id="re"}
+            {volist name="month" id="re"}
             <div class="box">
                 {eq name="re.photo" value="1"}
                 <a href="{:Url('Floating/article?id='.$re['id'])}" class="box_up">
                     {else/}
                     <a href="{:Url('Floating/video?id='.$re['id'])}" class="box_up">
                         {/eq}
-                        <img src="{$re.front_cover}" alt="图片">
+                        <img src="{$re.front_cover|get_cover='path'}" alt="图片">
                         <div class="title">{$re.title}</div>
                         <div class="note clear">
                             <span class="fl">{$re.publisher}</span>
