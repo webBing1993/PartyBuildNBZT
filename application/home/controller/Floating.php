@@ -26,12 +26,12 @@ class Floating extends Base {
         //本月最新的两条文章
 
         $month = db('self_flaw') ->whereTime('create_time','m')-> order('id','desc') ->limit(2)->select();
-
+        var_dump($month);
         //展示列表页
         $map = [
             'status' => ['gt',0]
         ];
-        $list = $flaw ->where($map)->order('id','desc') ->limit(10)->select();
+        $list = $flaw ->where($map)->order('id','desc') ->select();
         $this->assign('month',$month);//最新的两条
         $this->assign('list',$list);//最新的两条
         return $this->fetch();
@@ -120,7 +120,8 @@ class Floating extends Base {
             $num = 0;
             foreach($monthRank as $key=>$value) {
                 if($vo['userid'] == $value['userid']) {
-                    $num += $value['rank'];
+                    $zong = $value['rank']+$value['award'];
+                    $num += $zong;
                 }
             }
             $listMonth[$vo['userid']] = $num;
@@ -145,7 +146,8 @@ class Floating extends Base {
             $num = 0;
             foreach($rank as $key=>$value) {
                 if($vo['userid'] == $value['userid']) {
-                    $num += $value['rank'];
+                    $zong = $value['rank']+$value['award'];
+                    $num += $zong;
                 }
             }
             $listYear[$vo['userid']] = $num;

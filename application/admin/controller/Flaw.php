@@ -10,6 +10,10 @@ namespace app\admin\controller;
  * 流动党员
  * */
 use app\admin\model\SelfFlaw;
+use app\admin\model\SelfRank;
+use app\home\model\Comment;
+use app\home\model\WechatDepartmentUser;
+use app\home\model\WechatUser;
 use com\wechat\TPQYWechat;
 use app\admin\model\Picture;
 use think\Config;
@@ -51,7 +55,7 @@ class Flaw extends Admin {
                 }
             }
             $activity   = new SelfFlaw();
-            $result = $activity ->validate('Study')->save($data);
+            $result = $activity ->validate('Flaw')->save($data);
             if($result) {
                 return $this->success('添加成功',url('admin/flaw/index'));
             } else {
@@ -258,4 +262,156 @@ class Flaw extends Admin {
             return $this->error('发送失败');
         }
     }
+    
+    /*
+     * 学习情况首页
+     * */
+    
+    public function rank() {
+        //$list = $this ->lists('WechatDepartmentUser',['departmentid'=>187]);//分页
+        $map  = ['status'=>['egt',1]];
+        //$rank = $this ->lists('SelfRank',$map);
+        $rank = db('self_rank')->field('userid')->group('userid') ->select();
+       // $rank = db('self_rank') ->select();
+        $list = WechatDepartmentUser::where(['departmentid'=>187])->select();
+        foreach($rank as $k=>$v) {
+            $user = WechatUser::where('userid',$v['userid'])->find();
+            if(!empty($user)) {
+                $rank[$k]['name'] = $user['name'];
+                $rank[$k]['study'] = $this->study($v['userid'],1);
+                $rank[$k]['comment'] = $this->study($v['userid'],2);
+                $rank[$k]['total'] = $this->study($v['userid']);
+            }
+        }
+        $rank = $this->object($rank);
+        foreach($rank as $val){
+            $key_arrays[]=$val['total'];
+        }
+        array_multisort($key_arrays,SORT_DESC,SORT_NUMERIC,$rank);
+        $this -> assign('list',$rank);
+        return $this->fetch();
+    }
+
+    function object(&$object) {
+        $object =  json_decode( json_encode($object),true);
+        return  $object;
+    }
+    /*
+     * 学习总积分
+     * $type 1学习总积分2评论总积分null为总积分
+     *
+     * */
+
+    public function study($userid,$type=null) {
+        if($type == 1) {
+            $map = [
+                'status'=>2,
+                'userid'=>$userid
+            ];
+        } elseif($type == 2) {
+            $map = [
+                'status'=>1,
+                'userid'=>$userid
+            ];
+        } else {
+            $map = [
+                'userid'=>$userid
+            ];
+        }
+
+        $detail = db('self_rank') ->where($map) ->select();
+        $num = 0;
+        foreach ($detail as $v) {
+            if($type == 2) {//评论
+                $zong = $v['rank'] + $v['award'];
+                $num += $zong;
+            } else {
+                $num +=$v['rank'];
+            }
+        }
+        return $num;
+    }
+
+    
+    /*
+     * 学习积分的详情
+     * */
+    
+    public function studyrank() {
+        $userid = input('userid');
+        $user = WechatUser::where('userid',$userid)->field('name')->find();//姓名
+        $map = [
+            'status'=>2,
+            'userid'=>$userid
+        ];
+        //$rank = SelfRank::where($map)->select();
+        $rank = $this ->lists('SelfRank',$map);
+        foreach ($rank as $k=>$v) {
+            $title = SelfFlaw::where('id',$v['detail_id'])->field('title')->find();
+            $rank[$k]['title'] = $title['title'];
+        }
+        $this->assign('user',$user);
+        $this->assign('rank',$rank);
+        return $this ->fetch();
+    }
+    
+    /*
+     * 评论积分详情
+     * */
+    
+    public function commentrank() {
+        $userid = input('userid');
+        $user = WechatUser::where('userid',$userid)->field('name')->find();//姓名
+        $map = [
+            'status'=>1,
+            'userid'=>$userid
+        ];
+        $rank = $this ->lists('SelfRank',$map);
+        foreach ($rank as $k=>$v) {
+            $title = SelfFlaw::where('id',$v['detail_id'])->field('title')->find();
+            $content = Comment::where(['type'=>9,'aid'=>$v['detail_id']])->find();
+            $rank[$k]['title'] = $title['title'];
+            $rank[$k]['content'] = $content['content'];
+            $rank[$k]['time'] = $content['create_time'];
+        }
+        $this->assign('user',$user);
+        $this->assign('rank',$rank);
+        return $this ->fetch();
+    }
+
+    /*
+     * 操作记录
+     * */
+
+    public function operation() {
+        $userid = input('userid');
+        $user = WechatUser::where('userid',$userid)->field('name')->find();//姓名
+        $map = [
+            'status'=>1,
+            'userid'=>$userid
+        ];
+        $rank = $this ->lists('SelfRank',$map);
+        $this->assign('rank',$rank);
+        return $this ->fetch();
+    }
+    /*
+     * 奖励积分
+     * */
+    
+    public function award() {
+        $data = input('post.');
+        $arr = SelfRank::where('id',$data['id'])->field('award')->find();
+        $data['create_user'] = $_SESSION['think']['user_auth']['id'];//获取用户名
+        if(isset($data['type'])) {
+            $re = SelfRank::where(['id'=>$data['id']])->update(['award'=>$arr['award']-0.5,'operator'=>$data['create_user'],'opera_time'=>time()]);
+        } else {
+            $re = SelfRank::where(['id'=>$data['id']])->update(['award'=>0.5+$arr['award'],'operator'=>$data['create_user'],'opera_time'=>time()]);
+        }
+        if($re) {
+            return $this->success('成功');
+        } else {
+            return $this ->error();
+        }
+    }
+    
 }

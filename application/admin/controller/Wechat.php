@@ -59,7 +59,7 @@ class Wechat extends Admin
      * 同步通讯录用户
      */
     public function synchronizeUser() {
-        ini_set('max_execution_time', '60');
+        ini_set('max_execution_time', '480');
         $Wechat = new QYWechat(Config::get('party'));
         if($Wechat->errCode != 40001) {
             return $this->error("同步出错");
@@ -110,7 +110,7 @@ class Wechat extends Admin
      * 同步部门
      */
     public function synchronizeDp(){
-        ini_set('max_execution_time', '60');
+        ini_set('max_execution_time', '120');
         $Wechat = new QYWechat(Config::get('party'));
         if($Wechat->errCode != 40001) {
             return $this->error("同步出错");
