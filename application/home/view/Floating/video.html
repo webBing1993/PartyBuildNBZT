@@ -35,9 +35,9 @@
 					<span class="read">{$detail.views +1}</span>
 					{eq name="visit" value="0"}
 					{eq name="detail.is_like" value="1"}
-					<span class="isgood good_ notvisitor"  data-type="3" data-id="{$detail.id}">{$detail.likes}</span>
+					<span class="isgood good_ notvisitor"  data-type="9" data-id="{$detail.id}">{$detail.likes}</span>
 					{else/}
-					<span class="isgood good notvisitor"  data-type="3" data-id="{$detail.id}">{$detail.likes}</span>
+					<span class="isgood good notvisitor"  data-type="9" data-id="{$detail.id}">{$detail.likes}</span>
 					{/eq}
 					{else/}
 					<span class="isgood good">{$detail.likes}</span>
@@ -75,7 +75,7 @@
 </div>
 
 {eq name="visit" value="0"}
-<div class="bottom clear" onclick="send(this,3,{$detail['id']})">
+<div class="bottom clear" onclick="send(this,9,{$detail['id']})">
 	<div class="myword fl">
 		<input type="text" placeholder="说说你的感想！" id="send" disabled>
 	</div>
@@ -152,7 +152,6 @@
 
 		function timer() {
 			duration--;
-			console.log(parseInt(pausetime / 2))
 			if(duration == parseInt(pausetime / 2) && pausetime > 300){
 				clearInterval(q_timer);
 				vid.pause();

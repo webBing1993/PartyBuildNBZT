@@ -17,7 +17,7 @@
             <!--精彩专题-->
             {volist name="top" id="re"}
             <div class="box">
-                {eq name="re.type" value="2"}
+                {eq name="re.photo" value="1"}
                 <a href="{:Url('Floating/article?id='.$re['id'])}" class="box_up">
                     {else/}
                     <a href="{:Url('Floating/video?id='.$re['id'])}" class="box_up">
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <!--模糊层-->
-                    <img src="{$re.front_cover}" alt="背景" class="bg">
+                    <img src="{$re.front_cover|get_cover='path'}" alt="背景" class="bg">
             </div>
             {/volist}
         </div>
@@ -46,14 +46,14 @@
             <div class="tag"> —— 往期回顾 —— </div>
             <!--图文课程-->
             {volist name="list" id="vo"}
-            {eq name="vo.type" value="2"}
+            {eq name="vo.photo" value="1"}
             <a href="{:Url('Floating/article?id='.$vo['id'])}" class="list lesson">
                 <div class="tab">图文</div>
                 {else/}
                 <a href="{:Url('Floating/video?id='.$vo['id'])}" class="list lesson">
                     <div class="tab">视频</div>
                     {/eq}
-                    <img src="{$vo.front_cover}" alt="图片" class="img">
+                    <img src="{$vo.front_cover|get_cover='path'}" alt="图片" class="img">
                     <div class="title limit">{$vo.title}</div>
                     <span class="study">{$vo.views}人阅读过</span>
                 </a>

@@ -12,7 +12,7 @@
 
 {block name="body"}
 <div id="refreshContainer" class="mui-content mui-scroll-wrapper">
-	<div class="mui-scroll">
+	<div class="mui-scroll" id="scrollDiv">
 	<div class="article">
 		<div class="title"><p>{$detail.title}</p></div>
 		<div class="note clear">
@@ -25,9 +25,9 @@
 				<span class="read">{$detail.views +1}</span>
 				{eq name="visit" value="0"}
 				{eq name="detail.is_like" value="1"}
-				<span class="isgood good_ notvisitor"  data-type="3" data-id="{$detail.id}">{$detail.likes}</span>
+				<span class="isgood good_ notvisitor"  data-type="9" data-id="{$detail.id}">{$detail.likes}</span>
 				{else/}
-				<span class="isgood good notvisitor"  data-type="3" data-id="{$detail.id}">{$detail.likes}</span>
+				<span class="isgood good notvisitor"  data-type="9" data-id="{$detail.id}">{$detail.likes}</span>
 				{/eq}
 				{else/}
 				<span class="isgood good">{$detail.likes}</span>
@@ -65,7 +65,7 @@
 </div>
 
 {eq name="visit" value="0"}
-<div class="bottom clear" onclick="send(this,3,{$detail['id']})">
+<div class="bottom clear" onclick="send(this,9,{$detail['id']})">
 	<div class="myword fl">
 		<input type="text" placeholder="说说你的感想！" id="send" disabled>
 	</div>
@@ -81,6 +81,29 @@
 			mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
 		}else{
 			mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+		}
+	};
+	var articleEnd = false;
+	var scrollDiv = document.getElementById('scrollDiv');
+	scrollDiv.addEventListener('scroll',function(){
+		var translate3d = this.style.webkitTransform;
+		var scrollData = translate3d.substring(12,translate3d.length-17);
+		var scrollTop = scrollData.split(", ")[1].substring(0,scrollData.split(", ")[1].length-2);
+		var eleHeigth = scrollDiv.offsetHeight;
+		var erfHeight = $("#refreshContainer").height();
+		if(eleHeigth<erfHeight){
+			articleEnd=true;
+			integral_ajax();
+		}else if(Number(eleHeigth)+Number(scrollTop)==erfHeight){
+			articleEnd=true;
+			integral_ajax();
+		}
+
+	});
+
+	var integral_ajax = function(){
+		if(articleEnd){
+
 		}
 	};
 
@@ -167,7 +190,7 @@
 										'</div>';
 								$('.lists' ).prepend(html);
 								inputValue="";
-								var sum = $('.sum span' );
+								var sum = $('.sum span');
 								sum.text(parseInt(sum.text())+1);
 								swal({
 									title: ' ',

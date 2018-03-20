@@ -41,7 +41,7 @@ class Floating extends Base {
      * 流动党员图文详情页
      * */
 
-    public function detail() {
+    public function article() {
         $this->anonymous();
         $this->jssdk();
         $id = input('id/d');
@@ -59,7 +59,7 @@ class Floating extends Base {
         $this->jssdk();
         $id = input('id/d');
         $info = $this->content(9,$id);
-        $this->assign('detail',$info);
+       + $this->assign('detail',$info);
         return $this->fetch();
     }
 
