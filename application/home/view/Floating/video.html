@@ -23,6 +23,12 @@
 	.fr{
 		float: right;
 	}
+	.sweet-alert .sa-icon.sa-info{
+		display: none!important;
+	}
+	.sweet-alert h2{
+		color: #ff9800;
+	}
 </style>
 {/block}
 
@@ -219,6 +225,12 @@
 					success:function(msg){
 						if(msg.code==1){
 							type=false;
+							swal({
+								title: '+1分',
+								text: '恭喜您，学习完成！评论文章还可以得分哦！',
+								type: 'info',
+								confirmButtonText:'确定'
+							});
 						}
 					}
 				});
