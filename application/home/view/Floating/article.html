@@ -315,6 +315,44 @@
 		}
 		$(".lists" ).append(html);
 	}
+
+	isOut();
+	function isOut(){
+		pushHistory();
+		setTimeout(function(){
+			window.addEventListener("popstate", function(e) {
+				if("{$check}"==0 && type){
+					swal({
+								title: "确定退出本页面吗？",
+								text: "还未学习完，退出将不会获得学习积分",
+								type: "warning",
+								showCancelButton: true,
+								confirmButtonColor: "#DD6B55",
+								confirmButtonText: "退出",
+								cancelButtonText: "取消",
+								closeOnConfirm: false
+							},
+							function(){
+									window.history.go(-1);
+
+							});
+				}else{
+					window.history.go(-1);
+				}
+			}, false);
+		},200)
+	}
+
+	//防止恶意刷新
+	function pushHistory(){
+		var sta = {
+			title: "title"
+		};
+		if( window.history.state === null )
+		{
+			window.history.pushState( sta, "title" );
+		}
+	}
 </script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
 <script>

@@ -19,6 +19,7 @@
 		width: 10vw;
 		right: 3vw;
 		top: 1vw;
+		display: none;
 	}
 	.fr{
 		float: right;
@@ -45,7 +46,7 @@
 			<div class="content">
 				<div class="video">
 					<!--<video id="video" style="width: 80vw;" poster="http://p1.img.cctvpic.com/fmspic/2018/01/23/1b3c1437a6154a1bbd3350f5a69dce2e-180.jpg?p=2&amp;h=120" preload="none" webkit-playsinline="" playsinline="" x-webkit-airplay="isHtml5UseAirPlay" controls="" src="http://122.228.240.95/asp/hls/main/0303000a/3/default/e0a0a479fa4d42bbb9e1b4629a20b161/main.m3u8?maxbr=2048&amp;minbr=400"></video>-->
-					<video id="video" style="width: 80vw;" poster="http://p1.img.cctvpic.com/fmspic/2018/01/23/1b3c1437a6154a1bbd3350f5a69dce2e-180.jpg?p=2&amp;h=120" controls="" x5-playsinline="" playsinline="" webkit-playsinline="" poster="" preload="auto" src="{$detail.net_path}"></video>
+					<video id="video" style="width: 80vw;" poster="http://p1.img.cctvpic.com/fmspic/2018/01/23/1b3c1437a6154a1bbd3350f5a69dce2e-180.jpg?p=2&amp;h=120" controls="" x5-playsinline="" playsinline="" webkit-playsinline="" poster="" preload="auto" src="http://cntv.hls.cdn.myqcloud.com/asp/hls/main/0303000a/3/default/e0a0a479fa4d42bbb9e1b4629a20b161/main.m3u8?maxbr=2048&minbr=400"></video>
 				</div>
 				<div class="article-content">{$detail.content}</div>
 				<div class="like">
@@ -114,7 +115,6 @@
 //	ueLimit();
 	});
 
-
 	var videoEnd=false,articleEnd=false;
 	window.onload = function(){
 		if("{$check}"==0 && type) {
@@ -161,11 +161,11 @@
 
 			video.addEventListener('ended', function (e) {
 				if (duration == 0) {
-					alert('恭喜您，您已经完成全部内容学习！');
+					alert('恭喜您，您已经完成视频学习！');
 					videoEnd = true;
 					integral_ajax();
 				} else {
-					alert('需要完成观看完视频才能获得积分！');
+					alert('需要完整观看视频才能获得积分！');
 				}
 
 			});
@@ -359,7 +359,6 @@
 			beforeSend: function(XMLHttpRequest){
 			},
 			success:function(data){
-				console.log(data)
 				if(data.code == 1){
 					addComment(data);
 					var dataLen =data.data.length;
@@ -405,6 +404,45 @@
 					'</div>';
 		}
 		$(".lists" ).append(html);
+	}
+
+	isOut();
+	function isOut(){
+		pushHistory();
+		setTimeout(function(){
+			window.addEventListener("popstate", function(e) {
+				if("{$check}"==0 && type){
+					swal({
+						title: "确定退出本页面吗？",
+						text: "还未学习完，退出将不会获得学习积分",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "退出",
+						cancelButtonText: "取消",
+						closeOnConfirm: false
+					},
+					function(isConfirm){
+						if (isConfirm) {
+							window.history.go(-1);
+						}
+					});
+				}else{
+					window.history.go(-1);
+				}
+			}, false);
+		},200)
+	}
+
+	//防止恶意刷新
+	function pushHistory(){
+		var sta = {
+			title: "title"
+		};
+		if( window.history.state === null )
+		{
+			window.history.pushState( sta, "title" );
+		}
 	}
 </script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
