@@ -42,11 +42,24 @@ class Floating extends Base {
      * */
 
     public function article() {
+        $userId = session('userId');
         $this->anonymous();
         $this->jssdk();
         $id = input('id/d');
+        $map = [
+            'userid'=>$userId,
+            'detail_id'=>$id,
+            'status'=>2
+        ];
+        $rank = db('self_rank')->where($map)->field('rank')->find();
+        if($rank['rank'] != 0) {
+            $check = 1;
+        } else {
+            $check = 0;
+        }
         $info = $this->content(9,$id);
         $this->assign('detail',$info);
+        $this->assign('check',$check);
         return $this->fetch();
     }
 
@@ -55,11 +68,24 @@ class Floating extends Base {
      * */
 
     public function video() {
+        $userId = session('userId');
         $this->anonymous();
         $this->jssdk();
         $id = input('id/d');
+        $map = [
+            'userid'=>$userId,
+            'detail_id'=>$id,
+            'status'=>2
+        ];
+        $rank = db('self_rank')->where($map)->field('rank')->find();
+        if($rank['rank'] != 0) {
+            $check = 1;
+        } else {
+            $check = 0;
+        }
         $info = $this->content(9,$id);
-       + $this->assign('detail',$info);
+        $this->assign('detail',$info);
+        $this->assign('check',$check);
         return $this->fetch();
     }
 

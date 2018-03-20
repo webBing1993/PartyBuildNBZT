@@ -7,12 +7,21 @@
 	.lists {
 		padding-bottom: 1.2rem;
 	}
+	.getpoint{
+		position: absolute;
+		z-index: 99;
+		width: 10vw;
+		right: 3vw;
+		top: 1vw;
+		display: none;
+	}
 </style>
 {/block}
 
 {block name="body"}
 <div id="refreshContainer" class="mui-content mui-scroll-wrapper">
 	<div class="mui-scroll" id="scrollDiv">
+		<img src="/home/images/floating/getpoint.png" class="getpoint">
 	<div class="article">
 		<div class="title"><p>{$detail.title}</p></div>
 		<div class="note clear">
@@ -75,6 +84,7 @@
 
 {block name="script"}
 <script>
+	var type=true;
 	$("title").text("流动党员");
 	window.onload = function(){
 		if($(".list").length<10){
@@ -83,30 +93,46 @@
 			mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
 		}
 	};
-	var articleEnd = false;
-	var scrollDiv = document.getElementById('scrollDiv');
-	scrollDiv.addEventListener('scroll',function(){
-		var translate3d = this.style.webkitTransform;
-		var scrollData = translate3d.substring(12,translate3d.length-17);
-		var scrollTop = scrollData.split(", ")[1].substring(0,scrollData.split(", ")[1].length-2);
-		var eleHeigth = scrollDiv.offsetHeight;
-		var erfHeight = $("#refreshContainer").height();
-		if(eleHeigth<erfHeight){
-			articleEnd=true;
-			integral_ajax();
-		}else if(Number(eleHeigth)+Number(scrollTop)==erfHeight){
-			articleEnd=true;
-			integral_ajax();
-		}
 
-	});
+	if("{$check}"==0 && type) {
+		var articleEnd = false;
+		var scrollDiv = document.getElementById('scrollDiv');
+		scrollDiv.addEventListener('scroll', function () {
+			var translate3d = this.style.webkitTransform;
+			var scrollData = translate3d.substring(12, translate3d.length - 17);
+			var scrollTop = scrollData.split(", ")[1].substring(0, scrollData.split(", ")[1].length - 2);
+			var eleHeigth = scrollDiv.offsetHeight;
+			var erfHeight = $("#refreshContainer").height();
+			if (eleHeigth < erfHeight) {
+				articleEnd = true;
+				integral_ajax();
+			} else if (Number(eleHeigth) + Number(scrollTop) == erfHeight) {
+				articleEnd = true;
+				integral_ajax();
+			}
 
-	var integral_ajax = function(){
-		if(articleEnd){
+		});
 
-		}
-	};
-
+		var integral_ajax = function () {
+			var id = "{$detail.id}";
+			if (articleEnd) {
+				$.ajax({
+					type:"post",
+					url:"{:Url('Floating/study')}",
+					data:{
+						id:id
+					},
+					success:function(msg){
+						if(msg.code==1){
+							type=false;
+						}
+					}
+				});
+			}
+		};
+	}else{
+		$(".getpoint").show();
+	}
 
 	//tab点击事件
 	mui('#refreshContainer').on('tap', '.notvisitor', function(e) {
@@ -224,7 +250,7 @@
 			type:"post",
 			url:"{:Url('Base/morecomment')}",
 			data:{
-				type:3,
+				type:9,
 				aid:id,
 				length:len
 			},

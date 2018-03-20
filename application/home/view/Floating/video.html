@@ -13,12 +13,23 @@
 	.none{
 		display: none!important;
 	}
+	.getpoint{
+		position: absolute;
+		z-index: 99;
+		width: 10vw;
+		right: 3vw;
+		top: 1vw;
+	}
+	.fr{
+		float: right;
+	}
 </style>
 {/block}
 
 {block name="body"}
 <div id="refreshContainer" class="mui-content mui-scroll-wrapper">
 	<div class="mui-scroll" id="scrollDiv">
+		<img src="/home/images/floating/getpoint.png" class="getpoint">
 		<div class="article">
 			<div class="title"><p>{$detail.title}</p></div>
 			<div class="note clear">
@@ -86,6 +97,7 @@
 {block name="script"}
 <script src="/home/js/reset.js"></script>
 <script>
+	var type=true;
 	$(function(){
 //	播放视频
 //	hideplay();
@@ -96,73 +108,79 @@
 //	ueLimit();
 	});
 
+
 	var videoEnd=false,articleEnd=false;
 	window.onload = function(){
-		var u = navigator.userAgent;
-		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
-		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-		var once = true;
-		var vConsole = new VConsole();
-		var vid = document.getElementById("video");
-		var pausetime;
-		vid.onloadedmetadata = function(){
-			if(isiOS){
-				if(once){
-					pausetime = vid.duration;
-					duration = vid.duration;
-					q_timer = setInterval(timer,1000);
+		if("{$check}"==0 && type) {
+			var u = navigator.userAgent;
+			var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+			var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+			var once = true;
+			var vConsole = new VConsole();
+			var vid = document.getElementById("video");
+			var pausetime;
+			vid.onloadedmetadata = function () {
+				if (isiOS) {
+					if (once) {
+						pausetime = vid.duration;
+						duration = vid.duration;
+						q_timer = setInterval(timer, 1000);
+					}
 				}
-			}
-		};
-		vid.addEventListener('play',function() {
-				if(!isiOS){
-					if(once){
-						setTimeout(function(){
+			};
+			vid.addEventListener('play', function () {
+				if (!isiOS) {
+					if (once) {
+						setTimeout(function () {
 							pausetime = vid.duration;
 							duration = vid.duration;
-							q_timer = setInterval(timer,1000);
-						},1000)
-					}else{
-						setTimeout(function(){
-							q_timer = setInterval(timer,1000);
-						},1000)
+							q_timer = setInterval(timer, 1000);
+						}, 1000)
+					} else {
+						setTimeout(function () {
+							q_timer = setInterval(timer, 1000);
+						}, 1000)
 					}
-				}else{
-					if(!once){
-						q_timer = setInterval(timer,1000);
+				} else {
+					if (!once) {
+						q_timer = setInterval(timer, 1000);
 					}
 				}
-		});
+			});
 
-		vid.addEventListener('pause',function(){
-			clearInterval(q_timer);
-			once = false;
-		});
-
-		video.addEventListener('ended', function (e) {
-			if(duration==0){
-				alert('恭喜您，您已经完成全部内容学习！');
-				videoEnd=true;
-				integral_ajax();
-			}else{
-				alert('需要完成观看完视频才能获得积分！');
-			}
-
-		});
-
-		function timer() {
-			duration--;
-			if(duration == parseInt(pausetime / 2) && pausetime > 300){
+			vid.addEventListener('pause', function () {
 				clearInterval(q_timer);
-				vid.pause();
-				if(!isiOS) {
-					alert('您已学习大部分内容，请继续努力');
+				once = false;
+			});
+
+			video.addEventListener('ended', function (e) {
+				if (duration == 0) {
+					alert('恭喜您，您已经完成全部内容学习！');
+					videoEnd = true;
+					integral_ajax();
+				} else {
+					alert('需要完成观看完视频才能获得积分！');
+				}
+
+			});
+
+			function timer() {
+				duration--;
+				if (duration == parseInt(pausetime / 2) && pausetime > 300) {
+					clearInterval(q_timer);
+					vid.pause();
+					if (!isiOS) {
+						alert('您已学习大部分内容，请继续努力');
+					}
+				}
+				if (duration <= 0) {
+					clearInterval(q_timer);
 				}
 			}
-			if(duration<=0){
-				clearInterval(q_timer);
-			}
+		}else{
+			$(".getpoint").show();
 		}
+
 
 		if($(".list").length<10){
 			mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
@@ -171,29 +189,42 @@
 		}
 	};
 
-	 var scrollDiv = document.getElementById('scrollDiv');
-	 scrollDiv.addEventListener('scroll',function(){
-	 var translate3d = this.style.webkitTransform;
-	 var scrollData = translate3d.substring(12,translate3d.length-17);
-	 var scrollTop = scrollData.split(", ")[1].substring(0,scrollData.split(", ")[1].length-2);
-	 var eleHeigth = scrollDiv.offsetHeight;
-	 var erfHeight = $("#refreshContainer").height();
-		 if(eleHeigth<erfHeight){
-			 articleEnd=true;
-			 integral_ajax();
-		 }else if(Number(eleHeigth)+Number(scrollTop)==erfHeight){
-			 articleEnd=true;
-			 integral_ajax();
-		 }
+	if("{$check}"==0 && type) {
+		var scrollDiv = document.getElementById('scrollDiv');
+		scrollDiv.addEventListener('scroll', function () {
+			var translate3d = this.style.webkitTransform;
+			var scrollData = translate3d.substring(12, translate3d.length - 17);
+			var scrollTop = scrollData.split(", ")[1].substring(0, scrollData.split(", ")[1].length - 2);
+			var eleHeigth = scrollDiv.offsetHeight;
+			var erfHeight = $("#refreshContainer").height();
+			if (eleHeigth < erfHeight) {
+				articleEnd = true;
+				integral_ajax();
+			} else if (Number(eleHeigth) + Number(scrollTop) == erfHeight) {
+				articleEnd = true;
+				integral_ajax();
+			}
 
-	 });
+		});
 
-	var integral_ajax = function(){
-		if(videoEnd && articleEnd){
-
-		}
-	};
-
+		var integral_ajax = function () {
+			var id = "{$detail.id}";
+			if (videoEnd && articleEnd) {
+				$.ajax({
+					type:"post",
+					url:"{:Url('Floating/study')}",
+					data:{
+						id:id
+					},
+					success:function(msg){
+						if(msg.code==1){
+							type=false;
+						}
+					}
+				});
+			}
+		};
+	}
 	//tab点击事件
 	mui('#refreshContainer').on('tap', '.notvisitor', function(e) {
 		var type = this.getAttribute("data-type");
@@ -310,7 +341,7 @@
 			type:"post",
 			url:"{:Url('Base/morecomment')}",
 			data:{
-				type:3,
+				type:9,
 				aid:id,
 				length:len
 			},
