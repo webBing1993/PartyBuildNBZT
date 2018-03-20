@@ -42,11 +42,24 @@ class Flaw extends Base {
      * */
 
     public function detail() {
+        $userId = session('userId');
         $this->anonymous();
         $this->jssdk();
         $id = input('id/d');
+        $map = [
+            'userid'=>$userId,
+            'detail_id'=>$id,
+            'status'=>2
+        ];
+        $rank = db('self_rank')->where($map)->field('rank')->find();
+        if($rank['rank'] != 0) {
+            $check = 1;
+        } else {
+            $check = 2;
+        }
         $info = $this->content(9,$id);
         $this->assign('detail',$info);
+        $this->assign('check',$check);
         return $this->fetch();
     }
 
@@ -55,11 +68,24 @@ class Flaw extends Base {
      * */
 
     public function video() {
+        $userId = session('userId');
         $this->anonymous();
         $this->jssdk();
         $id = input('id/d');
+        $map = [
+            'userid'=>$userId,
+            'detail_id'=>$id,
+            'status'=>2
+        ];
+        $rank = db('self_rank')->where($map)->field('rank')->find();
+        if($rank['rank'] != 0) {
+            $check = 1;
+        } else {
+            $check = 2;
+        }
         $info = $this->content(9,$id);
         $this->assign('detail',$info);
+        $this->assign('check',$check);
         return $this->fetch();
     }
 
@@ -86,25 +112,18 @@ class Flaw extends Base {
     public function rank() {
 
         //月榜
+        $Months =  db('self_rank') ->whereTime('create_time','m')->field('userid')->group('userid')->select();
         $monthRank =  db('self_rank') ->whereTime('create_time','m')->select();
         $listMonth = [];//一年的数据
-        //找到唯一
-        foreach($monthRank as $value) {
-            $user = WechatUser::where('userid',$value['userid']) ->find();
-            if($user) {
-                $k = $value['userid'];
-                $listMonth[$k][] = $value['rank'];
-            }
-        }
         //进行累加
-        foreach($listMonth as $ko=>$vo) {
+        foreach($Months as $ko=>$vo) {
             $num = 0;
             foreach($monthRank as $key=>$value) {
-                if($ko == $value['userid']) {
+                if($vo['userid'] == $value['userid']) {
                     $num += $value['rank'];
                 }
             }
-            $listMonth[$ko] = $num;
+            $listMonth[$vo['userid']] = $num;
         }
         arsort($listMonth);
         //获取头像
@@ -112,36 +131,24 @@ class Flaw extends Base {
             $user = WechatUser::where('userid',$k) ->find();
             $listMonth[$k]= ['rank'=> $listMonth[$k],'name'=>$user['name'],'avatar'=>$user['avatar'],'userid'=>$k,'header'=>$user['header']];
         }
-        //年的重组
+        //重组
         $monthList = [];
         foreach ($listMonth as $value) {
             $monthList[] = $value;
         }
         //总榜
-
-        $year = date('Y',time());
-        $info = array(
-            "FROM_UNIXTIME(create_time,'%Y')" => $year,
-        );
-        $rank = db('self_rank') ->where($info)->select();
+        $year = db('self_rank') ->field('userid')->group('userid')->select();
+        $rank = db('self_rank') ->select();
         $listYear = [];//一年的数据
-        //找到唯一
-        foreach($rank as $value) {
-            $user = WechatUser::where('userid',$value['userid']) ->find();
-            if($user) {
-                $k = $value['userid'];
-                $listYear[$k][] = $value['rank'];
-            }
-        }
         //进行累加
-        foreach($listYear as $ko=>$vo) {
+        foreach($year as $ko=>$vo) {
             $num = 0;
             foreach($rank as $key=>$value) {
-                if($ko == $value['userid']) {
+                if($vo['userid'] == $value['userid']) {
                     $num += $value['rank'];
                 }
             }
-            $listYear[$ko] = $num;
+            $listYear[$vo['userid']] = $num;
         }
         arsort($listYear);
         //获取头像
@@ -154,7 +161,6 @@ class Flaw extends Base {
         foreach ($listYear as $value) {
             $yearList[] = $value;
         }
-
         $list = [
             'monthList'=>$monthList,
             'yearList'=>$yearList
