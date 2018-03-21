@@ -281,8 +281,14 @@ class Flaw extends Admin {
             }
         }
         array_multisort(array_column($key_arrays,'total'),SORT_DESC,$key_arrays);
-        $this -> assign('list',array_slice($key_arrays,0,20));
-        return $this->fetch();
+        /*if(IS_POST) {
+            $len = input('length');
+            $arr = array_slice($key_arrays,$len,20);
+            return $this->success('','',$arr);
+        } else {*/
+            $this -> assign('list',$key_arrays);
+            return $this->fetch();
+        
     }
 
     function object(&$object) {

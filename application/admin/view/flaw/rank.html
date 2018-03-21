@@ -27,6 +27,19 @@
         display: inline-flex;
         flex:1;
     }
+    .tip{height: 1.5vw;
+        text-align: center;
+        line-height: 1.5vw;
+        color: #fff;
+        font-size: 0.34rem;
+        width: 30vw;
+        background: #ff2222;
+        position: absolute;
+        bottom: 4vw;
+        left:30vw;
+        cursor: pointer;
+    }
+
 </style>
 {/block}
 
@@ -84,6 +97,7 @@
                                 <td>{$vo.total}</td><!--operation-->
                             </tr>
                             {/volist}
+
                             </tbody>
                             <tfoot>
                             <tr>
@@ -98,9 +112,8 @@
             </div>
         </div>
     </div>
+
 </div>
-<iframe id="iframe" src="" style="height: 80%;width: 392px;z-index: 99;position: absolute;top: 10%;border: 0;left: 32%;background: #fff;display: none;" scrolling="auto" seamless></iframe>
-<div class="shadow" style="display: none"></div>
 {/block}
 
 {block name="script"}
@@ -113,11 +126,57 @@
             radioClass: 'iradio_square-green',
         });
     });
-  /*  //排行
-    var len =  $("tbody tr").length;
-    var sum =parseInt($(".current").text())-1 ;
-    for(var i=0;i<len;i++){
-        $("tbody tr").eq(i).find("td").eq(1).text(parseInt(sum*10)+parseInt(i)+1)
+    /*var len = $("tbody tr").length;
+    if(len<20){
+        $(".tip").css("background","#f1f1f1");
+        $(".tip").unbind();
+    }else{
+        $(".tip").css("background","#ff2222");
+        $(".tip").click();
+    }
+    $(".tip").click(function(){
+        var len = $("tbody tr").length;
+        $.ajax({
+            type:"post",
+            url:"{:Url('Flaw/rank')}",
+            data:{
+                length:len,
+            },
+            beforeSend: function(XMLHttpRequest){
+            },
+            success:function(data){
+              /!*  var data = JSON.parse(res);*!/
+                console.log(data)
+                if(data.code == 1){
+                    addCourse(data);
+                    $(".tip").css("background","#ff2222");
+                }else{
+                    $(".tip").css("background","#f1f1f1");
+                    $(".tip").unbind();
+                }
+            }
+        })
+    });
+    function addCourse(data) {
+        var html = '';
+        var lists = data.data;
+        var len = lists.length;
+        for (var i = 0; i < len; i++) {
+            var list = lists[i];
+                html +='<tr><td>' +
+                        '<input type="checkbox" class="i-checks" name="input[]">' +
+                        '</td>' +
+                        '<td></td>' +
+                        '<td>'+list.name+'</td>' +
+                        '<td>' +
+                        '<a href="/admin/flaw/studyrank/userid/'+list.userid+'" class="btn btn-sm btn-primary" style="display: inline-block;width: 5vw">'+list.study+'</a>' +
+                        '</td>' +
+                        '<td>' +
+                        '<a href="/admin/flaw/commentrank/userid/'+list.userid+'" class="btn btn-sm btn-primary" style="display: inline-block;width: 5vw">'+list.comment+'</a>' +
+                        '</td>' +
+                        '<td>'+list.total+'</td></tr>'
+            $("tbody").append(html);
+      }
     }*/
 
 </script>

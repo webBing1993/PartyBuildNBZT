@@ -109,7 +109,7 @@ class Floating extends Base {
      * */
 
     public function rank() {
-
+        $userId = session('userId');
         //月榜
         $Months =  db('self_rank') ->whereTime('create_time','m')->field('userid')->group('userid')->select();
         $monthRank =  db('self_rank') ->whereTime('create_time','m')->select();
@@ -132,9 +132,16 @@ class Floating extends Base {
             $listMonth[$k]= ['rank'=> $listMonth[$k],'name'=>$user['name'],'avatar'=>$user['avatar'],'userid'=>$k,'header'=>$user['header']];
         }
         //重组
+        $selfMonth = [];
         $monthList = [];
-        foreach ($listMonth as $value) {
-            $monthList[] = $value;
+        $snum = 0;
+        foreach ($listMonth as $key=>$value) {
+            $monthList[$snum] = $value;
+            if($key == $userId) {
+                $selfMonth = $value;
+                $selfMonth['ranking'] = $snum+1;
+            }
+            $snum++;
         }
         //总榜
         $year = db('self_rank') ->field('userid')->group('userid')->select();
@@ -159,12 +166,21 @@ class Floating extends Base {
         }
         //年的重组
         $yearList = [];
-        foreach ($listYear as $value) {
-            $yearList[] = $value;
+        $selfYear = [];
+        $ynum = 0;
+        foreach ($listYear as $key=>$value) {
+            $yearList[$ynum] = $value;
+            if($key == $userId) {
+                $selfYear = $value;
+                $selfYear['ranking'] = $ynum+1;
+            }
+            $ynum++;
         }
         $list = [
             'monthList'=>$monthList,
-            'yearList'=>$yearList
+            'yearList'=>$yearList,
+            'selfMonth'=>$selfMonth,
+            'selfYear' => $selfYear
         ];
         $this->assign('list',$list);
         return $this->fetch();
