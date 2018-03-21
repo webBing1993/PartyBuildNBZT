@@ -351,6 +351,7 @@ class Volunteer extends Base
     public function rank()
     {
         $this->anonymous();
+        $type = 0;
         $userId = session('userId');
         // 获取  党员志愿者
         $map = array(
