@@ -143,6 +143,9 @@
                 100% 75%, 50% 100%, 0 75%, 0 25%);
         clip-path: polygon( 0 25%, 50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     }
+    .month,.year{
+        display: none;
+    }
 </style>
 {/block}
 
@@ -152,25 +155,57 @@
         <div class="banner">
             <div class="rule"><span>积分规则</span></div>
         </div>
+        <div class="month">
+                {volist name="list.monthList" id="v" key="k"}
+                {if condition="$k eq 1"}
+                <div class="ranking-number-one">
+                <img class="box1 clipPolygon" src="{$v.avatar}">
+                <img class="box clipPolygon" src="/home/images/floating/ranking.png">
+                <p><span>{$v.name}</span> | <span>{$v.rank}分</span></p>
+                </div>
+                {/if}
+                {if condition="$k eq 2"}
+                <div class="ranking-number-two">
+                    <img class="box1 clipPolygon" src="{$v.avatar}">
+                    <img class="box clipPolygon" src="/home/images/floating/ranking.png">
+                    <p><span>{$v.name}</span> | <span>{$v.rank}分</span></p>
+                </div>
+                {/if}
+                {if condition="$k eq 3"}
+                <div class="ranking-number-three">
+                    <img class="box1 clipPolygon" src="{$v.avatar}">
+                    <img class="box clipPolygon" src="/home/images/floating/ranking.png">
+                    <p><span>{$v.name}</span> | <span>{$v.rank}分</span></p>
+                </div>
+                {/if}
+            {/volist}
+      </div>
 
-        <div class="ranking-number-one">
-        <img class="box1 clipPolygon" src="/home/images/floating/rule.png">
-        <img class="box clipPolygon" src="/home/images/floating/ranking.png">
-        <p><span>王赛英</span> | <span>98分</span></p>
+        <div class="year">
+            {volist name="list.yearList" id="v" key="k"}
+            {if condition="$k eq 1"}
+            <div class="ranking-number-one">
+                <img class="box1 clipPolygon" src="{$v.avatar}">
+                <img class="box clipPolygon" src="/home/images/floating/ranking.png">
+                <p><span>{$v.name}</span> | <span>{$v.rank}分</span></p>
+            </div>
+            {/if}
+            {if condition="$k eq 2"}
+            <div class="ranking-number-two">
+                <img class="box1 clipPolygon" src="{$v.avatar}">
+                <img class="box clipPolygon" src="/home/images/floating/ranking.png">
+                <p><span>{$v.name}</span> | <span>{$v.rank}分</span></p>
+            </div>
+            {/if}
+            {if condition="$k eq 3"}
+            <div class="ranking-number-three">
+                <img class="box1 clipPolygon" src="{$v.avatar}">
+                <img class="box clipPolygon" src="/home/images/floating/ranking.png">
+                <p><span>{$v.name}</span> | <span>{$v.rank}分</span></p>
+            </div>
+            {/if}
+            {/volist}
         </div>
-
-        <div class="ranking-number-two">
-            <img class="box1 clipPolygon" src="/home/images/floating/rule.png">
-            <img class="box clipPolygon" src="/home/images/floating/ranking.png">
-            <p><span>王赛英</span> | <span>98分</span></p>
-        </div>
-
-        <div class="ranking-number-three">
-            <img class="box1 clipPolygon" src="/home/images/floating/rule.png">
-            <img class="box clipPolygon" src="/home/images/floating/ranking.png">
-            <p><span>王赛英</span> | <span>98分</span></p>
-        </div>
-
 
         <div id="tab" class="mui-slider-indicator mui-segmented-control mui-segmented-control-inverted">
             <a class="mui-control-item" href="#item1mobile" data-index="0">
@@ -181,31 +216,48 @@
             </a>
         </div>
 
-        <div class="list myself">
-            <ul>
-                <li>
-                    <img src="" style="margin-left: 14vw">
-                    <span class="name" style="margin-top: -5vw;">chengjiabo</span>
-                    <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第24名</span>
-                    <span class="score">3分</span>
-                </li>
-            </ul>
-        </div>
-
         <div class="mui-slider-group">
             <div id="item1mobile" class="mui-slider-item mui-control-content">
-                <div class="list">
+
+                <div class="list myself">
                     <ul>
                         <li>
-                            <span class="number">4</span>
-                            <img src="">
-                            <span class="name">大胜多负少</span>
-                            <span class="score">33分</span>
+                            <img src="" style="margin-left: 14vw">
+                            <span class="name" style="margin-top: -5vw;">chengjiabo</span>
+                            <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第24名</span>
+                            <span class="score">3分</span>
                         </li>
+                    </ul>
+                </div>
+
+                <div class="list">
+                    <ul>
+                        {volist name="list.monthList" id="v" key="k"}
+                        {if condition="$k gt 4"}
+                        <li>
+                            <span class="number">$k</span>
+                            <img src="{$v.avatar}">
+                            <span class="name">{$v.name}</span>
+                            <span class="score">{$v.rank}分</span>
+                        </li>
+                        {/if}
+                        {/volist}
                     </ul>
                 </div>
             </div>
             <div id="item2mobile" class="mui-slider-item mui-control-content">
+
+                <div class="list myself">
+                    <ul>
+                        <li>
+                            <img src="" style="margin-left: 14vw">
+                            <span class="name" style="margin-top: -5vw;">chengjiabo</span>
+                            <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第24名</span>
+                            <span class="score">3分</span>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="list">
                     <ul>
                         <li>
@@ -245,6 +297,13 @@
         c = getCookie("c")?getCookie("c"):0;
         $("#tab a").eq(c).addClass('mui-active');
         $(".mui-slider-group>div").eq(c).addClass('mui-active');
+        if(c==0){
+            $(".year").hide();
+            $(".month").show();
+        }else{
+            $(".month").hide();
+            $(".year").show();
+        }
     });
 
     //首页加载是否需要上拉加载
@@ -271,6 +330,13 @@
         mui('#refreshContainer').scroll().scrollTo(0,0);
         mui('#refreshContainer').pullRefresh().refresh(true);
         c = this.getAttribute("data-index");
+        if(c==0){
+            $(".year").hide();
+            $(".month").show();
+        }else{
+            $(".month").hide();
+            $(".year").show();
+        }
         setCookie("c",c);
     });
 
