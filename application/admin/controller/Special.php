@@ -49,6 +49,14 @@ class Special extends Admin
                 if ($data['push'] == 1){
                     $this ->push($model['id'],$model['status']);//发布
                 }
+                $data = [
+                    'focus_vice' => null,
+                    'create_user' => session('user_auth.username'),
+                    'focus_main' => $model['id'],
+                    'class' => 1, // 通知公告
+                ];
+                //保存到推送列表
+                Push::create($data);
                 return $this->success('新增通知成功',Url('Special/index'));
             }else{
                 return $this->get_update_error_msg($Model->getError());
@@ -148,23 +156,6 @@ class Special extends Admin
                 "safe" => "0"
             );
         }
-        $msg = $Wechat->sendMessage($message);  // 推送至审核
-
-        if($msg['errcode'] == 0){
-            // 待审核 做存储
-            if ($status == 0){
-                $data = [
-                    'focus_vice' => null,
-                    'create_user' => session('user_auth.username'),
-                    'focus_main' => $id,
-                    'class' => 1, // 通知公告
-                ];
-                //保存到推送列表
-                Push::create($data);
-            }
-            return $this->success('发送成功');
-        }else{
-            return $this->error('发送失败');
-        }
+        $Wechat->sendMessage($message);  // 推送至审核
     }
 }

@@ -52,6 +52,14 @@ class News extends Admin {
                 if ($data['push'] == 1){
                     $this->push($info['id'],$info['status']);
                 }
+                $data = [
+                    'focus_vice' => null,
+                    'create_user' => session('user_auth.username'),
+                    'focus_main' => $info['id'],
+                    'class' => 2, // 箬横动态
+                ];
+                //保存到推送列表
+                Push::create($data);
                 return $this->success("新增成功",Url('News/index'));
             }else{
                 return $this->error($newModel->getError());
@@ -150,22 +158,6 @@ class News extends Admin {
                 "safe" => "0"
             );
         }
-        $msg = $Wechat->sendMessage($message);  // 推送至审核
-        if($msg['errcode'] == 0){
-            // 待审核 做存储
-            if ($status == 0){
-                $data = [
-                    'focus_vice' => null,
-                    'create_user' => session('user_auth.username'),
-                    'focus_main' => $id,
-                    'class' => 2, // 箬横动态
-                ];
-                //保存到推送列表
-                Push::create($data);
-            }
-            return $this->success('发送成功');
-        }else{
-            return $this->error('发送失败');
-        }
+        $Wechat->sendMessage($message);  // 推送至审核
     }
 }
