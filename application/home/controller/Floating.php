@@ -205,6 +205,7 @@ class Floating extends Base {
             'userid'=>$userId,
             'detail_id'=>$data['id']
         ];
+
         $rank = db('self_rank')->where($map) ->find();
         if(empty($rank)) {
             $info = [
@@ -214,7 +215,16 @@ class Floating extends Base {
                 'status'=>2,
                 'create_time'=>time()
             ];
-            $re = db('self_rank')->insert($info);
+            $years = date('Y',time());
+            $month = date('m',time());
+            $week = array(
+                "FROM_UNIXTIME(create_time,'%Y')" => $years.$month,
+                'id'=>$data['id']
+            );
+            $flaw = db('self_flaw')->where($week)->find();
+            if($flaw) {
+                $re = db('self_rank')->insert($info);
+            }
             if($re) {
                 return $this->success('成功');
             } else {
