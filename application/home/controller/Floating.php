@@ -216,7 +216,7 @@ class Floating extends Base {
                 'create_time'=>time()
             ];
             $years = date('Y',time());
-            $month = date('m',time());
+            $month = date('n',time());
             $week = array(
                 "FROM_UNIXTIME(create_time,'%Y%c')" => $years.$month,
                 'id'=>$data['id']
