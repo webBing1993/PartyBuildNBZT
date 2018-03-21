@@ -27,7 +27,7 @@
                                 <a  href="{:Url('Reviews/detail?class='.$lo['class'].'&id='.$lo['id'])}" class="list clear">
                                     <img src="{$lo.front_cover}">
                                     <span>{$lo.title}</span>
-                                    <span>{eq name="$lo.class" value="1"}[通知公告]{/eq} {eq name="$lo.class" value="2"}[箬横动态]{/eq}  发布人：{$lo.publish}</span>
+                                    <span>{eq name="$lo.class" value="1"}[通知公告]{/eq} {eq name="$lo.class" value="2"}[箬横动态]{/eq} {eq name="$lo.class" value="4"}[箬横动态]{/eq} 发布人：{$lo.publish}</span>
                                     <span>{$lo.create_time}</span>
                                     <span class="mui-icon mui-icon-forward"></span>
                                     <i class="fail" data-fid="{$lo.fid}" data-id="{$lo.id}" data-class="{$lo.class}">不通过</i><i class="pass" data-id="{$lo.id}" data-fid="{$lo.fid}" data-class="{$lo.class}" >通&nbsp;过</i>
@@ -57,6 +57,9 @@
                                     {/eq}
                                     {eq name="ls.class" value="2"}
                                     <p>[箬横动态]</p>
+                                    {/eq}
+                                    {eq name="ls.class" value="4"}
+                                    <p>[流动党员]</p>
                                     {/eq}
                                     <p>审核人：{$ls.name}</p>
                                     <span>{$ls.review_time}</span>
@@ -159,6 +162,8 @@ function addCourse(data,type) {
             class_name = "[会议纪要]";
         }else if(list.class == 2) {
             class_name = "[微心愿]";
+        }else if(list.class == 4) {
+            class_name = "[流动党员]";
         }
         link = '/home/reviews/detail/class/'+list.class+'/id/'+list.id;
         if (type == 0) {

@@ -28,7 +28,7 @@ class Floating extends Base {
         $month = db('self_flaw') ->whereTime('create_time','m')-> order('id','desc') ->limit(2)->select();
         //展示列表页
         $map = [
-            'status' => ['gt',0]
+            'status' => ['egt',0]
         ];
         $list = $flaw ->where($map)->order('id','desc') ->select();
         $this->assign('month',$month);//最新的两条
@@ -95,7 +95,7 @@ class Floating extends Base {
     public function more() {
         $NewsModel = new SelfFlaw();
         $len = input('length');
-        $map = ['status' => ['gt',0]];
+        $map = ['status' => ['egt',0]];
         $list = $NewsModel->get_list($map,$len);
         if ($list){
             return $this->success('加载成功','',$list);

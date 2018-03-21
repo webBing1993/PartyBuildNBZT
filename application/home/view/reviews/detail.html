@@ -11,6 +11,10 @@
     .comment{
         padding-bottom: 1rem;
     }
+    video{
+      margin: 0 auto;
+        display: block;
+    }
 </style>
 {/block}
 {block name="body"}
@@ -23,6 +27,11 @@
                 <span class="time">{$detail.create_time|time_format="Y-m-d"}</span>
             </div>
             <div class="content">
+                {if condition="isset($detail.net_path)"}
+                {if condition="$detail.net_path neq ''"}
+                <video id="video" style="width: 80vw;" poster="" controls="" x5-playsinline="" playsinline="" webkit-playsinline="" poster="" preload="auto" src="{$detail.net_path}"></video>
+                {/if}
+                {/if}
                 <div class="article-content">{$detail.content}</div>
             </div>
         </div>

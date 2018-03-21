@@ -25,12 +25,11 @@ class Flaw extends Admin {
      *流动党员
      * */
     public function index() {
-        $map  = ['status'=>['egt',1]];
+        $map  = ['status'=>['egt',0]];
         $list = $this ->lists('SelfFlaw',$map);//分页
         int_to_string($list,array(//数组进行整数映射转换，转换出自己想要啊的
             'type' => array(1=>"流动党员"),
-            'status' => array(1=>"已发布"),
-            'push' => [0 => "否" , 1 => "是"],
+            'status' => array(0=>"已发布"),
             'photo' => [1 => "图片" , 2 => "视频"],
         ));
         $this->assign('list',$list);
@@ -114,7 +113,7 @@ class Flaw extends Admin {
             $info = array(
                 'id' => array('neq',$id),
                 'create_time' => array('egt',$t),
-                'status' => 1
+                'push' => 0
             );
             $infoes = SelfFlaw::where($info)->select();
             foreach($infoes as $value){
@@ -135,7 +134,7 @@ class Flaw extends Admin {
             );
             $list=$this->lists('Push',$map);
             int_to_string($list,array(
-                'status' => array(-1 => '不通过', 0 => '未审核', 1=> '已发送')
+                'status' => array(-1 => '不通过', 0 => '未审核', 1=> '已通过',2=>'未通过')
             ));
             //数据重组
             foreach($list as $value){
@@ -153,7 +152,7 @@ class Flaw extends Admin {
             $t = $this->week_time();
             $info = array(
                 'create_time' => array('egt',$t),
-                'status' => 1
+                'push' => 0
             );
             $infoes = SelfFlaw::where($info)->select();
             foreach($infoes as $value){
@@ -236,7 +235,7 @@ class Flaw extends Admin {
         }
 
         //发送给企业号
-        $Wechat = new TPQYWechat(Config::get('user'));
+        $Wechat = new TPQYWechat(Config::get('review'));
         $message = array(
             "touser" => toUser,
             "msgtype" => 'news',
@@ -250,7 +249,7 @@ class Flaw extends Admin {
             $data['focus_vice'] ? $data['focus_vice'] = json_encode($data['focus_vice']) : $data['focus_vice'] = null;
             $data['create_user'] = session('user_auth.username');
             $data['class'] = 4;  //
-            $data['status'] = 1;
+            $data['status'] = 0;
             //保存到推送列表
             $result = Push::create($data);
             if($result){
