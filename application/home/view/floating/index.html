@@ -1,0 +1,168 @@
+{extend name="public/pure"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/sass/stylesheets/graphic-video.css">
+<title></title>
+{/block}
+
+{block name="body"}
+<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+    <div class="mui-scroll">
+        {empty name="$list"}
+        <div class="default"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>
+        {else/}
+        {notempty name="$month"}
+        <div class="banner">
+            <div class="tag">—— 本月文章 ——</div>
+            <!--精彩专题-->
+            {volist name="month" id="re"}
+            <div class="box">
+                {eq name="re.photo" value="1"}
+                <a href="{:Url('Floating/article?id='.$re['id'])}" class="box_up">
+                    {else/}
+                    <a href="{:Url('Floating/video?id='.$re['id'])}" class="box_up">
+                        {/eq}
+                        <img src="{$re.front_cover|get_cover='path'}" alt="图片">
+                        <div class="title">{$re.title}</div>
+                        <div class="note clear">
+                            <span class="fl">{$re.publisher}</span>
+                            <span class="fr">{$re.create_time|time_format='Y-m-d'}</span>
+                        </div>
+                    </a>
+                    <div class="box_down">
+                        <div class="clear">
+                            <span class="scan">{$re.views}</span>
+                            <div class="fr next">下一篇</div>
+                        </div>
+                    </div>
+                    <!--模糊层-->
+                    <img src="{$re.front_cover|get_cover='path'}" alt="背景" class="bg">
+            </div>
+            {/volist}
+        </div>
+        {/notempty}
+        <!--课程列表-->
+        <div class="lists">
+            <div class="tag"> —— 往期回顾 —— </div>
+            <!--图文课程-->
+            {volist name="list" id="vo"}
+            {eq name="vo.photo" value="1"}
+            <a href="{:Url('Floating/article?id='.$vo['id'])}" class="list lesson">
+                <div class="tab">图文</div>
+                {else/}
+                <a href="{:Url('Floating/video?id='.$vo['id'])}" class="list lesson">
+                    <div class="tab">视频</div>
+                    {/eq}
+                    <img src="{$vo.front_cover|get_cover='path'}" alt="图片" class="img">
+                    <div class="title limit">{$vo.title}</div>
+                    <span class="study">{$vo.views}人阅读过</span>
+                </a>
+                {/volist}
+        </div>
+        {/empty}
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    $("title").text("流动党员");
+    $(function(){
+        $('.box').eq(0).show();
+    });
+
+    //首页加载是否需要上拉加载
+    window.onload = function() {
+        if ($(".lists a").length < 10) {
+            mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+        } else {
+            mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+        }
+    };
+
+    /**
+     * 切换精彩专题
+     * @param e
+     */
+    mui('.box_down').on('tap', '.next', function(e) {
+        var box =$('.box');
+        var len = box.length;
+        var this_ = $(this).parents('.box');
+        var index = this_.index();
+        index = index == len ? 0:index;
+        $('.box_up').find('img' ).hide();
+        box.eq(index).show().siblings('.box' ).hide();
+        box.eq(index).find('img' ).fadeIn();
+    });
+
+    //初始化下拉加载
+    mui.init({
+        pullRefresh: {
+            container: '#refreshContainer',
+            up: {
+                callback: loadScroll
+            }
+        }
+    });
+
+    function loadScroll(){
+        var len = $(".lists a").length;
+        $.ajax({
+            type:"post",
+            url:"{:Url('Learn/indexmore')}",
+            data:{
+                length:len
+            },
+            beforeSend: function(XMLHttpRequest){
+            },
+            success:function(data){
+                addCourse(data);
+                if(data.code == 1){
+                    if(data.data.length == 7){
+                        mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+                    }else{
+                        mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+                    }
+                }else{
+                    mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+                }
+            }
+        })
+    }
+
+    function addCourse(data){
+        var html = '';
+        var lists = data.data;
+        var len = lists.length;
+        for(var i = 0; i< len;i++){
+            var list = lists[i];
+            if(list.type == 1){
+                html+=
+                        '<a href="/home/Learn/video/id/'+list.id+'.html" class="list">'+
+                        '<div class="tab">视频</div>'
+            }else{
+                html+=
+                        '<a href="/home/Learn/article/id/'+list.id+'.html" class="list">'+
+                        '<div class="tab">图文</div>'
+            }
+            html +=
+                    '<img src="'+list.front_cover+'" alt="图片" class="img">'+
+                    '<div class="title limit">'+ list.title+'</div>'+
+                    '<span class="study">'+ list.views+'人阅读过</span>'+
+                    '</a>'
+        }
+        $(".lists").append(html);
+    };
+
+    mui("#refreshContainer").on("touchstart","a",function(){
+        $(this).css("backgroundColor","rgba(0,0,0,.1)");
+    }).on("touchend","a", function () {
+        $(this).css("backgroundColor","#fff");
+    });
+
+    mui("#refreshContainer").on("tap","a",function(){
+        var url = this.getAttribute("href");
+        window.location.href = url;
+    });
+</script>
+{/block}
