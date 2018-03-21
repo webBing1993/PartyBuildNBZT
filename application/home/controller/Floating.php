@@ -144,8 +144,12 @@ class Floating extends Base {
             $snum++;
         }
         //总榜
+        $years = date('Y',time());
+        $info = array(
+            "FROM_UNIXTIME(create_time,'%Y')" => $years,
+        );
         $year = db('self_rank') ->field('userid')->group('userid')->select();
-        $rank = db('self_rank') ->select();
+        $rank = db('self_rank') ->where($info)->select();
         $listYear = [];//一年的数据
         //进行累加
         foreach($year as $ko=>$vo) {
