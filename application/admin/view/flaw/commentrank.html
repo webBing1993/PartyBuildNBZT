@@ -67,7 +67,7 @@
                                 <td class="f">{$vo.award + $vo.rank}</td>
                                 <td>
                                     <span class="a">-</span>
-                                    <span class="b" data-id="{$vo.id}">0</span>
+                                    <span class="b" data-id="{$vo.id}" data-uid="{$vo.userid}">0</span>
                                     <span class="c">+</span>
                                 </td>
                             </tr>
@@ -112,13 +112,15 @@
                 sun=0;
             }else{
                 var _this = $(this)
-                var id = $(this).siblings(".b").attr("data-id")
+                var id = $(this).siblings(".b").attr("data-id");
+                var uid = $(this).siblings(".b").attr("data-uid")
                 $.ajax({
                     type:"post",
                     url:"{:Url('Flaw/award')}",
                     data:{
                         id:id,
-                        type:1
+                        type:1,
+                        userid:uid
                     },
                     beforeSend: function(XMLHttpRequest){
                     },
@@ -136,6 +138,7 @@
         });
         $("tbody tr").eq(i).find(".c").click(function(){
             var id = $(this).siblings(".b").attr("data-id")
+            var uid = $(this).siblings(".b").attr("data-uid")
             var sun = parseFloat($(this).siblings(".b").text())+0.5;
             var _this = $(this)
             console.log(sun)
@@ -143,7 +146,8 @@
                 type:"post",
                 url:"{:Url('Flaw/award')}",
                 data:{
-                    id:id
+                    id:id,
+                    userid:uid,
                 },
                 beforeSend: function(XMLHttpRequest){
                 },

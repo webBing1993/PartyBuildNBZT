@@ -268,19 +268,14 @@ class Flaw extends Admin {
      * */
     
     public function rank() {
-        //$list = $this ->lists('WechatDepartmentUser',['departmentid'=>187]);//分页
-        $map  = ['status'=>['egt',1]];
-        //$rank = $this ->lists('SelfRank',$map);
-        $rank = db('self_rank')->field('userid')->group('userid') ->select();
-       // $rank = db('self_rank') ->select();
-        $list = WechatDepartmentUser::where(['departmentid'=>187])->select();
+        $rank = WechatDepartmentUser::where(['departmentid'=>187])->select();
         foreach($rank as $k=>$v) {
             $user = WechatUser::where('userid',$v['userid'])->find();
             if(!empty($user)) {
                 $rank[$k]['name'] = $user['name'];
                 $rank[$k]['study'] = $this->study($v['userid'],1);
                 $rank[$k]['comment'] = $this->study($v['userid'],2);
-                $rank[$k]['total'] = $this->study($v['userid']);
+                $rank[$k]['total'] = $this->study($v['userid'],3);
             }
         }
         $rank = $this->object($rank);
@@ -298,7 +293,7 @@ class Flaw extends Admin {
     }
     /*
      * 学习总积分
-     * $type 1学习总积分2评论总积分null为总积分
+     * $type 1学习总积分2评论总积分3为总积分
      *
      * */
 
@@ -313,7 +308,7 @@ class Flaw extends Admin {
                 'status'=>1,
                 'userid'=>$userid
             ];
-        } else {
+        } elseif($type == 3) {
             $map = [
                 'userid'=>$userid
             ];
@@ -323,6 +318,9 @@ class Flaw extends Admin {
         $num = 0;
         foreach ($detail as $v) {
             if($type == 2) {//评论
+                $zong = $v['rank'] + $v['award'];
+                $num += $zong;
+            } elseif($type == 3) {
                 $zong = $v['rank'] + $v['award'];
                 $num += $zong;
             } else {
@@ -384,13 +382,21 @@ class Flaw extends Admin {
      * */
 
     public function operation() {
-        $userid = input('userid');
-        $user = WechatUser::where('userid',$userid)->field('name')->find();//姓名
         $map = [
-            'status'=>1,
-            'userid'=>$userid
+            'status'=>['egt',0],
         ];
-        $rank = $this ->lists('SelfRank',$map);
+        $rank = $this ->lists('Years',$map);
+        int_to_string($rank,array(//数组进行整数映射转换，转换出自己想要啊的
+            'type' => array(1=>"增加",0=>'减去'),
+        ));
+        foreach ($rank as $k=>$v) {
+            $user = WechatUser::where('userid',$v['userid'])->field('name')->find();//姓名
+            $detail = SelfFlaw::where('id',$v['detail_id'])->field('title')->find();
+            $opera = db('ucenter_member')->where('id',$v['opera'])->field('username')->find();
+            $rank[$k]['name']=$user['name'];
+            $rank[$k]['title']=$detail['title'];
+            $rank[$k]['username']=$opera['username'];
+        }
         $this->assign('rank',$rank);
         return $this ->fetch();
     }
@@ -403,8 +409,24 @@ class Flaw extends Admin {
         $arr = SelfRank::where('id',$data['id'])->field('award')->find();
         $data['create_user'] = $_SESSION['think']['user_auth']['id'];//获取用户名
         if(isset($data['type'])) {
+            $map = [
+                'type'=>0,
+                'userid'=>$data['userid'],
+                'opera'=>$data['create_user'],
+                'detail_id'=>$data['id'],
+                'create_time'=>time()
+            ];
+            db('years')->insert($map);
             $re = SelfRank::where(['id'=>$data['id']])->update(['award'=>$arr['award']-0.5,'operator'=>$data['create_user'],'opera_time'=>time()]);
         } else {
+            $map = [
+                'type'=>1,
+                'userid'=>$data['userid'],
+                'opera'=>$data['create_user'],
+                'detail_id'=>$data['id'],
+                'create_time'=>time()
+            ];
+            db('years')->insert($map);
             $re = SelfRank::where(['id'=>$data['id']])->update(['award'=>0.5+$arr['award'],'operator'=>$data['create_user'],'opera_time'=>time()]);
         }
         if($re) {

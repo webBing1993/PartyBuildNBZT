@@ -51,9 +51,9 @@
                             {volist name="rank" id="vo"  key="k"}
                             <tr>
                                 <td></td>
-                                <td>{$vo.title}</td>
-                                <td>{$vo.rank}</td>
-                                <td>{$vo.opera_time|time_format='Y-m-d'}</td>
+                                <td>{$vo.username}</td>
+                                <td>对用户:【{$vo.name}】的【{$vo.title}】【{$vo.type_text}】0.5分</td>
+                                <td>{$vo.create_time|time_format='Y-m-d'}</td>
                             </tr>
                             {/volist}
                             </tbody>
