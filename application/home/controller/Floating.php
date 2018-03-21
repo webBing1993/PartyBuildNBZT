@@ -218,7 +218,7 @@ class Floating extends Base {
             $years = date('Y',time());
             $month = date('m',time());
             $week = array(
-                "FROM_UNIXTIME(create_time,'%Y')" => $years.$month,
+                "FROM_UNIXTIME(create_time,'%Y%c')" => $years.$month,
                 'id'=>$data['id']
             );
             $flaw = db('self_flaw')->where($week)->find();
