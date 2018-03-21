@@ -27,9 +27,9 @@ class Reviews extends Base
         $this->checkRole();
         $Push = new Push();
         // 待审核
-        $left = $Push->index(['status' => 0]);
+        $left = $Push->index(['status' => 0,'class' => ['in','1,2']]);
         // 已审核
-        $right = $Push->index(['status' => ['gt',0]]);
+        $right = $Push->index(['status' => ['gt',0],'class' => ['in','1,2']]);
         $this->assign('left',$left);
         $this->assign('right',$right);
         return $this->fetch();
@@ -41,9 +41,9 @@ class Reviews extends Base
         $len = input('len'); //长度
         $c = input('type'); // 类型 0 待审核 1 已审核
         if ($c == 0){
-            $where = ['status' => $c];
+            $where = ['status' => $c,'class' => ['in','1,2']];
         }else{
-            $where = ['status' => ['egt' => $c]];
+            $where = ['status' => ['egt' => $c],'class' => ['in','1,2']];
         }
         $Push = new Push();
         $list = $Push->index($where,$len);
@@ -72,51 +72,48 @@ class Reviews extends Base
         Push::where('id',$msg['fid'])->update(['status' => $msg['status']]);  // 状态改变
         $res = Db::name('push_review')->insert($data);
         if ($res){
-            // 审核成功
-            if($msg['status'] == 1){  // 通过
-                // 修改相应表状态
-                switch ($msg['type']){
-                    case 1: // 通知公告
-                        Db::name('special')->where('id',$msg['id'])->update(['status' => $msg['status']]);
-                        $info = Db::name('special')->where('id',$msg['id'])->find();
-                        $pre = '【通知公告】';
-                        break;
-                    case 2: // 箬横动态
-                        Db::name('news')->where('id',$msg['id'])->update(['status' => $msg['status']]);
-                        $info = Db::name('news')->where('id',$msg['id'])->find();
-                        $pre = '【箬横动态】';
-                        break;
-                }
-                // 通过 则判断是否推送
-                if($info['push'] == 1){
-                    $str = strip_tags($info['content']);
-                    $des = mb_substr($str,0,40);
-                    $content = str_replace("&nbsp;","",$des);  //空格符替换成空
-                    $url = hostUrl."/home/Notice/detail/id/".$info['id'].".html";
-                    $image = Picture::get($info['front_cover']);
-                    $path = hostUrl.$image['path'];
-                    $send = [
-                        'articles' => [
-                            0 => [
-                                'title' => $pre.$info['title'],
-                                'description' => $content,
-                                'url'  => $url,
-                                'picurl' => $path
-                            ]
+            // 修改相应表状态
+            switch ($msg['type']){
+                case 1: // 通知公告
+                    Db::name('special')->where('id',$msg['id'])->update(['status' => $msg['status']]);
+                    $info = Db::name('special')->where('id',$msg['id'])->find();
+                    $pre = '【通知公告】';
+                    break;
+                case 2: // 箬横动态
+                    Db::name('news')->where('id',$msg['id'])->update(['status' => $msg['status']]);
+                    $info = Db::name('news')->where('id',$msg['id'])->find();
+                    $pre = '【箬横动态】';
+                    break;
+            }
+            // 通过 则判断是否推送
+            if($info['push'] == 1){
+                $str = strip_tags($info['content']);
+                $des = mb_substr($str,0,40);
+                $content = str_replace("&nbsp;","",$des);  //空格符替换成空
+                $url = hostUrl."/home/Notice/detail/id/".$info['id'].".html";
+                $image = Picture::get($info['front_cover']);
+                $path = hostUrl.$image['path'];
+                $send = [
+                    'articles' => [
+                        0 => [
+                            'title' => $pre.$info['title'],
+                            'description' => $content,
+                            'url'  => $url,
+                            'picurl' => $path
                         ]
-                    ];
-                    $Wechat = new TPQYWechat(Config::get('user'));
-                    $message = array(
-                        "touser" => toUser,
-                        "msgtype" => 'news',
-                        "agentid" => config('user.agentid'),  // 个人中心
-                        "news" => $send,
-                        "safe" => "0"
-                    );
-                    $msg = $Wechat->sendMessage($message);
-                    if($msg['errcode'] !== 0){
-                        return $this->error('审核失败');
-                    }
+                    ]
+                ];
+                $Wechat = new TPQYWechat(Config::get('user'));
+                $message = array(
+                    "touser" => toUser,
+                    "msgtype" => 'news',
+                    "agentid" => config('user.agentid'),  // 个人中心
+                    "news" => $send,
+                    "safe" => "0"
+                );
+                $msg = $Wechat->sendMessage($message);
+                if($msg['errcode'] !== 0){
+                    return $this->error('审核失败');
                 }
             }
             return $this->success('审核成功');

@@ -28,7 +28,7 @@ class Push extends Model
                     $id = $info['id'];
                     $class = 1;
                     $front_cover = $info['front_cover'];
-                    $publish = $info['publish'];
+                    $publish = $info['publisher'];
                     $time = $info['create_time'];
                     break;
                 case 2: // 箬横动态
@@ -37,7 +37,7 @@ class Push extends Model
                     $id = $info['id'];
                     $class = 2;
                     $front_cover = $info['front_cover'];
-                    $publish = $info['publish'];
+                    $publish = $info['publisher'];
                     $time = $info['create_time'];
                     break;
             }
