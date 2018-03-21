@@ -390,8 +390,8 @@ class Volunteer extends Base
                 $arr1[$key]['name'] = $User['name']; // 名字
                 $arr1[$key]['avatar'] = $User['avatar']; // 头像
                 $arr1[$key]['mouth'] = $score1 + $score2; // 月榜
-                $arr1[$key]['type'] = $type; 
-                $arr2[$key]['type'] = $type; 
+                /*$arr1[$key]['type'] = $type; 
+                $arr2[$key]['type'] = $type; */
                 $arr2[$key]['name'] = $User['name']; // 名字
                 $arr2[$key]['avatar'] = $User['avatar']; // 头像
                 $arr2[$key]['all'] = $score3; // 总榜
@@ -457,8 +457,8 @@ class Volunteer extends Base
                 $arr3[$key]['name'] = $User2['name']; // 名字
                 $arr3[$key]['avatar'] = $User2['avatar']; // 头像
                 $arr3[$key]['mouth'] = $score1 + $score2; // 月榜
-                $arr3[$key]['type'] = $type; 
-                $arr4[$key]['type'] = $type; 
+                /*$arr3[$key]['type'] = $type; 
+                $arr4[$key]['type'] = $type; */
                 $arr4[$key]['name'] = $User2['name']; // 名字
                 $arr4[$key]['avatar'] = $User2['avatar']; // 头像
                 $arr4[$key]['all'] = $score3; // 总榜
@@ -487,6 +487,7 @@ class Volunteer extends Base
         }
         $this->assign('list2', $arr3);
         $this->assign('lists2', $arr4);
+        $this->assign('type', $type);
         return $this->fetch();
     }
 
