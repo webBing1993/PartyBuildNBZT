@@ -269,19 +269,21 @@ class Flaw extends Admin {
     
     public function rank() {
         $rank = WechatDepartmentUser::where(['departmentid'=>187])->select();
+        $key_arrays=[];
         foreach($rank as $k=>$v) {
-            $user = WechatUser::where('userid',$v['userid'])->find();
+            $user = WechatUser::where('userid',$v['userid'])->field('name')->find();
             if(!empty($user)) {
                 $rank[$k]['name'] = $user['name'];
                 $rank[$k]['study'] = $this->study($v['userid'],1);
                 $rank[$k]['comment'] = $this->study($v['userid'],2);
                 $rank[$k]['total'] = $this->study($v['userid'],3);
+                $key_arrays[]=$rank[$k]['total'];
             }
         }
-        $rank = $this->object($rank);
-        foreach($rank as $val){
+        //$rank = $this->object($rank);
+       /* foreach($rank as $val){
             $key_arrays[]=$val['total'];
-        }
+        }*/
         array_multisort($key_arrays,SORT_DESC,SORT_NUMERIC,$rank);
         $this -> assign('list',$rank);
         return $this->fetch();
