@@ -26,25 +26,18 @@ class Rank extends Admin
             $year = input('year');
             $mouth = input('month');
             // 获取签到人员列表
-            $map = array(
-                "FROM_UNIXTIME(create_time,'%Y%c')"  => $year.$mouth,
-                'type' => 2,
-                'status' => 0,
-            );
-            $list = Db::name('apply')->field('userid,sum(score) as sums')->where($map)->group('userid')->select();
+            $list = Db::name('wechat_user_tag')->where(['tagid' => ['in',[2,3]]])->select();
             foreach($list as $key => $value){
+                $sums = Db::name('apply')->where(['userid' => $value['userid'],'type' => 2,'status' => 0,"FROM_UNIXTIME(create_time,'%Y%c')" => $year.$mouth])->sum('score');
                 // 干预分数
-                $info = Db::name('handle')->where(['userid' => $value['userid'],'mouth' => $mouth])->select();
-                $sum = 0;
-                foreach($info as $v){
-                    $sum += $v['score'];
-                }
-                $list[$key]['sum'] = $value['sums'] + $sum;
+                $sum = Db::name('handle')->where(['userid' => $value['userid'],'mouth' => $mouth])->sum('score');
+                $list[$key]['sum'] = $sums + $sum;
+                $list[$key]['sums'] = $sums;
                 $list[$key]['mouth'] = $mouth;
                 $User = WechatUser::where('userid',$value['userid'])->find();
                 if ($User){
                     $list[$key]['name'] = $User['name'];
-                    $department_id = WechatDepartmentUser::where('userid',$value['userid'])->value('departmentid');
+                    $department_id = WechatDepartmentUser::where(['userid'=>$value['userid'],'departmentid' => ['in',[185,186]]])->value('departmentid');
                     $list[$key]['department'] = WechatDepartment::where('id',$department_id)->value('name');
                     //基础分
                     $list[$key]['base'] = $User['volunteer_base'];
@@ -60,25 +53,18 @@ class Rank extends Admin
             $year = date('Y',time());  // 年
             $mouth = date('m',time());  // 当前月份
             // 获取签到人员列表
-            $map = array(
-                "FROM_UNIXTIME(create_time,'%Y%c')"  => $year.$mouth,
-                'type' => 2,
-                'status' => 0,
-            );
-            $list = Db::name('apply')->field('userid,sum(score) as sums')->where($map)->group('userid')->select();
+            $list = Db::name('wechat_user_tag')->where(['tagid' => ['in',[2,3]]])->select();
             foreach($list as $key => $value){
+                $sums = Db::name('apply')->where(['userid' => $value['userid'],'type' => 2,'status' => 0,"FROM_UNIXTIME(create_time,'%Y%c')" => $year.$mouth])->sum('score');
                 // 干预分数
-                $info = Db::name('handle')->where(['userid' => $value['userid'],'mouth' => $mouth])->select();
-                $sum = 0;
-                foreach($info as $v){
-                    $sum += $v['score'];
-                }
-                $list[$key]['sum'] = $value['sums'] + $sum;
+                $sum = Db::name('handle')->where(['userid' => $value['userid'],'mouth' => $mouth])->sum('score');
+                $list[$key]['sum'] = $sums + $sum;
+                $list[$key]['sums'] = $sums;
                 $list[$key]['mouth'] = $mouth;
                 $User = WechatUser::where('userid',$value['userid'])->find();
                 if ($User){
                     $list[$key]['name'] = $User['name'];
-                    $department_id = WechatDepartmentUser::where('userid',$value['userid'])->value('departmentid');
+                    $department_id = WechatDepartmentUser::where(['userid'=>$value['userid'],'departmentid' => ['in',[185,186]]])->value('departmentid');
                     $list[$key]['department'] = WechatDepartment::where('id',$department_id)->value('name');
                     //基础分
                     $list[$key]['base'] = $User['volunteer_base'];
@@ -93,6 +79,9 @@ class Rank extends Admin
             $years = Apply::all(function($query){
                 $query->group("FROM_UNIXTIME(create_time,'%Y')")->field("FROM_UNIXTIME(create_time,'%Y') as year");
             });
+            if(!in_array($year,$years)){
+                array_push($years,['year' => $year]);
+            }
             $this->assign('years',$years);
             $this->assign('list',$list);
             return $this->fetch();
