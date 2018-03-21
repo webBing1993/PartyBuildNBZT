@@ -35,20 +35,23 @@
                         <span>总榜</span>
                     </a>
                 </div>
-                <div class="list myself">
-                    <ul>
-                        <li>
-                            <img src="" style="margin-left: 14vw">
-                            <span class="name" style="margin-top: -5vw;">chengjiabo</span>
-                            <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第24名</span>
-                            <span class="score">3分</span>
-                        </li>
-                    </ul>
-                </div>
 
                 <div class="mui-slider-group">
 
                     <div id="item3mobile" class="mui-slider-item mui-control-content">
+
+                        {if condition="$type==1"}
+                        <div class="list myself">
+                            <ul>
+                                <li>
+                                    <img src="" style="margin-left: 14vw">
+                                    <span class="name" style="margin-top: -5vw;">chengjiabo</span>
+                                    <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第24名</span>
+                                    <span class="score">3分</span>
+                                </li>
+                            </ul>
+                        </div>
+                        {/if}
 
                         <div class="list">
                             <ul>
@@ -80,6 +83,20 @@
 
                     <div id="item4mobile" class="mui-slider-item mui-control-content">
                         <div class="list">
+
+                            {if condition="$type==1"}
+                            <div class="list myself">
+                                <ul>
+                                    <li>
+                                        <img src="" style="margin-left: 14vw">
+                                        <span class="name" style="margin-top: -5vw;">chengjiabo</span>
+                                        <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第24名</span>
+                                        <span class="score">3分</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            {/if}
+
                             <ul>
                                 {volist name="lists" id="ls"}
                                 <li>
@@ -125,6 +142,18 @@
                 <div class="mui-slider-group">
 
                     <div id="item5mobile" class="mui-slider-item mui-control-content">
+                        {if condition="$type==2"}
+                        <div class="list myself">
+                            <ul>
+                                <li>
+                                    <img src="" style="margin-left: 14vw">
+                                    <span class="name" style="margin-top: -5vw;">chengjiabo</span>
+                                    <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第24名</span>
+                                    <span class="score">3分</span>
+                                </li>
+                            </ul>
+                        </div>
+                        {/if}
                         <div class="list">
                             <ul>
                                 {volist name="list2" id="loo"}
@@ -153,6 +182,18 @@
                     </div>
 
                     <div id="item6mobile" class="mui-slider-item mui-control-content">
+                        {if condition="$type==2"}
+                        <div class="list myself">
+                            <ul>
+                                <li>
+                                    <img src="" style="margin-left: 14vw">
+                                    <span class="name" style="margin-top: -5vw;">chengjiabo</span>
+                                    <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第24名</span>
+                                    <span class="score">3分</span>
+                                </li>
+                            </ul>
+                        </div>
+                        {/if}
                         <div class="list">
                             <ul>
                                 {volist name="lists2" id="lss"}
