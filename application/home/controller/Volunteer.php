@@ -351,6 +351,7 @@ class Volunteer extends Base
     public function rank()
     {
         $this->anonymous();
+        $userId = session('userId');
         // 获取  党员志愿者
         $map = array(
             'tagid' => 2,
@@ -362,6 +363,9 @@ class Volunteer extends Base
         foreach ($list as $key => $value) {
             $User = WechatUser::where('userid', $value->userid)->find();
             if (!empty($User)) {
+                if($userId == $value['userid']) {
+                    $type = 1;//党员志愿者
+                }
                 // 月积分
                 $map = array(
                     "userid" => $value['userid'],
@@ -386,6 +390,8 @@ class Volunteer extends Base
                 $arr1[$key]['name'] = $User['name']; // 名字
                 $arr1[$key]['avatar'] = $User['avatar']; // 头像
                 $arr1[$key]['mouth'] = $score1 + $score2; // 月榜
+                $arr1[$key]['type'] = $type; 
+                $arr2[$key]['type'] = $type; 
                 $arr2[$key]['name'] = $User['name']; // 名字
                 $arr2[$key]['avatar'] = $User['avatar']; // 头像
                 $arr2[$key]['all'] = $score3; // 总榜
@@ -424,6 +430,9 @@ class Volunteer extends Base
         foreach ($list2 as $key => $value) {
             $User2 = WechatUser::where('userid', $value->userid)->find();
             if (!empty($User2)) {
+                if($userId == $value['userid']) {
+                    $type = 2;//群众志愿者
+                }
                 // 月积分
                 $map3 = array(
                     "userid" => $value['userid'],
@@ -448,6 +457,8 @@ class Volunteer extends Base
                 $arr3[$key]['name'] = $User2['name']; // 名字
                 $arr3[$key]['avatar'] = $User2['avatar']; // 头像
                 $arr3[$key]['mouth'] = $score1 + $score2; // 月榜
+                $arr3[$key]['type'] = $type; 
+                $arr4[$key]['type'] = $type; 
                 $arr4[$key]['name'] = $User2['name']; // 名字
                 $arr4[$key]['avatar'] = $User2['avatar']; // 头像
                 $arr4[$key]['all'] = $score3; // 总榜
