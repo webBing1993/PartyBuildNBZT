@@ -521,6 +521,7 @@ class Volunteer extends Base
         $this->assign('lists2', $arr4);
         $this->assign('detailMonth', $detailMonth);
         $this->assign('detailYear', $detailYear);
+        $this->assign('type', $type);
         return $this->fetch();
     }
 
