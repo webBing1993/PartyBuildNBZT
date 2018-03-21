@@ -388,10 +388,12 @@ class Volunteer extends Base
                 // 总分
                 $score3 = $User['volunteer_base'] + $User['volunteer_score'];
                 $arr1[$key]['name'] = $User['name']; // 名字
+                $arr1[$key]['userid'] = $User['userid']; // id
                 $arr1[$key]['avatar'] = $User['avatar']; // 头像
                 $arr1[$key]['mouth'] = $score1 + $score2; // 月榜
                 /*$arr1[$key]['type'] = $type; 
                 $arr2[$key]['type'] = $type; */
+                $arr2[$key]['userid'] = $User['userid']; // id
                 $arr2[$key]['name'] = $User['name']; // 名字
                 $arr2[$key]['avatar'] = $User['avatar']; // 头像
                 $arr2[$key]['all'] = $score3; // 总榜
@@ -457,8 +459,10 @@ class Volunteer extends Base
                 $arr3[$key]['name'] = $User2['name']; // 名字
                 $arr3[$key]['avatar'] = $User2['avatar']; // 头像
                 $arr3[$key]['mouth'] = $score1 + $score2; // 月榜
+                $arr3[$key]['userid'] = $User2['userid']; // id
                 /*$arr3[$key]['type'] = $type; 
                 $arr4[$key]['type'] = $type; */
+                $arr4[$key]['userid'] = $User2['userid']; // id
                 $arr4[$key]['name'] = $User2['name']; // 名字
                 $arr4[$key]['avatar'] = $User2['avatar']; // 头像
                 $arr4[$key]['all'] = $score3; // 总榜
@@ -485,9 +489,38 @@ class Volunteer extends Base
                 }
             }
         }
+        //获取自己
+        $detailMonth = [];
+        $detailYear = [];
+        $arrayMonth = [];
+        $arrayYear = [];
+        if($type == 1) {//党员
+            $arrayMonth = $arr1;
+            $arrayYear = $arr2;
+        } else {//群众
+            $arrayMonth = $arr3;
+            $arrayYear = $arr4;
+        }
+        foreach ($arrayMonth as $k=>$v) {
+            if($userId == $v['userid']) {
+                $detailMonth[]['month'] = $v['mouth'];//分数
+                $detailMonth[]['ranking'] = $k+1;//名次
+                $detailMonth[]['name'] = $v['name'];
+                $detailMonth[]['avatar'] = $v['avatar'];
+            }
+        }
+        foreach ($arrayYear as $k=>$v) {
+            if($userId == $v['userid']) {
+                $detailYear[]['month'] = $v['mouth'];//分数
+                $detailYear[]['ranking'] = $k+1;//名次
+                $detailYear[]['name'] = $v['name'];
+                $detailYear[]['avatar'] = $v['avatar'];
+            }
+        }
         $this->assign('list2', $arr3);
         $this->assign('lists2', $arr4);
-        $this->assign('type', $type);
+        $this->assign('detailMonth', $detailMonth);
+        $this->assign('detailYear', $detailYear);
         return $this->fetch();
     }
 
