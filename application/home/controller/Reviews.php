@@ -109,11 +109,11 @@ class Reviews extends Base
                             ]
                         ]
                     ];
-                    $Wechat = new TPQYWechat(Config::get('user'));
+                    $Wechat = new TPQYWechat(Config::get('floating'));
                     $message = array(
                         "touser" => toUser,
                         "msgtype" => 'news',
-                        "agentid" => config('user.agentid'),  // 个人中心
+                        "agentid" => config('floating.agentid'),  // 个人中心
                         "news" => $send,
                         "safe" => "0"
                     );

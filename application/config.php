@@ -57,11 +57,18 @@ return [
         'appsecret' => '-njGAjJ7EnSKMXlzSoUxcJO6RDGhYtbVEiY5KSiry3s',
         'agentid' => 1000003
     ),
+    //流动党员
+    'floating'=>array(
+        'appid' => 'ww678237a01774a2fb',
+        'appsecret' => '35iZd-7NnHEAHz7NBtchtqh5rPL8VWt3keSz4Gr8r9w',
+        'agentid' => 1000008
+    ),
     /* UC用户中心配置 */
     'uc_auth_key' => '(.t!)=JTb_OPCkrD:-i"QEz6KLGq5glnf^[{p;je',
     /*直播地址*/
 
     define('hostUrl','http://rh.0571ztnet.com'),
+    define('agentId',1000004),
 //    define('toUser','@all')
-    define('toUser','17557289172')
+    define('toUser','13588359175')
 ];
