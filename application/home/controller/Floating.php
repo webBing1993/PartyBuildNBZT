@@ -26,7 +26,6 @@ class Floating extends Base {
         //本月最新的两条文章
 
         $month = db('self_flaw') ->whereTime('create_time','m')-> order('id','desc') ->limit(2)->select();
-        var_dump($month);
         //展示列表页
         $map = [
             'status' => ['gt',0]
