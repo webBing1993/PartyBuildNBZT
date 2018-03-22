@@ -3,6 +3,19 @@
 {block name="style"}
 <link rel="stylesheet" href="/home/sass/stylesheets/graphic-video.css">
 <title></title>
+<style>
+    .month{
+        text-align: center;
+        color: #333;
+        width: 26vw;
+        background: #f1f1f1;
+        margin: 0.1rem auto;
+        border-radius: 30px;
+        height: 0.8rem;
+        line-height: 0.8rem;
+        font-size: 0.34rem;
+    }
+</style>
 {/block}
 
 {block name="body"}
@@ -49,21 +62,31 @@
                 $four = 0;
             {/php}
             {volist name="list" id="vo"}
-            {php}
-                 $first = strtotime(date('Y-m',$vo['create_time']));
-                 $two = strtotime(date('Y-m',time()));
-                $three = $two - $first;
-                if($three != $four) {
-                    $four = $three;
-                    echo "<div style='text-align: center'>".date('Y年m月',$first)."</div>";
-                }
-
-            {/php}
             {eq name="vo.photo" value="1"}
             <a href="{:Url('Floating/article?id='.$vo['id'])}" class="list lesson">
+                {php}
+                $first = strtotime(date('Y-m',$vo['create_time']));
+                $two = strtotime(date('Y-m',time()));
+                $three = $two - $first;
+                if($three != $four) {
+                $four = $three;
+                echo "<div class='month'>".date('Y年m月',$first)."</div>";
+                }
+
+                {/php}
                 <div class="tab">图文</div>
                 {else/}
                 <a href="{:Url('Floating/video?id='.$vo['id'])}" class="list lesson">
+                    {php}
+                    $first = strtotime(date('Y-m',$vo['create_time']));
+                    $two = strtotime(date('Y-m',time()));
+                    $three = $two - $first;
+                    if($three != $four) {
+                    $four = $three;
+                    echo "<div class='month'>".date('Y年m月',$first)."</div>";
+                    }
+
+                    {/php}
                     <div class="tab">视频</div>
                     {/eq}
                     <img src="{$vo.front_cover|get_cover='path'}" alt="图片" class="img">
@@ -82,6 +105,7 @@
     $("title").text("流动党员");
     $(function(){
         $('.box').eq(0).show();
+        $(".month").next(".tab").css("top","1.4rem");
     });
 
     //首页加载是否需要上拉加载
