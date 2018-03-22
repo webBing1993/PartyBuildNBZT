@@ -20,7 +20,7 @@ use app\home\model\Browse;
 class Base extends Controller {
     public function _initialize(){
 //        session('userId','visitor');
-        session('userId','15757116500');
+        session('userId','15757118744');
 //        session('header','/home/images/vistor.jpg');
 //        session('nickname','游客');
         if(!empty($_SERVER['REQUEST_URI'])){
@@ -298,6 +298,7 @@ class Base extends Controller {
             if($type == 9) {//流动党员的积分规则
                 $maps = [
                     'userid'=>session('userId'),
+                    'status'=>1,
                     'detail_id'=>$aid
                 ];
                 $rank = db('self_rank')->where($maps) ->find();

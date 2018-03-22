@@ -270,7 +270,7 @@ class Flaw extends Admin {
         $rank = WechatDepartmentUser::where(['departmentid'=>187])->select();
         $key_arrays=[];
         foreach($rank as $k=>$v) {
-            $user = WechatUser::where('userid',$v['userid'])->field('name')->find();
+            $user = WechatUser::where('userid',$v['userid'])->field('userid,name')->find();
             if(!empty($user)) {
                 $key_arrays[$k]['name'] = $user['name'];
                 $key_arrays[$k]['userid'] = $user['userid'];
@@ -280,11 +280,6 @@ class Flaw extends Admin {
             }
         }
         array_multisort(array_column($key_arrays,'total'),SORT_DESC,$key_arrays);
-        /*if(IS_POST) {
-            $len = input('length');
-            $arr = array_slice($key_arrays,$len,20);
-            return $this->success('','',$arr);
-        } else {*/
             $this -> assign('list',$key_arrays);
             return $this->fetch();
         

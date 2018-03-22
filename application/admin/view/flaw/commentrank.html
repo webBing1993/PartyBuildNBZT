@@ -67,7 +67,7 @@
                                 <td class="f">{$vo.award + $vo.rank}</td>
                                 <td>
                                     <span class="a">-</span>
-                                    <span class="b" data-id="{$vo.id}" data-uid="{$vo.userid}">0</span>
+                                    <span class="b" data-id="{$vo.detail_id}" data-uid="{$vo.userid}">0</span>
                                     <span class="c">+</span>
                                 </td>
                             </tr>
@@ -94,7 +94,7 @@
 {block name="script"}
 <script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
 <script>
-    highlight_subnav("{:Url('Flaw/index')}");
+    highlight_subnav("{:Url('Flaw/rank')}");
     $(document).ready(function(){
         $('.i-checks').iCheck({
             checkboxClass: 'icheckbox_square-green',
