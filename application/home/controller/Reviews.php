@@ -41,9 +41,9 @@ class Reviews extends Base
         $len = input('len'); //长度
         $c = input('type'); // 类型 0 待审核 1 已审核
         if ($c == 0){
-            $where = ['status' => $c,'class' => ['in','1,2']];
+            $where = ['status' => $c,'class' => ['in','1,2,4']];
         }else{
-            $where = ['status' => ['egt' => $c],'class' => ['in','1,2']];
+            $where = ['status' => ['egt',$c],'class' => ['in','1,2,4']];
         }
         $Push = new Push();
         $list = $Push->index($where,$len);
