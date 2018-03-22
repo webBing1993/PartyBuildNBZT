@@ -21,7 +21,6 @@ class Push extends Model
         $list = $this->where($where)->order('create_time','desc')->limit($len,12)->select();
         $data = [];
         foreach($list as $value){
-            var_dump($value);
             switch ($value['class']){
                 case 1: // 通知公告
                     $info = Db::name('special')->where('id',$value['focus_main'])->find();

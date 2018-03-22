@@ -31,6 +31,11 @@ class Floating extends Base {
             'status' => ['egt',0]
         ];
         $list = $flaw ->where($map)->order('id','desc') ->select();
+        foreach($list as $k=>$v) {
+            if($k == 0 || $k == 1) {
+                unset($list[$k]);
+            }
+        }
         $this->assign('month',$month);//最新的两条
         $this->assign('list',$list);//最新的两条
         return $this->fetch();
