@@ -33,7 +33,7 @@
                                 <a  href="{:Url('Reviews/detail?class='.$lo['class'].'&id='.$lo['id'])}" class="list clear">
                                     <img src="{$lo.front_cover}">
                                     <span>{$lo.title}</span>
-                                    <span>{eq name="$lo.class" value="1"}[通知公告]{/eq} {eq name="$lo.class" value="2"}[箬横动态]{/eq} {eq name="$lo.class" value="4"}[箬横动态]{/eq} 发布人：{$lo.publish}</span>
+                                    <span>{eq name="$lo.class" value="1"}[通知公告]{/eq} {eq name="$lo.class" value="2"}[箬横动态]{/eq} {eq name="$lo.class" value="4"}[流动党员]{/eq} 发布人：{$lo.publish}</span>
                                     <span>{$lo.create_time}</span>
                                     <span class="mui-icon mui-icon-forward"></span>
                                     <i class="fail" data-fid="{$lo.fid}" data-id="{$lo.id}" data-class="{$lo.class}">不通过</i><i class="pass" data-id="{$lo.id}" data-fid="{$lo.fid}" data-class="{$lo.class}" >通&nbsp;过</i>
