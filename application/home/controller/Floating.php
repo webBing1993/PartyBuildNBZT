@@ -31,14 +31,9 @@ class Floating extends Base {
         $map = [
             'status' => ['egt',0]
         ];
-        $list = $flaw ->where($map)->order('id','desc') ->select();
-        foreach($list as $k=>$v) {
-            if($k == 0 || $k == 1) {
-                unset($list[$k]);
-            }
-        }
+        $list = $flaw ->where($map)->whereTime('create_time','<','m')->order('id','desc') ->select();
         $this->assign('month',$month);//最新的两条
-        $this->assign('list',$list);//最新的两条
+        $this->assign('list',$list);
         return $this->fetch();
     }
 
