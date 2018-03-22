@@ -206,7 +206,6 @@ class Floating extends Base {
             array_pop($listYear);
             $listYear[$userId] = 0;
         }
-        var_dump($listYear);
         //获取头像
         foreach($listYear as  $k=>$v) {
             $user = WechatUser::where('userid',$k) ->find();
