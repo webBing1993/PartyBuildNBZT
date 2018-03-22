@@ -117,7 +117,7 @@ class Floating extends Base {
         $userId = session('userId');
         //月榜
         $Months =  db('self_rank') ->whereTime('create_time','m')->field('userid')->group('userid')->select();
-        $monthRank =  db('self_rank') ->whereTime('create_time','m')->select();
+        $monthRank =  db('self_rank') ->whereTime('create_time','m')->limit(100)->select();
         $listMonth = [];//一年的数据
         //进行累加
         foreach($Months as $ko=>$vo) {
@@ -154,7 +154,7 @@ class Floating extends Base {
             "FROM_UNIXTIME(create_time,'%Y')" => $years,
         );
         $year = db('self_rank') ->field('userid')->group('userid')->select();
-        $rank = db('self_rank') ->where($info)->select();
+        $rank = db('self_rank') ->where($info)->limit(100)->select();
         $listYear = [];//一年的数据
         //进行累加
         foreach($year as $ko=>$vo) {
