@@ -238,9 +238,9 @@
                 <div class="list">
                     <ul>
                         {volist name="list.monthList" id="v" key="k"}
-                        {if condition="$k gt 4"}
+                        {if condition="$k egt 4"}
                         <li>
-                            <span class="number">$k</span>
+                            <span class="number">{$k}</span>
                             <img src="{$v.avatar}">
                             <span class="name">{$v.name}</span>
                             <span class="score">{$v.rank}分</span>
@@ -266,9 +266,9 @@
                 <div class="list">
                     <ul>
                         {volist name="list.yearList" id="v" key="k"}
-                        {if condition="$k gt 4"}
+                        {if condition="$k egt 4"}
                         <li>
-                            <span class="number">$k</span>
+                            <span class="number">{$k}</span>
                             <img src="{$v.avatar}">
                             <span class="name">{$v.name}</span>
                             <span class="score">{$v.rank}分</span>

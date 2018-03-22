@@ -7,6 +7,7 @@
  */
 namespace app\home\controller;
 use app\admin\model\SelfFlaw;
+use app\home\model\WechatDepartmentUser;
 use app\home\model\WechatUser;
 use think\Db;
 /*
@@ -116,7 +117,7 @@ class Floating extends Base {
     public function rank() {
         $userId = session('userId');
         //月榜
-        $Months =  db('self_rank') ->whereTime('create_time','m')->field('userid')->group('userid')->select();
+        $Months =  db('self_rank') ->whereTime('create_time','m')->field('userid')->group('userid')->limit(100)->select();
         $monthRank =  db('self_rank') ->whereTime('create_time','m')->limit(100)->select();
         $listMonth = [];//一年的数据
         //进行累加
@@ -131,6 +132,25 @@ class Floating extends Base {
             $listMonth[$vo['userid']] = $num;
         }
         arsort($listMonth);
+        $sum = 100 - count($Months);//查看还有多少到100人
+        $wechatUser = WechatDepartmentUser::where('departmentid',187)->select();//流动党员找出来
+        $he = 0;
+        foreach ($wechatUser as $k=>$v) {
+            if($he <= $sum) {
+                $re = array_key_exists($v['userid'],$listMonth);
+                if(!$re) {
+                    $listMonth[$v['userid']] = 0;
+                }
+            } else {
+                break;
+            }
+            $he++;
+        }
+        $res = array_key_exists($userId,$listMonth);//判断自己在不在里
+        if(!$res) {
+            array_pop($listMonth);
+            $listMonth[$userId] = 0;
+        }
         //获取头像
         foreach($listMonth as  $k=>$v) {
             $user = WechatUser::where('userid',$k) ->find();
@@ -153,7 +173,7 @@ class Floating extends Base {
         $info = array(
             "FROM_UNIXTIME(create_time,'%Y')" => $years,
         );
-        $year = db('self_rank') ->field('userid')->group('userid')->select();
+        $year = db('self_rank') ->field('userid')->group('userid')->limit(100)->select();
         $rank = db('self_rank') ->where($info)->limit(100)->select();
         $listYear = [];//一年的数据
         //进行累加
@@ -168,6 +188,25 @@ class Floating extends Base {
             $listYear[$vo['userid']] = $num;
         }
         arsort($listYear);
+        $sumYear = 100 - count($year);//查看还有多少到100人
+        $heYear = 0;
+        foreach ($wechatUser as $k=>$v) {
+            if($heYear <= $sumYear) {
+                $re = array_key_exists($v['userid'],$listYear);
+                if(!$re) {
+                    $listYear[$v['userid']] = 0;
+                }
+            } else {
+                break;
+            }
+            $heYear++;
+        }
+        $res = array_key_exists($userId,$listYear);//判断自己在不在里
+        if(!$res) {
+            array_pop($listYear);
+            $listYear[$userId] = 0;
+        }
+        var_dump($listYear);
         //获取头像
         foreach($listYear as  $k=>$v) {
             $user = WechatUser::where('userid',$k) ->find();
