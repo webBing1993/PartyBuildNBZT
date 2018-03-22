@@ -194,6 +194,7 @@ body {
   justify-content: center;
   align-items: center;
   padding-top: 6.4vw;
+  font-weight: bold;
 }
 .rule-text-title:before{
   display: inline-block;
