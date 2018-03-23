@@ -125,7 +125,7 @@ class Reviews extends Base
                     }
                 }
             } else {
-                if($info['push'] == 1){
+                if($info['push'] == 1 && $msg['status']== 1){
                     $str = strip_tags($info['content']);
                     $des = mb_substr($str,0,40);
                     $content = str_replace("&nbsp;","",$des);  //空格符替换成空
