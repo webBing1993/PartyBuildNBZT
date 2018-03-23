@@ -109,7 +109,7 @@
         $(".month").next(".tab").css("top","1.4rem");
     });
 
-    /*
+    /**
      * 切换精彩专题
      * @param e
      */
@@ -123,6 +123,21 @@
         box.eq(index).show().siblings('.box' ).hide();
         box.eq(index).find('img' ).fadeIn();
     });
+
+    //初始化下拉加载
+    mui.init({
+        pullRefresh: {
+            container: '#refreshContainer',
+            up: {
+                callback: loadScroll
+            }
+        }
+    });
+
+    function loadScroll(){
+        mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+    }
+
 
 
     mui("#refreshContainer").on("touchstart","a",function(){
