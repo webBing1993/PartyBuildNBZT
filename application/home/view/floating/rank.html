@@ -151,6 +151,14 @@
     .rule-text-title{
         font-weight: bold;
     }
+    .rule-mask{
+        top:25vw;
+    }
+    @media screen and (device-width: 320px) and (device-height: 480px) and (-webkit-device-pixel-ratio: 2){
+        .rule-mask{
+            top:10vw;
+        }
+    }
 </style>
 {/block}
 
@@ -284,7 +292,7 @@
 </div>
 
 <div class="mask"></div>
-<div class="rule-mask" style="top: 25vw;">
+<div class="rule-mask">
     <img src="/home/images/floating/rule.png">
     <div class="rule-text">
         <p class="rule-text-title">积分规则</p>
