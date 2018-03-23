@@ -130,7 +130,12 @@ class Floating extends Base {
             $listMonth[$vo['userid']] = $num;
         }
         arsort($listMonth);
-        $sum = 100 - count($Months);//查看还有多少到100人
+        if(count($Months) == 0) {
+            $sun = count($Months)+1;
+        } else {
+            $sun = count($Months);
+        }
+        $sum = 100 - $sun;//查看还有多少到100人
         $wechatUser = WechatDepartmentUser::where('departmentid',187)->select();//流动党员找出来
         $he = 0;
         foreach ($wechatUser as $k=>$v) {
@@ -186,7 +191,12 @@ class Floating extends Base {
             $listYear[$vo['userid']] = $num;
         }
         arsort($listYear);
-        $sumYear = 100 - count($year);//查看还有多少到100人
+        if(count($year) == 0) {
+            $ysun = count($year)+1;
+        } else {
+            $ysun = count($year);
+        }
+        $sumYear = 100 - $ysun;//查看还有多少到100人
         $heYear = 0;
         foreach ($wechatUser as $k=>$v) {
             if($heYear <= $sumYear) {
