@@ -51,6 +51,7 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
+                                <th>操作人</th>
                                 <th>操作内容</th>
                                 <th>操作时间</th>
                             </tr>
@@ -58,6 +59,7 @@
                             <tbody>
                             {volist name="list" id="vo"}
                             <tr>
+                                <td>admin</td>
                                 <td>{$vo.content}</td>
                                 <td>{$vo.create_time|time_format='Y-m-d H:i'}</td>
                             </tr>

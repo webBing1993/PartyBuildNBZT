@@ -48,6 +48,7 @@ class Rank extends Admin
                     $list[$key]['base'] = 0;
                 }
             }
+
             return $this->success('加载成功','',$list);
         }else{
             $year = date('Y',time());  // 年
@@ -119,7 +120,11 @@ class Rank extends Admin
         }
         $list =  $this->lists('Handle',$where);
         foreach($list as $value){
-            $name = WechatUser::where('userid',$value['userid'])->value('name');
+            $name = "暂无";
+            $names = WechatUser::where('userid',$value['userid'])->value('name');
+            if($names){
+                $name = $names;
+            }
             $value['content'] = "对用户：【".$name."】人工干预 【 ".$value['score']." 】 分";
         }
         $this->assign('list',$list);
