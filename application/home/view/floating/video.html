@@ -305,7 +305,9 @@
 				},
 				function(inputValue){
 					if (inputValue === false) {
-						return false
+						if (!isiOS) {
+							$(".video").show();
+						}
 					}else if (inputValue === "")
 					{
 						swal.showInputError("请输入评论");
