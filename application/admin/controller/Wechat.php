@@ -96,7 +96,7 @@ class Wechat extends Admin
                                 $user['work'] = $val['value'];
                                 break;
                             case "基础分":
-                                $user['volunteer_base'] = $val['value'];
+                                $user['volunteer_base'] = intval($val['value']);
                                 break;
                         }
                     }

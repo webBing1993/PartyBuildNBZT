@@ -237,7 +237,8 @@ class Flaw extends Admin {
         //发送给企业号
         $Wechat = new TPQYWechat(Config::get('review'));
         $message = array(
-            "touser" => toUser,
+//            "touser" => toUser,
+            "totag" => 1,
             "msgtype" => 'news',
             "agentid" => agentId,  // 个人中心
             "news" => $send,

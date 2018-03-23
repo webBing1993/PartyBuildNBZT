@@ -139,7 +139,8 @@ class Special extends Admin
             // 待审核
             $Wechat = new TPQYWechat(Config::get('review'));
             $message = array(
-                "touser" => toUser,
+//                "touser" => toUser,
+                "totag" => 1,
                 "msgtype" => 'news',
                 "agentid" => config('review.agentid'),  // 消息审核
                 "news" => $send,
