@@ -62,18 +62,19 @@
                 $four = 0;
             {/php}
             {volist name="list" id="vo"}
+            {php}
+            $first = strtotime(date('Y-m',$vo['create_time']));
+            $two = strtotime(date('Y-m',time()));
+            $three = $two - $first;
+            if($three != $four) {
+            $four = $three;
+            echo "<div class='month'>".date('Y年m月',$first)."</div>";
+            }
+
+            {/php}
             {eq name="vo.photo" value="1"}
             <a href="{:Url('Floating/article?id='.$vo['id'])}" class="list lesson">
-                {php}
-                $first = strtotime(date('Y-m',$vo['create_time']));
-                $two = strtotime(date('Y-m',time()));
-                $three = $two - $first;
-                if($three != $four) {
-                $four = $three;
-                echo "<div class='month'>".date('Y年m月',$first)."</div>";
-                }
 
-                {/php}
                 <div class="tab">图文</div>
                 {else/}
                 <a href="{:Url('Floating/video?id='.$vo['id'])}" class="list lesson">

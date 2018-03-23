@@ -26,12 +26,15 @@ class Floating extends Base {
         $flaw = new SelfFlaw();
         //本月最新的两条文章
 
-        $month = db('self_flaw') ->whereTime('create_time','m')-> order('id','desc') ->limit(2)->select();
+        $month = db('self_flaw') ->whereTime('create_time','m')-> order('id','desc') ->select();
         //展示列表页
+        $years = date('Y',time());
+        $m = date('n',time());
         $map = [
-            'status' => ['egt',0]
+            'status' => ['egt',0],
+            "FROM_UNIXTIME(create_time,'%Y%c')" => ['not in',$years.$m],
         ];
-        $list = $flaw ->where($map)->whereTime('create_time','<','m')->order('id','desc') ->select();
+        $list = $flaw ->where($map)->order('id','desc') ->select();
         $this->assign('month',$month);//最新的两条
         $this->assign('list',$list);
         return $this->fetch();
