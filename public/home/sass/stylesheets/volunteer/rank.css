@@ -143,6 +143,7 @@ body {
 .rule span{
   width:21.33vw;
   letter-spacing: 1px;
+  font-size: 0.34rem;
 }
 .rule:after{
   display: inline-block;
