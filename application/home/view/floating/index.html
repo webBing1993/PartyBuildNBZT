@@ -78,16 +78,6 @@
                 <div class="tab">图文</div>
                 {else/}
                 <a href="{:Url('Floating/video?id='.$vo['id'])}" class="list lesson">
-                    {php}
-                    $first = strtotime(date('Y-m',$vo['create_time']));
-                    $two = strtotime(date('Y-m',time()));
-                    $three = $two - $first;
-                    if($three != $four) {
-                    $four = $three;
-                    echo "<div class='month'>".date('Y年m月',$first)."</div>";
-                    }
-
-                    {/php}
                     <div class="tab">视频</div>
                     {/eq}
                     <img src="{$vo.front_cover|get_cover='path'}" alt="图片" class="img">
