@@ -404,7 +404,7 @@ class Flaw extends Admin {
     
     public function award() {
         $data = input('post.');
-        $arr = SelfRank::where(['detail_id'=>$data['id'],'userid'=>$data['userid']])->field('award')->find();
+        $arr = SelfRank::where(['detail_id'=>$data['id'],'userid'=>$data['userid'],'status'=>1])->field('award')->find();
         $data['create_user'] = $_SESSION['think']['user_auth']['id'];//获取用户名
         if(isset($data['type'])) {
             $map = [
@@ -414,7 +414,7 @@ class Flaw extends Admin {
                 'detail_id'=>$data['id'],
                 'create_time'=>time()
             ];
-            $re = SelfRank::where(['detail_id'=>$data['id'],'userid'=>$data['userid']])->update(['award'=>$arr['award']-0.5,'operator'=>$data['create_user'],'opera_time'=>time()]);
+            $re = SelfRank::where(['detail_id'=>$data['id'],'userid'=>$data['userid'],'status'=>1])->update(['award'=>$arr['award']-0.5,'operator'=>$data['create_user'],'opera_time'=>time()]);
         } else {
             $map = [
                 'type'=>1,
@@ -424,7 +424,7 @@ class Flaw extends Admin {
                 'create_time'=>time()
             ];
 
-            $re = SelfRank::where(['detail_id'=>$data['id'],'userid'=>$data['userid']])->update(['award'=>0.5+$arr['award'],'operator'=>$data['create_user'],'opera_time'=>time()]);
+            $re = SelfRank::where(['detail_id'=>$data['id'],'userid'=>$data['userid'],'status'=>1])->update(['award'=>0.5+$arr['award'],'operator'=>$data['create_user'],'opera_time'=>time()]);
         }
         if($re) {
             db('years')->insert($map);
