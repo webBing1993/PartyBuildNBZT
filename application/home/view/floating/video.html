@@ -102,7 +102,7 @@
 {/block}
 
 {block name="script"}
-<script src="/home/js/reset.js"></script>
+<!--<script src="/home/js/reset.js"></script>-->
 <script>
 	var type=true;
 	$("title").text("流动党员");
@@ -406,27 +406,27 @@
 		$(".lists" ).append(html);
 	}
 
+	window.confirm = function(name){
+		//隐藏提示框的url,返回按钮结果
+		var iframe = document.createElement("IFRAME");
+		iframe.style.display="none";
+		iframe.setAttribute("src", 'data:text/plain,');
+		document.documentElement.appendChild(iframe);
+		var result = window.frames[0].window.confirm(name);
+		iframe.parentNode.removeChild(iframe);
+		return result;
+	};
+
 	isOut();
 	function isOut(){
 		pushHistory();
 		setTimeout(function(){
 			window.addEventListener("popstate", function(e) {
 				if("{$check}"==0 && type){
-					swal({
-						title: "确定退出本页面吗？",
-						text: "还未学习完，退出将不会获得学习积分",
-						type: "warning",
-						showCancelButton: true,
-						confirmButtonColor: "#DD6B55",
-						confirmButtonText: "退出",
-						cancelButtonText: "取消",
-						closeOnConfirm: false
-					},
-					function(isConfirm){
-						if (isConfirm) {
-							window.history.go(-1);
-						}
-					});
+					var msg = "您确定要退出吗？\n\n还未学习完，退出将不会获得学习积分";
+					if (confirm(msg)==true){
+						window.history.go(-1);
+					}
 				}else{
 					window.history.go(-1);
 				}
