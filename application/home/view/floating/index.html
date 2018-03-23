@@ -109,16 +109,7 @@
         $(".month").next(".tab").css("top","1.4rem");
     });
 
-    //首页加载是否需要上拉加载
-    window.onload = function() {
-        if ($(".lists a").length < 10) {
-            mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
-        } else {
-            mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
-        }
-    };
-
-    /**
+    /*
      * 切换精彩专题
      * @param e
      */
@@ -133,64 +124,6 @@
         box.eq(index).find('img' ).fadeIn();
     });
 
-    //初始化下拉加载
-    mui.init({
-        pullRefresh: {
-            container: '#refreshContainer',
-            up: {
-                callback: loadScroll
-            }
-        }
-    });
-
-    function loadScroll(){
-        var len = $(".lists a").length;
-        $.ajax({
-            type:"post",
-            url:"{:Url('Floating/more')}",
-            data:{
-                length:len
-            },
-            beforeSend: function(XMLHttpRequest){
-            },
-            success:function(data){
-                addCourse(data);
-                if(data.code == 1){
-                    if(data.data.length == 7){
-                        mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
-                    }else{
-                        mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
-                    }
-                }else{
-                    mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
-                }
-            }
-        })
-    }
-
-    function addCourse(data){
-        var html = '';
-        var lists = data.data;
-        var len = lists.length;
-        for(var i = 0; i< len;i++){
-            var list = lists[i];
-            if(list.type == 1){
-                html+=
-                        '<a href="/home/Floating/video/id/'+list.id+'.html" class="list">'+
-                        '<div class="tab">视频</div>'
-            }else{
-                html+=
-                        '<a href="/home/Floating/article/id/'+list.id+'.html" class="list">'+
-                        '<div class="tab">图文</div>'
-            }
-            html +=
-                    '<img src="'+list.front_cover+'" alt="图片" class="img">'+
-                    '<div class="title limit">'+ list.title+'</div>'+
-                    '<span class="study">'+ list.views+'人阅读过</span>'+
-                    '</a>'
-        }
-        $(".lists").append(html);
-    };
 
     mui("#refreshContainer").on("touchstart","a",function(){
         $(this).css("backgroundColor","rgba(0,0,0,.1)");
