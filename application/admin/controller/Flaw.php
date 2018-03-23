@@ -267,7 +267,7 @@ class Flaw extends Admin {
      * */
     
     public function rank() {
-        $rank = WechatDepartmentUser::where(['departmentid'=>187])->select();
+        $rank = WechatDepartmentUser::where(['departmentid'=>187])->limit(20)->select();
         $key_arrays=[];
         foreach($rank as $k=>$v) {
             $user = WechatUser::where('userid',$v['userid'])->field('userid,name')->find();
@@ -404,7 +404,7 @@ class Flaw extends Admin {
     
     public function award() {
         $data = input('post.');
-        $arr = SelfRank::where('id',$data['id'])->field('award')->find();
+        $arr = SelfRank::where(['detail_id'=>$data['id'],'userid'=>$data['userid']])->field('award')->find();
         $data['create_user'] = $_SESSION['think']['user_auth']['id'];//获取用户名
         if(isset($data['type'])) {
             $map = [
@@ -414,8 +414,7 @@ class Flaw extends Admin {
                 'detail_id'=>$data['id'],
                 'create_time'=>time()
             ];
-            db('years')->insert($map);
-            $re = SelfRank::where(['id'=>$data['id']])->update(['award'=>$arr['award']-0.5,'operator'=>$data['create_user'],'opera_time'=>time()]);
+            $re = SelfRank::where(['detail_id'=>$data['id'],'userid'=>$data['userid']])->update(['award'=>$arr['award']-0.5,'operator'=>$data['create_user'],'opera_time'=>time()]);
         } else {
             $map = [
                 'type'=>1,
@@ -424,10 +423,11 @@ class Flaw extends Admin {
                 'detail_id'=>$data['id'],
                 'create_time'=>time()
             ];
-            db('years')->insert($map);
-            $re = SelfRank::where(['id'=>$data['id']])->update(['award'=>0.5+$arr['award'],'operator'=>$data['create_user'],'opera_time'=>time()]);
+
+            $re = SelfRank::where(['detail_id'=>$data['id'],'userid'=>$data['userid']])->update(['award'=>0.5+$arr['award'],'operator'=>$data['create_user'],'opera_time'=>time()]);
         }
         if($re) {
+            db('years')->insert($map);
             return $this->success('成功');
         } else {
             return $this ->error();
