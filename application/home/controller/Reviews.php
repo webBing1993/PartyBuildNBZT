@@ -48,7 +48,7 @@ class Reviews extends Base
         $Push = new Push();
         $list = $Push->index($where,$len);
         if ($list){
-            return $this->success('加载成功');
+            return $this->success('加载成功','',$list);
         }else{
             return $this->error('加载失败');
         }
