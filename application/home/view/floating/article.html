@@ -100,50 +100,55 @@
 		}
 	};
 
-	if("{$check}"==0 && type) {
-		var articleEnd = false;
-		var scrollDiv = document.getElementById('scrollDiv');
-		scrollDiv.addEventListener('scroll', function () {
-			var translate3d = this.style.webkitTransform;
-			var scrollData = translate3d.substring(12, translate3d.length - 17);
-			var scrollTop = scrollData.split(", ")[1].substring(0, scrollData.split(", ")[1].length - 2);
-			var eleHeigth = scrollDiv.offsetHeight;
-			var erfHeight = $("#refreshContainer").height();
-			if (eleHeigth < erfHeight) {
-				articleEnd = true;
-				integral_ajax();
-			} else if (Number(eleHeigth) + Number(scrollTop) == erfHeight) {
-				articleEnd = true;
-				integral_ajax();
-			}
+	var date = new Date();
+	var month = date.getMonth()+1;
+	var articleMonth = parseInt("{$detail.create_time|time_format='Y-m-d'}".split("-")[1]);
+	if(articleMonth === month ) {
+		if ("{$check}" == 0 && type) {
+			var articleEnd = false;
+			var scrollDiv = document.getElementById('scrollDiv');
+			scrollDiv.addEventListener('scroll', function () {
+				var translate3d = this.style.webkitTransform;
+				var scrollData = translate3d.substring(12, translate3d.length - 17);
+				var scrollTop = scrollData.split(", ")[1].substring(0, scrollData.split(", ")[1].length - 2);
+				var eleHeigth = scrollDiv.offsetHeight;
+				var erfHeight = $("#refreshContainer").height();
+				if (eleHeigth < erfHeight) {
+					articleEnd = true;
+					integral_ajax();
+				} else if (Number(eleHeigth) + Number(scrollTop) == erfHeight) {
+					articleEnd = true;
+					integral_ajax();
+				}
 
-		});
+			});
 
-		var integral_ajax = function () {
-			var id = "{$detail.id}";
-			if (articleEnd) {
-				$.ajax({
-					type:"post",
-					url:"{:Url('Floating/study')}",
-					data:{
-						id:id
-					},
-					success:function(msg){
-						if(msg.code==1){
-							type=false;
-							swal({
-								title: '+1分',
-								text: '恭喜您，学习完成！评论文章还可以得分哦！',
-								type: 'info',
-								confirmButtonText:'确定'
-							});
+			var integral_ajax = function () {
+				var id = "{$detail.id}";
+				if (articleEnd) {
+					$.ajax({
+						type: "post",
+						url: "{:Url('Floating/study')}",
+						data: {
+							id: id
+						},
+						success: function (msg) {
+							if (msg.code == 1) {
+								type = false;
+								swal({
+									title: '+1分',
+									text: '恭喜您，学习完成！评论文章还可以得分哦！',
+									type: 'info',
+									confirmButtonText: '确定'
+								});
+							}
 						}
-					}
-				});
-			}
-		};
-	}else{
-		$(".getpoint").show();
+					});
+				}
+			};
+		} else {
+			$(".getpoint").show();
+		}
 	}
 
 	//tab点击事件
@@ -316,31 +321,33 @@
 		$(".lists" ).append(html);
 	}
 
-	isOut();
-	function isOut(){
-		pushHistory();
-		setTimeout(function(){
-			window.addEventListener("popstate", function(e) {
-				if("{$check}"==0 && type){
-					swal({
-								title: "确定退出本页面吗？",
-								text: "还未学习完，退出将不会获得学习积分",
-								type: "warning",
-								showCancelButton: true,
-								confirmButtonColor: "#DD6B55",
-								confirmButtonText: "退出",
-								cancelButtonText: "取消",
-								closeOnConfirm: false
-							},
-							function(){
+	if(articleMonth === month ) {
+		isOut();
+		function isOut() {
+			pushHistory();
+			setTimeout(function () {
+				window.addEventListener("popstate", function (e) {
+					if ("{$check}" == 0 && type) {
+						swal({
+									title: "确定退出本页面吗？",
+									text: "还未学习完，退出将不会获得学习积分",
+									type: "warning",
+									showCancelButton: true,
+									confirmButtonColor: "#DD6B55",
+									confirmButtonText: "退出",
+									cancelButtonText: "取消",
+									closeOnConfirm: false
+								},
+								function () {
 									window.history.go(-1);
 
-							});
-				}else{
-					window.history.go(-1);
-				}
-			}, false);
-		},200)
+								});
+					} else {
+						window.history.go(-1);
+					}
+				}, false);
+			}, 200)
+		}
 	}
 
 	//防止恶意刷新

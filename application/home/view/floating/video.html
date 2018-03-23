@@ -115,7 +115,7 @@
 		//ue限定
 //	ueLimit();
 	});
-	var vConsole = new VConsole();
+//	var vConsole = new VConsole();
 	var wAlert = window.alert;
 	window.alert = function (message) {
 		try {
@@ -135,77 +135,81 @@
 			return wAlert(message);
 		}
 	};
-
+	var date = new Date();
+	var month = date.getMonth()+1;
+	var articleMonth = parseInt("{$detail.create_time|time_format='Y-m-d'}".split("-")[1]);
 	var videoEnd=false,articleEnd=false;
 	window.onload = function(){
-		if("{$check}"==0 && type) {
-			var u = navigator.userAgent;
-			var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
-			var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
-			var once = true;
-			var vid = document.getElementById("video");
-			var pausetime;
-			vid.onloadedmetadata = function () {
-				if (isiOS) {
-					if (once) {
-						pausetime = vid.duration;
-						duration = vid.duration;
-						q_timer = setInterval(timer, 1000);
-					}
-				}
-			};
-			vid.addEventListener('play', function () {
-				if (!isiOS) {
-					if (once) {
-						setTimeout(function () {
+		if(articleMonth === month ) {
+			if ("{$check}" == 0 && type) {
+				var u = navigator.userAgent;
+				var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+				var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+				var once = true;
+				var vid = document.getElementById("video");
+				var pausetime;
+				vid.onloadedmetadata = function () {
+					if (isiOS) {
+						if (once) {
 							pausetime = vid.duration;
 							duration = vid.duration;
 							q_timer = setInterval(timer, 1000);
-						}, 1000)
-					} else {
-						setTimeout(function () {
-							q_timer = setInterval(timer, 1000);
-						}, 1000)
+						}
 					}
-				} else {
-					if (!once) {
-						q_timer = setInterval(timer, 1000);
-					}
-				}
-			});
-
-			vid.addEventListener('pause', function () {
-				clearInterval(q_timer);
-				once = false;
-			});
-
-			video.addEventListener('ended', function (e) {
-				console.log(duration)
-				if (duration <= 0) {
-					alert('恭喜您，您已经完成视频学习！');
-					videoEnd = true;
-					integral_ajax();
-				} else {
-					alert('需要完整观看视频才能获得积分！');
-				}
-			});
-
-			function timer() {
-				duration--;
-				if (duration == parseInt(pausetime / 2) && pausetime > 300) {
-					clearInterval(q_timer);
-					vid.pause();
+				};
+				vid.addEventListener('play', function () {
 					if (!isiOS) {
-						alert('您已学习大部分内容，请继续努力');
-						vid.play();
+						if (once) {
+							setTimeout(function () {
+								pausetime = vid.duration;
+								duration = vid.duration;
+								q_timer = setInterval(timer, 1000);
+							}, 1000)
+						} else {
+							setTimeout(function () {
+								q_timer = setInterval(timer, 1000);
+							}, 1000)
+						}
+					} else {
+						if (!once) {
+							q_timer = setInterval(timer, 1000);
+						}
+					}
+				});
+
+				vid.addEventListener('pause', function () {
+					clearInterval(q_timer);
+					once = false;
+				});
+
+				video.addEventListener('ended', function (e) {
+					console.log(duration)
+					if (duration <= 0) {
+						alert('恭喜您，您已经完成视频学习！');
+						videoEnd = true;
+						integral_ajax();
+					} else {
+						alert('需要完整观看视频才能获得积分！');
+					}
+				});
+
+				function timer() {
+					duration--;
+					if (duration == parseInt(pausetime / 2) && pausetime > 300) {
+						clearInterval(q_timer);
+						vid.pause();
+						if (!isiOS) {
+							alert('您已学习大部分内容，请继续努力');
+							vid.play();
+						}
+					}
+					if (duration <= 0) {
+						clearInterval(q_timer);
 					}
 				}
-				if (duration <= 0) {
-					clearInterval(q_timer);
-				}
+			} else {
+				$(".getpoint").show();
 			}
-		}else{
-			$(".getpoint").show();
 		}
 
 
@@ -451,21 +455,23 @@
 		return result;
 	};
 
-	isOut();
-	function isOut(){
-		pushHistory();
-		setTimeout(function(){
-			window.addEventListener("popstate", function(e) {
-				if("{$check}"==0 && type){
-					var msg = "您确定要退出吗？\n\n还未学习完，退出将不会获得学习积分";
-					if (confirm(msg)==true){
+	if(articleMonth === month ) {
+		isOut();
+		function isOut() {
+			pushHistory();
+			setTimeout(function () {
+				window.addEventListener("popstate", function (e) {
+					if ("{$check}" == 0 && type) {
+						var msg = "您确定要退出吗？\n\n还未学习完，退出将不会获得学习积分";
+						if (confirm(msg) == true) {
+							window.history.go(-1);
+						}
+					} else {
 						window.history.go(-1);
 					}
-				}else{
-					window.history.go(-1);
-				}
-			}, false);
-		},200)
+				}, false);
+			}, 200)
+		}
 	}
 
 	//防止恶意刷新
