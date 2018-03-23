@@ -21,7 +21,7 @@
 {block name="body"}
 <div id="refreshContainer" class="mui-content mui-scroll-wrapper">
     <div class="mui-scroll">
-        {empty name="$list"}
+        {if condition="empty($list) && empty($month)"}
         <div class="default"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>
         {else/}
         {notempty name="$month"}
@@ -96,7 +96,7 @@
                 </a>
                 {/volist}
         </div>
-        {/empty}
+        {/if}
     </div>
 </div>
 {/block}
