@@ -27,6 +27,9 @@
         display: inline-flex;
         flex:1;
     }
+    td {
+       text-align: center;
+    }
     .tip{height: 1.5vw;
         text-align: center;
         line-height: 1.5vw;
@@ -39,7 +42,20 @@
         left:30vw;
         cursor: pointer;
     }
+    .a{
+        margin-right: 9.4vw;
+        display: inline-block;
+    }
+    .b{
+        margin-right: 9.6vw;
+        display: inline-block;
+    }
+    .c{
+        margin-left: 1vw;;
+    }
+    .d{
 
+    }
 </style>
 {/block}
 
@@ -78,7 +94,6 @@
                             <thead>
                             <tr>
                                 <th><input class="i-checks check-all" type="checkbox"></th>
-
                                 <th>排名</th>
                                 <th>姓名</th>
                                 <th>学习总积分</th>
@@ -90,10 +105,10 @@
                             {volist name="list" id="vo"  key="k"}
                             <tr>
                                 <td><input type="checkbox" class="i-checks" name="input[]"></td>
-                                <td>{$k}</td>
-                                <td>{$vo.name}</td>
-                                <td><a href="/admin/flaw/studyrank/userid/{$vo.userid}" class="btn btn-sm btn-primary" style="display: inline-block;width: 5vw">{$vo.study}</a></td>
-                                <td><a href="/admin/flaw/commentrank/userid/{$vo.userid}" class="btn btn-sm btn-primary" style="display: inline-block;width: 5vw">{$vo.comment}</a></td>
+                                <td class="c">{$k}</td>
+                                <td class="d">{$vo.name}</td>
+                                <td><a href="/admin/flaw/studyrank/userid/{$vo.userid}" class="btn btn-sm btn-primary a" style="display: inline-block;width: 5vw">{$vo.study}</a></td>
+                                <td><a href="/admin/flaw/commentrank/userid/{$vo.userid}" class="btn btn-sm btn-primary b" style="display: inline-block;width: 5vw">{$vo.comment}</a></td>
                                 <td>{$vo.total}</td><!--operation-->
                             </tr>
                             {/volist}
