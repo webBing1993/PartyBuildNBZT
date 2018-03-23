@@ -135,10 +135,15 @@
 
 
 
-    mui("#refreshContainer").on("touchstart","a",function(){
+    mui(".lists").on("touchstart","a",function(){
         $(this).css("backgroundColor","rgba(0,0,0,.1)");
     }).on("touchend","a", function () {
         $(this).css("backgroundColor","#fff");
+    });
+    mui(".box").on("touchstart","a",function(){
+        $(this).css("backgroundColor","none");
+    }).on("touchend","a", function () {
+        $(this).css("backgroundColor","none");
     });
 
     mui("#refreshContainer").on("tap","a",function(){
