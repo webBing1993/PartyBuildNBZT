@@ -26,6 +26,84 @@
     .ibox-date select:first-child{
         margin-right: 30px;
     }
+    .showbox {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 5%;
+        background: rgba(0, 0, 0, 0.3);
+        display: none;
+    }
+
+    .loader {
+        position: relative;
+        margin: 0 auto;
+        width: 100px;
+        margin-top: 30%;
+    }
+    .loader:before {
+        content: '';
+        display: block;
+        padding-top: 50%;
+    }
+
+    .circular {
+        animation: rotate 2s linear infinite;
+        height: 100%;
+        transform-origin: center center;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+
+    .path {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+        stroke-linecap: round;
+    }
+
+    @keyframes rotate {
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+    @keyframes dash {
+        0% {
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+        }
+        50% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -35px;
+        }
+        100% {
+            stroke-dasharray: 89, 200;
+            stroke-dashoffset: -124px;
+        }
+    }
+    @keyframes color {
+        100%,
+        0% {
+            stroke: #d62d20;
+        }
+        40% {
+            stroke: #0057e7;
+        }
+        66% {
+            stroke: #008744;
+        }
+        80%,
+        90% {
+            stroke: #ffa700;
+        }
+    }
 </style>
 
 {/block}
@@ -84,11 +162,13 @@
                         <div  style="padding-right:17px">
                         <table class="table table-striped">
                             <tr>
+                                <th width="10%">排名</th>
                                 <th width="10%">姓名</th>
                                 <th width="15%">部门</th>
+                                <th width="5%">总分</th>
                                 <th width="5%">基础分</th>
                                 <th width="5%">签到积分</th>
-                                <th width="5%">干预后积分</th>
+                                <th width="5%">干预积分</th>
                                 <th width="15%">操作</th>
                             </tr>
                             </table>
@@ -98,13 +178,15 @@
                             <tbody>
                             {volist name="list" id="vo"}
                             <tr>
+                                <td width="10%">{$i}</td>
                                 <td width="10%">{$vo.name}</td>
                                 <td width="15%">{$vo.department}</td>
-                                <td width="5%">{$vo.base}</td>
-                                <td width="5%">{$vo.sums}</td>
                                 <td width="5%">{$vo.sum}</td>
+                                <td width="5%">{$vo.sum3}</td>
+                                <td width="5%">{$vo.sum1}</td>
+                                <td width="5%">{$vo.sum2}</td>
                                 <td width="15%">
-                                    <span class="minus" data-id="{$vo.userid}" data-month="{$vo.mouth}" style="font-size: 20px"><b>-</b></span><input value="{$vo.sum}" name="zy" readonly><span class="add" style="font-size: 20px"><b>+</b></span>&emsp;&emsp;&emsp;
+                                    <span class="minus" data-id="{$vo.userid}" data-month="{$vo.mouth}" style="font-size: 20px"><b>-</b></span><input value="{$vo.sum2}" name="zy" readonly><span class="add" style="font-size: 20px"><b>+</b></span>&emsp;&emsp;&emsp;
                                     <span><a href="{:Url('Rank/detail?mouth='.$vo.mouth.'&userid='.$vo['userid'])}">查看详情</a></span>
                                 </td>
                             </tr>
@@ -127,6 +209,14 @@
 </div>
 <iframe id="iframe" src="" style="height: 80%;width: 392px;z-index: 99;position: absolute;top: 10%;border: 0;left: 32%;background: #fff;display: none;" scrolling="auto" seamless></iframe>
 <div class="shadow" style="display: none"></div>
+
+<div class="showbox">
+    <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</div>
 {/block}
 
 {block name="script"}
@@ -194,14 +284,17 @@
         var val =  el.parent().children("input").val();
         var points = el.parent().prev().text();
         var parent = el.parent();
+        var totalpoints = el.parent().parent().find("td:nth-child(4)");
         if(el.hasClass("add")){
             parent.children("input").val(parseInt(val) + 1);
-            parent.prev().text(parseInt(val) + 1)
+            parent.prev().text(parseInt(val) + 1);
             parent.children(".minus").css("visibility", "visible");
+            totalpoints.text(parseInt(totalpoints.text())+1);
         }else{
             parent.children("input").val(val - 1);
             parent.prev().text(parseInt(val) - 1);
             parent.children(".add").css("visibility", "visible");
+            totalpoints.text(parseInt(totalpoints.text())-1);
         }
         reload = false;
     };
@@ -255,9 +348,13 @@
                 year:year,
                 month:month
             },
+            beforeSend: function(XMLHttpRequest){
+                $(".showbox").show();
+            },
             success:function(data){
                 if(data.code==1){
                     addList(data);
+                    $(".showbox").hide();
                 }
             }
         })
@@ -269,16 +366,18 @@
         var len = lists.length;
         for(var i = 0; i< len;i++){
             var list = lists[i];
+            var y = i+1;
             html+=
                 '<tr>'+
+                '<td width="10%">'+y+'</td>'+
                 '<td width="10%">'+list.name+'</td>'+
                 '<td width="15%">'+list.department+'</td>'+
-                '<td width="5%">'+list.base+'</td>'+
-                '<td width="5%">'+list.sums+'</td>'+
-                '<td width="5%">'+list.sum+'</td>'+
+                '<td width="5%">'+list.sum3+'</td>'+
+                '<td width="5%">'+list.sum1+'</td>'+
+                '<td width="5%">'+list.sum2+'</td>'+
                 '<td width="15%">'+
                 '<span class="minus" data-id="'+list.userid+'" data-month="'+list.mouth+'" style="font-size: 20px"><b>-</b></span>'+
-                '<input value="'+list.sum+'" name="zy" readonly>'+
+                '<input value="'+list.sum2+'" name="zy" readonly>'+
                 '<span class="add" style="font-size: 20px"><b>+</b></span>&emsp;&emsp;&emsp;'+
                 '<span><a href="/admin/rank/detail/mouth/'+list.mouth+'/userid/'+list.userid+'">查看详情</a>'+
                 '</span>'+

@@ -25,56 +25,55 @@ class Rank extends Admin
         if (IS_POST){
             $year = input('year');
             $mouth = input('month');
+            $arr = [];
             // 获取签到人员列表
             $list = Db::name('wechat_user_tag')->where(['tagid' => ['in',[2,3]]])->select();
             foreach($list as $key => $value){
-                $sums = Db::name('apply')->where(['userid' => $value['userid'],'type' => 2,'status' => 0,"FROM_UNIXTIME(create_time,'%Y%c')" => $year.$mouth])->sum('score');
+                // 签到积分
+                $sum1 = Db::name('apply')->where(['userid' => $value['userid'],'type' => 2,'status' => 0,"FROM_UNIXTIME(create_time,'%Y%c')" => $year.$mouth])->sum('score');
                 // 干预分数
-                $sum = Db::name('handle')->where(['userid' => $value['userid'],'mouth' => $mouth])->sum('score');
-                $list[$key]['sum'] = $sums + $sum;
-                $list[$key]['sums'] = $sums;
-                $list[$key]['mouth'] = $mouth;
+                $sum2 = Db::name('handle')->where(['userid' => $value['userid'],'mouth' => $mouth])->sum('score');
                 $User = WechatUser::where('userid',$value['userid'])->find();
                 if ($User){
-                    $list[$key]['name'] = $User['name'];
+                    $name = $User['name'];
                     $department_id = WechatDepartmentUser::where(['userid'=>$value['userid'],'departmentid' => ['in',[185,186]]])->value('departmentid');
-                    $list[$key]['department'] = WechatDepartment::where('id',$department_id)->value('name');
+                    $department = WechatDepartment::where('id',$department_id)->value('name');
                     //基础分
-                    $list[$key]['base'] = $User['volunteer_base'];
+                    $sum3 = $User['volunteer_base'];
                 }else {
-                    $list[$key]['name'] = '暂无';
-                    $list[$key]['department'] = "暂无";
+                    $name = '暂无';
+                    $department = "暂无";
                     //基础分
-                    $list[$key]['base'] = 0;
+                    $sum3 = 0;
                 }
+                array_push($arr,['sum1' => $sum1,'sum2' => $sum2,'mouth' => $mouth,'name' => $name,'department' => $department,'sum3' => $sum3,'sum' => $sum1+$sum2+$sum3,'userid' => $value['userid']]);
             }
-
-            return $this->success('加载成功','',$list);
+            array_multisort(array_column($arr,'sum'),SORT_DESC,$arr);
+            return $this->success('加载成功','',$arr);
         }else{
             $year = date('Y',time());  // 年
             $mouth = date('m',time());  // 当前月份
-            // 获取签到人员列表
+            $arr = [];
             $list = Db::name('wechat_user_tag')->where(['tagid' => ['in',[2,3]]])->select();
             foreach($list as $key => $value){
-                $sums = Db::name('apply')->where(['userid' => $value['userid'],'type' => 2,'status' => 0,"FROM_UNIXTIME(create_time,'%Y%c')" => $year.$mouth])->sum('score');
+                // 签到积分
+                $sum1 = Db::name('apply')->where(['userid' => $value['userid'],'type' => 2,'status' => 0,"FROM_UNIXTIME(create_time,'%Y%c')" => $year.$mouth])->sum('score');
                 // 干预分数
-                $sum = Db::name('handle')->where(['userid' => $value['userid'],'mouth' => $mouth])->sum('score');
-                $list[$key]['sum'] = $sums + $sum;
-                $list[$key]['sums'] = $sums;
-                $list[$key]['mouth'] = $mouth;
+                $sum2 = Db::name('handle')->where(['userid' => $value['userid'],'mouth' => $mouth])->sum('score');
                 $User = WechatUser::where('userid',$value['userid'])->find();
                 if ($User){
-                    $list[$key]['name'] = $User['name'];
+                    $name = $User['name'];
                     $department_id = WechatDepartmentUser::where(['userid'=>$value['userid'],'departmentid' => ['in',[185,186]]])->value('departmentid');
-                    $list[$key]['department'] = WechatDepartment::where('id',$department_id)->value('name');
+                    $department = WechatDepartment::where('id',$department_id)->value('name');
                     //基础分
-                    $list[$key]['base'] = $User['volunteer_base'];
+                    $sum3 = $User['volunteer_base'];
                 }else {
-                    $list[$key]['name'] = '暂无';
-                    $list[$key]['department'] = "暂无";
+                    $name = '暂无';
+                    $department = "暂无";
                     //基础分
-                    $list[$key]['base'] = 0;
+                    $sum3 = 0;
                 }
+                array_push($arr,['sum1' => $sum1,'sum2' => $sum2,'mouth' => $mouth,'name' => $name,'department' => $department,'sum3' => $sum3,'sum' => $sum1+$sum2+$sum3,'userid' => $value['userid']]);
             }
             //获取全部共同数据年份
             $years = Apply::all(function($query){
@@ -83,8 +82,9 @@ class Rank extends Admin
             if(!in_array($year,$years)){
                 array_push($years,['year' => $year]);
             }
+            array_multisort(array_column($arr,'sum'),SORT_DESC,$arr);
             $this->assign('years',$years);
-            $this->assign('list',$list);
+            $this->assign('list',$arr);
             return $this->fetch();
         }
     }
@@ -144,16 +144,13 @@ class Rank extends Admin
         }
         if ($type == 1){
             // 减分
-            $res = WechatUser::where('userid',$userid)->setDec('volunteer_score');
             $num = -1;
         }else{
             // 加分
-            $res = WechatUser::where('userid',$userid)->setInc('volunteer_score');
             $num = 1;
         }
+        $res = Db::name('handle')->insert(['userid' => $userid,'mouth' => $mouth,'score' => $num,'create_time' => time()]);
         if ($res){
-            // 存日志
-            Db::name('handle')->insert(['userid' => $userid,'mouth' => $mouth,'score' => $num,'create_time' => time()]);
             return  $this->success('操作成功');
         }else{
             return $this->error('操作失败');
