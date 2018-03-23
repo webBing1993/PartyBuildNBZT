@@ -267,7 +267,7 @@ class Flaw extends Admin {
      * */
     
     public function rank() {
-        $rank = WechatDepartmentUser::where(['departmentid'=>187])->limit(20)->select();
+        $rank = WechatDepartmentUser::where(['departmentid'=>187])->select();
         $key_arrays=[];
         foreach($rank as $k=>$v) {
             $user = WechatUser::where('userid',$v['userid'])->field('userid,name')->find();
