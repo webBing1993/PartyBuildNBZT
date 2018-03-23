@@ -265,6 +265,8 @@ class Floating extends Base {
             $flaw = db('self_flaw')->where($week)->find();
             if($flaw) {
                 $re = db('self_rank')->insert($info);
+            } else {
+                $re = null;
             }
             if($re) {
                 return $this->success('成功');
