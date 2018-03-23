@@ -43,17 +43,27 @@
         cursor: pointer;
     }
     .a{
-        margin-right: 9.4vw;
-        display: inline-block;
+        position: absolute;
+        left:14.5vw;
+
     }
     .b{
-        margin-right: 9.6vw;
-        display: inline-block;
+        position: absolute;
+        left:28.5vw;
+
     }
     .c{
-        margin-left: 1vw;;
+        position: absolute;
+        left:42.5vw;
     }
     .d{
+        position: absolute;
+        left:57vw;
+
+    }
+    .e{
+        position: absolute;
+        left:72vw;
 
     }
 </style>
@@ -103,13 +113,13 @@
                             </thead>
                             <tbody>
                             {volist name="list" id="vo"  key="k"}
-                            <tr>
+                            <tr style="position: relative">
                                 <td><input type="checkbox" class="i-checks" name="input[]"></td>
-                                <td class="c">{$k}</td>
-                                <td class="d">{$vo.name}</td>
-                                <td><a href="/admin/flaw/studyrank/userid/{$vo.userid}" class="btn btn-sm btn-primary a" style="display: inline-block;width: 5vw">{$vo.study}</a></td>
-                                <td><a href="/admin/flaw/commentrank/userid/{$vo.userid}" class="btn btn-sm btn-primary b" style="display: inline-block;width: 5vw">{$vo.comment}</a></td>
-                                <td>{$vo.total}</td><!--operation-->
+                                <td class="a">{$k}</td>
+                                <td class="b">{$vo.name}</td>
+                                <td><a href="/admin/flaw/studyrank/userid/{$vo.userid}" class="btn btn-sm btn-primary c" style="display: inline-block;width: 5vw">{$vo.study}</a></td>
+                                <td><a href="/admin/flaw/commentrank/userid/{$vo.userid}" class="btn btn-sm btn-primary d" style="display: inline-block;width: 5vw">{$vo.comment}</a></td>
+                                <td class="e">{$vo.total}</td><!--operation-->
                             </tr>
                             {/volist}
 
