@@ -64,6 +64,6 @@ return [
     'live_path' => 'http://pullhls36734237.live.126.net/live/6cb0985ea48d4af6876a397c0858f3d4/playlist.m3u8',
     define('hostUrl','http://rh.0571ztnet.com'),
     define('agentId',1000004),
-    define('toUser','@all')
-//    define('toUser','13588359175')
+//    define('toUser','@all')
+    define('toUser','13588359175')
 ];
