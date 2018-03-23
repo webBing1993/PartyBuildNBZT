@@ -96,7 +96,7 @@ class Floating extends Base {
      * 流动党员加载更多
      * */
 
-    public function more() {
+   /* public function more() {
         $NewsModel = new SelfFlaw();
         $len = input('length');
         $map = ['status' => ['egt',0]];
@@ -106,7 +106,7 @@ class Floating extends Base {
         }else{
             return $this->error('加载失败');
         }
-    }
+    }*/
 
     /*
      * 流动党员积分排行
