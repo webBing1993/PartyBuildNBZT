@@ -78,11 +78,13 @@ class Reviews extends Base
                     Db::name('special')->where('id',$msg['id'])->update(['status' => $msg['status']]);
                     $info = Db::name('special')->where('id',$msg['id'])->find();
                     $pre = '【通知公告】';
+                    $url = hostUrl."/home/Notice/detail/id/".$info['id'].".html";
                     break;
                 case 2: // 箬横动态
                     Db::name('news')->where('id',$msg['id'])->update(['status' => $msg['status']]);
                     $info = Db::name('news')->where('id',$msg['id'])->find();
                     $pre = '【箬横动态】';
+                    $url = hostUrl."/home/News/detail/id/".$info['id'].".html";
                     break;
                 case 4: // 流动党员
                     Db::name('self_flaw')->where('id',$msg['id'])->update(['status' => $msg['status']]);
@@ -127,7 +129,6 @@ class Reviews extends Base
                     $str = strip_tags($info['content']);
                     $des = mb_substr($str,0,40);
                     $content = str_replace("&nbsp;","",$des);  //空格符替换成空
-                    $url = hostUrl."/home/Notice/detail/id/".$info['id'].".html";
                     $image = Picture::get($info['front_cover']);
                     $path = hostUrl.$image['path'];
                     $send = [
