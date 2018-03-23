@@ -286,6 +286,12 @@
 	};
 	//发送评论
 	var send = function(e,type,id){
+		var u = navigator.userAgent;
+		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1;
+		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+		if (!isiOS) {
+			$(".video").hide();
+		}
 		swal({
 					title: "",
 					text: "请输入评论内容！",
@@ -348,6 +354,11 @@
 									confirmButtonText:'确定',
 									timer:1500
 								});
+								if (!isiOS) {
+									setTimeout(function(){
+										$(".video").show();
+									},1700)
+								}
 							}
 						});
 					}
