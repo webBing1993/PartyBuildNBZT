@@ -26,7 +26,7 @@ class Floating extends Base {
         $flaw = new SelfFlaw();
         //本月最新的两条文章
 
-        $month = db('self_flaw') ->whereTime('create_time','m')-> order('id','desc') ->select();
+        $month = db('self_flaw') ->whereTime('create_time','m')->where('status','egt',0)-> order('id','desc') ->select();
         //展示列表页
         $years = date('Y',time());
         $m = date('n',time());
