@@ -44,10 +44,14 @@
                         <div class="list myself">
                             <ul>
                                 <li>
+                                    {if condition="!empty($detailMonth)"}
                                     <img src="{$detailMonth.avatar}" style="margin-left: 14vw">
                                     <span class="name" style="margin-top: -5vw;">{$detailMonth.name}</span>
                                     <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第{$detailMonth.ranking}名</span>
                                     <span class="score">{$detailMonth.month}分</span>
+                                    {/if}
+
+
                                 </li>
                             </ul>
                         </div>
@@ -88,10 +92,12 @@
                             <div class="list myself">
                                 <ul>
                                     <li>
+                                        {if condition="!empty($detailYear)"}
                                         <img src="{$detailYear.avatar}" style="margin-left: 14vw">
                                         <span class="name" style="margin-top: -5vw;">{$detailYear.name}</span>
                                         <span class="ranking" style="display: block;position: absolute;margin-left: 29vw;font-size:0.32rem;color: #999;margin-top: 4vw;">第{$detailYear.ranking}名</span>
                                         <span class="score">{$detailYear.all}分</span>
+                                        {/if}
                                     </li>
                                 </ul>
                             </div>
