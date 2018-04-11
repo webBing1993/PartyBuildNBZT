@@ -510,6 +510,13 @@ class Volunteer extends Base
                 $detailMonth[]['avatar'] = $v['avatar'];
             }
         }
+        $puser = WechatUser::where('userid',$userId)->find();
+        if(empty($detailMonth)) {
+            $detailMonth[]['month'] = 0;//分数
+            $detailMonth[]['ranking'] = 0;//名次
+            $detailMonth[]['name'] = $puser['name'];
+            $detailMonth[]['avatar'] = $puser['avatar'];
+        }
         foreach ($arrayYear as $k=>$v) {
             if($userId == $v['userid']) {
                 $detailYear[]['all'] = $v['all'];//分数
@@ -517,6 +524,12 @@ class Volunteer extends Base
                 $detailYear[]['name'] = $v['name'];
                 $detailYear[]['avatar'] = $v['avatar'];
             }
+        }
+        if(empty($arrayYear)) {
+            $detailYear[]['all'] = 0;//分数
+            $detailYear[]['ranking'] = 0;//名次
+            $detailYear[]['name'] = $puser['name'];
+            $detailYear[]['avatar'] = $puser['avatar'];
         }
         $this->assign('list2', $arr3);
         $this->assign('lists2', $arr4);
