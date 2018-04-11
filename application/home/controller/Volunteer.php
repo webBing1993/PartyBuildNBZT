@@ -504,33 +504,33 @@ class Volunteer extends Base
         }
         foreach ($arrayMonth as $k=>$v) {
             if($userId == $v['userid']) {
-                $detailMonth[]['month'] = $v['mouth'];//分数
-                $detailMonth[]['ranking'] = $k+1;//名次
-                $detailMonth[]['name'] = $v['name'];
-                $detailMonth[]['avatar'] = $v['avatar'];
+                $detailMonth['month'] = $v['mouth'];//分数
+                $detailMonth['ranking'] = $k+1;//名次
+                $detailMonth['name'] = $v['name'];
+                $detailMonth['avatar'] = $v['avatar'];
             }
         }
-        $puser = WechatUser::where('userid',$userId)->find();
-        if(empty($detailMonth)) {
-            $detailMonth[]['month'] = 0;//分数
-            $detailMonth[]['ranking'] = 0;//名次
-            $detailMonth[]['name'] = $puser['name'];
-            $detailMonth[]['avatar'] = $puser['avatar'];
-        }
+        //$puser = WechatUser::where('userid',$userId)->find();
+        /*if(empty($detailMonth)) {
+            $detailMonth['month'] = 0;//分数
+            $detailMonth['ranking'] = 0;//名次
+            $detailMonth['name'] = $puser['name'];
+            $detailMonth['avatar'] = $puser['avatar'];
+        }*/
         foreach ($arrayYear as $k=>$v) {
             if($userId == $v['userid']) {
-                $detailYear[]['all'] = $v['all'];//分数
-                $detailYear[]['ranking'] = $k+1;//名次
-                $detailYear[]['name'] = $v['name'];
-                $detailYear[]['avatar'] = $v['avatar'];
+                $detailYear['all'] = $v['all'];//分数
+                $detailYear['ranking'] = $k+1;//名次
+                $detailYear['name'] = $v['name'];
+                $detailYear['avatar'] = $v['avatar'];
             }
         }
-        if(empty($arrayYear)) {
-            $detailYear[]['all'] = 0;//分数
-            $detailYear[]['ranking'] = 0;//名次
-            $detailYear[]['name'] = $puser['name'];
-            $detailYear[]['avatar'] = $puser['avatar'];
-        }
+        /*if(empty($arrayYear)) {
+            $detailYear['all'] = 0;//分数
+            $detailYear['ranking'] = 0;//名次
+            $detailYear['name'] = $puser['name'];
+            $detailYear['avatar'] = $puser['avatar'];
+        }*/
         $this->assign('list2', $arr3);
         $this->assign('lists2', $arr4);
         $this->assign('detailMonth', $detailMonth);
