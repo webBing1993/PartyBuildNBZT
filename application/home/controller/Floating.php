@@ -157,7 +157,9 @@ class Floating extends Base {
         //获取头像
         foreach($listMonth as  $k=>$v) {
             $user = WechatUser::where('userid',$k) ->find();
-            $listMonth[$k]= ['rank'=> $listMonth[$k],'name'=>$user['name'],'avatar'=>$user['avatar'],'userid'=>$k,'header'=>$user['header']];
+            if($user) {
+                $listMonth[$k]= ['rank'=> $listMonth[$k],'name'=>$user['name'],'avatar'=>$user['avatar'],'userid'=>$k,'header'=>$user['header']];
+            }
         }
         //重组
         $selfMonth = [];
@@ -217,7 +219,9 @@ class Floating extends Base {
         //获取头像
         foreach($listYear as  $k=>$v) {
             $user = WechatUser::where('userid',$k) ->find();
-            $listYear[$k]= ['rank'=> $listYear[$k],'name'=>$user['name'],'avatar'=>$user['avatar'],'userid'=>$k,'header'=>$user['header']];
+            if($user) {
+                $listYear[$k]= ['rank'=> $listYear[$k],'name'=>$user['name'],'avatar'=>$user['avatar'],'userid'=>$k,'header'=>$user['header']];
+            }
         }
         //年的重组
         $yearList = [];
