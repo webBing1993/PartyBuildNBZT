@@ -104,14 +104,14 @@ class Base extends Controller {
      * type值：
      * 0 评论点赞
      * 1 special 通知公告
-     * 2 news  箬横动态
+     * 2 news  第一聚焦
      * 3 study 两学一做
      * 4 notice 支部活动
      * 5 redfilm 红色电影
      * 6 redbook 红色文学
      * 7 redmusic 红色音乐
      * 8 companys  志愿之家风采展详情
-     * 9
+     * 9 topic  专题模块
      */
     public function like(){
         $uid = session('userId'); //点赞人
@@ -144,6 +144,9 @@ class Base extends Controller {
                 break;
             case 8:
                 $table = "companys";
+                break;
+            case 9:
+                $table = "topic";
                 break;
             default:
                 return $this->error("无该数据表");

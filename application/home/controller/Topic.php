@@ -27,7 +27,7 @@ class Topic extends Base
             'status' => ['egt',0]
         );
         $topic = TopicModel::where($map)->order('id','desc')->limit(12)->select();
-        $this->assign('topic',$topic);
+        $this->assign('list',$topic);
         return $this->fetch();
     }
     /**
@@ -74,54 +74,47 @@ class Topic extends Base
         $this->jssdk();
 
         $userId = session('userId');
-        if (IS_POST){
-            $post_id = input('post.insert_id');
-            Db::name('stay_time')->where('id',$post_id)->update(['end_time' => time()]);
-        }else{
-            $id = input('id');
-            Db::name('stay_time')->insert(['userid' => $userId,'type' => 2,'aid' =>$id, 'start_time' => time(),'end_time' => time()+5]);
-            $insert_id = Db::name('stay_time')->getLastInsID();
-            //浏览加一
-            $info['views'] = array('exp','`views`+1');
-            TopicModel::where('id',$id)->update($info);
+        $id = input('id');
+        //浏览加一
+        $info['views'] = array('exp','`views`+1');
+        TopicModel::where('id',$id)->update($info);
 
-            if($userId != "visitor"){
-                //浏览不存在则存入pb_browse表
-                $con = array(
-                    'user_id' => $userId,
-                    'special_id' => $id,
-                );
-                $history = Browse::get($con);
-                if(!$history && $id != 0){
-                    $s['score'] = array('exp','`score`+1');
-                    if ($this->score_up()){
-                        // 未超过 15分
-                        WechatUser::where('userid',$userId)->update($s);
-                        Browse::create($con);
-                    }
+        if($userId != "visitor"){
+            //浏览不存在则存入pb_browse表
+            $con = array(
+                'user_id' => $userId,
+                'special_id' => $id,
+            );
+            $history = Browse::get($con);
+            if(!$history && $id != 0){
+                $s['score'] = array('exp','`score`+1');
+                if ($this->score_up()){
+                    // 未超过 15分
+                    WechatUser::where('userid',$userId)->update($s);
+                    Browse::create($con);
                 }
             }
-            //详细信息
-            $info = TopicModel::get($id);
-            //分享图片及链接及描述
-            $image = Picture::where('id',$info['front_cover'])->find();
-            $info['share_image'] = "http://".$_SERVER['SERVER_NAME'].$image['path'];
-            $info['link'] = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REDIRECT_URL'];
-            $info['desc'] = str_replace('&nbsp;','',strip_tags($info['content']));
-
-            //获取 文章点赞
-            $likeModel = new Like;
-            $like = $likeModel->getLike(6,$id,$userId);
-            $info['is_like'] = $like;
-            $this->assign('new',$info);
-
-            //获取 评论
-            $commentModel = new Comment();
-            $comment = $commentModel->getComment(6,$id,$userId);
-            $this->assign('comment',$comment);
-            $this->assign('insert_id',$insert_id);
-            return $this->fetch();
         }
+        //详细信息
+        $info = TopicModel::get($id);
+        //分享图片及链接及描述
+        $image = Picture::where('id',$info['front_cover'])->find();
+        $info['share_image'] = "http://".$_SERVER['SERVER_NAME'].$image['path'];
+        $info['link'] = "http://".$_SERVER['SERVER_NAME'].$_SERVER['REDIRECT_URL'];
+        $info['desc'] = str_replace('&nbsp;','',strip_tags($info['content']));
+
+        //获取 文章点赞
+        $likeModel = new Like;
+        $like = $likeModel->getLike(6,$id,$userId);
+        $info['is_like'] = $like;
+        $this->assign('new',$info);
+
+        //获取 评论
+        $commentModel = new Comment();
+        $comment = $commentModel->getComment(6,$id,$userId);
+        $this->assign('comment',$comment);
+        $this->assign('insert_id',$insert_id);
+        return $this->fetch();
     }
     /*
      * 专题 列表 更多

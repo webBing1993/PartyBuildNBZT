@@ -9,7 +9,7 @@
     {volist name="$list" id="v" key="k"}
     <a href="/home/theory/index/id/{$k}.html">
         <span>{$v.title}</span>
-        <img src="{$v.front_cover|get_covers='path'}">
+        <img src="{$v.front_cover|get_cover='path'}">
     </a>
     {/volist}
 </div>
