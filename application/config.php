@@ -57,6 +57,12 @@ return [
         'appsecret' => ' ',
         'agentid' => 1000003
     ),
+    /*随手拍*/
+    'pic' => array(
+        'appid' => ' ',
+        'appsecret' => ' ',
+        'agentid' => 1000003
+    ),
     /* UC用户中心配置 */
     'uc_auth_key' => '(.t!)=JTb_OPCkrD:-i"QEz6KLGq5glnf^[{p;je',
     /*直播地址*/

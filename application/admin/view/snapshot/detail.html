@@ -1,0 +1,187 @@
+{extend name="base/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/static/datepicker/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="/static/iCheck/custom.css">
+<link rel="stylesheet" href="/admin/css/chosen/chosen.css">
+<style>
+    .imggroup{
+        position: relative;
+    }
+    .imgbox{
+        position: relative;
+        width:200px;
+        height:200px;
+        margin-top: 5px;
+        margin-bottom: 0;
+        z-index: 2000;
+    }
+    .imgfile{
+        height: 100px;
+        width: 200px;
+        position: absolute;
+        top:0;
+        opacity: 0;
+    }
+    .plus{
+        height: 100px;
+        width: 200px;
+        font-size: 100px;
+        line-height: 100px;
+        text-align: center;
+        color: rgba(204, 204, 204, 0.51);
+    }
+    .plus:hover{
+        font-size: 150px;
+    }
+    .plus2{
+        display: none;
+    }
+    .plusimg{
+        display: none;
+    }
+    .modal-body{
+        height: auto;
+    }
+    .pre.right{
+        position: absolute;
+        top:40px;
+        left:425px;
+    }
+    .pre.right input{
+        width: 150px;
+    }
+    .pre img,.pre label{
+        display: block;
+    }
+    .pre label{
+        margin-top: 30px;
+        line-height: 30px;
+    }
+    .preview-content{
+        width: 375px;
+        height: 667px;
+        overflow-y: scroll;
+        box-shadow: 1px 3px 8px rgba(153, 153, 153, 0.6);
+    }
+    #mask{
+        position: absolute;
+        width:100%;
+        height:100%;
+        background:rgba(0,0,0,0.2);
+        top:0;
+        z-index: 1000;
+        display: none;
+    }
+    #img{
+        float:left;
+    }
+    .a{
+        position: absolute;
+        top:0;
+        left:0;
+        z-index:3000;
+    }
+</style>
+{/block}
+
+{block name="page-header"}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>
+            随手拍
+        </h2>
+        <ol class="breadcrumb">
+            <li>
+                <a href="{:Url('Snapshot/index')}">随手拍</a>
+            </li>
+            <li class="active">
+                <strong>内容详情</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+{/block}
+
+{block name="main"}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content all">
+                    <form id="form" class="form-horizontal" method="post">
+                        <div class="form-group">
+                            <div class="col-lg-1 text-right control-label">
+                                <label>随手拍图片:</label>
+                            </div>
+                            {volist name="$msg.path" id="vo"}
+                            <img src="{$vo}" alt='图片' class='thumbnail imgbox' id="img">
+                            {/volist}
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-1 control-label">
+                                <label>内容:</label>
+                            </div>
+                            <div class="col-lg-11">
+                                <div class=" float-e-margins">
+                                    <div class="ibox-content no-padding borders">
+                                        <script id="container" name="content" type="text/plain">{$msg.content}</script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selblo"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="mask"></div>
+</div>
+
+{/block}
+
+{block name="script"}
+<script src="/static/uploadify/jquery.uploadify.min.js"></script>
+<script src="/static/iCheck/icheck.min.js"></script>
+<script src="/static/ueditor/ueditor.config.js"></script>
+<script src="/static/ueditor/ueditor.all.min.js"></script>
+<script src="/admin/js/chosen.jquery.js"></script>
+<script>
+    $(function(){
+        //    单选按钮
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green'
+        });
+
+        highlight_subnav("{:Url('Snapshot/index')}");
+
+        var ue = UE.getEditor('container',{
+            initialFrameHeight:500
+        });
+    })
+
+for(var i=0;i<$(".imgbox").length;i++){
+    $(".imgbox").eq(i).click(function(){
+        $(this).width(800);
+        $(this).height(800);
+        $(this).addClass("a")
+        $("#mask").show();
+
+    })
+    $("#mask").click(function(){
+        $(".imgbox").removeClass("a")
+        $(".imgbox").width(200);
+        $(".imgbox").height(200);
+        $("#mask").hide()
+    })
+}
+
+
+
+</script>
+{/block}
