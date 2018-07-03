@@ -1,0 +1,124 @@
+{extend name="public/common"}
+
+{block name="style"}
+<title>通讯名录</title>
+<style>
+    body{
+        background: #f0eff5;
+    }
+    .header{
+        margin:2.667vw 0;
+        padding:2.667vw 4vw;
+        background: #ffffff;
+    }
+    .head_img{
+        width: 19.733vw;
+        height:19.733vw;
+        margin-right: 5.33vw;
+    }
+    .head_info .name{
+        color: #333;
+        font-size: 1.7rem;
+    }
+    .head_info li{
+        width:66vw;
+
+    }
+    .head_info .sex{
+        padding:2vw;
+        margin-left: 5px;
+    }
+    .head_info .sex.boy{
+        background: url("/home/images/book/pb.png") 50% 43% no-repeat;
+        background-size: 4vw 4vw;
+    }
+    .head_info .sex.girl{
+        background: url("/home/images/book/pg.png") 50% 43% no-repeat;
+        background-size: 4vw 4vw;
+    }
+    .head_info li:not(:first-child){
+        color: #999;
+        font-size: 1.4rem;
+        margin-top: 1.33vw;
+    }
+    .main>li{
+        box-sizing: border-box;
+        padding:2.667vw 4vw;
+        border-bottom: 1px solid #f1f1f1;
+        background: #ffffff;
+    }
+    .main>li>span:first-child{
+        color: #333;
+        font-size: 1.5rem;
+        margin-right: 20.67vw;
+    }
+    .main>li>span:last-child{
+        color: #999;
+        font-size: 1.4rem;
+        display: inline-block;
+    }
+    .main>li a{
+        font-size: 1.4rem;
+        color: #5d9cec;
+        width: 60vw;
+        /*text-align: justify;*/
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="header clear">
+    {empty name="info.header"}
+    <img src="/home/images/book/pb.png" class="head_img fl" alt="头像">
+    {else/}
+    <img src="{$info.header}" class="head_img fl" alt="头像">
+    {/empty}
+    <!--<img src="" class="head_img fl" alt="头像">-->
+    <ul class="head_info fl">
+        <li>
+            <span class="name">{$info.name}</span>
+            {eq name="info.gender" value="0"}
+                <span class="sex">未定义</span>
+            {else/}
+                {eq name="info.gender" value="1"}
+                <span class="sex boy"></span>
+                {else/}
+                <span class="sex girl"></span>
+                {/eq}
+            {/eq}
+        </li>
+        <li>
+            <span>账号：{$info.userid}</span>
+        </li>
+        <li>
+            <!--<span>企业微信号：bllhahaha</span>-->
+        </li>
+    </ul>
+</div>
+
+<ul class="main">
+    <li class="clearfix"><span>手机</span><a class="fr" href="tel:{$info.mobile}">{$info.mobile}</a></li>
+    <li class="clearfix"><span style="color: #333">职位</span><a class="fr">{$info.position}</a></li>
+    <li class="clearfix" id="dep"><span class="fl">部门</span><a class="fr" >{$info.depart}</a></li>
+    <li class="clearfix"><span>学历</span><a class="fr" >{$info.education}</a></li>
+    <li class="clearfix"><span style="margin-right: 12vw">出生日期</span><a class="fr" >{$info.birthday}</a></li>
+    <li class="clearfix"><span style="margin-right: 12vw">入党时间</span><a class="fr" >{$info.partytime}</a></li>
+</ul>
+{/block}
+{block name="script"}
+<script>
+    $(function () {
+        $(".main #dep a").on('click',function () {
+            window.history.back();
+        })
+    });
+    $(function () {
+        $(".main li span.fl").css("lineHeight",$(".main li span.fl").next("a").height() + "px");
+    })
+
+</script>
+{/block}

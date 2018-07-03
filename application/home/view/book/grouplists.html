@@ -1,0 +1,327 @@
+{extend name="public/common"}
+
+{block name="style"}
+<title>通讯名录</title>
+<style>
+    body{
+        background: #ffffff;
+    }
+
+
+    .search{
+        background: #f0eff5;
+        padding:2.133vw 4vw;
+        border-bottom: 1px solid #f0eff5;
+    }
+    .search>.searchBox{
+        border-radius: 5px;
+        height:7.467vw;
+        background: #ffffff;
+        text-align: center;
+
+    }
+    .search>.unBtn{
+        display: none;
+    }
+    .search>.searchBox>.searchInput{
+        display: none;
+    }
+    .search>.searchBox>.searchText{
+        display: inline-block;
+        font-size:1.4rem;
+        color: #999;
+        padding-left:6.4vw;
+        min-width: 1px;
+        line-height: 7.467vw;
+        height:7.467vw;
+        background: url("/home/images/book/search.png") 0 50% no-repeat;
+        background-size: 4.8vw 4.8vw;
+    }
+    .search.isClick{
+        background: #ffffff;
+        border-bottom: 1px solid #f1f1f1;
+        display: flex;
+    }
+    .search.isClick>.searchBox{
+        background: #f0eff5;
+        padding-left: 2.667vw;
+        width:74vw;
+        display: flex;
+        align-items: center;
+    }
+    .search.isClick>.searchBox>.searchText{
+        display: inline-block;
+    }
+    .search.isClick>.searchBox>.searchText>.searchText_c{
+        display: none;
+    }
+    .search.isClick .searchInput{
+        background: #f0eff5;
+        display: inline-block;
+        height:6.4vw;
+        width:61.33vw;
+    }
+    .search.isClick>.unBtn{
+        margin-left: 5.333vw;
+        display: block;
+        box-sizing: border-box;
+        width:13.333vw;
+        height:7.467vw;
+        border-radius: 5px;
+        border:1px solid #5d9cec;
+        color: #5d9cec;
+        text-align: center;
+        line-height: 6.933vw;
+        font-size: 1.4rem;
+    }
+
+    .main{
+        -webkit-tap-highlight-color:transparent;
+    }
+    .main>.nav{
+        padding:2.667vw 4vw;
+        border-bottom: 1px solid #f1f1f1;
+    }
+    .main>.nav>li{
+        float: left;
+        padding: 1.333vw 0;
+        line-height: 5.867vw;
+        color: #666;
+        font-size: 1.4rem;
+    }
+    .main>.nav>li>a{
+        display: block;
+        line-height: 5.867vw;
+        color: #666;
+        font-size: 1.4rem;
+        padding:0;
+    }
+    .main>.nav>li:first-child a{
+        color:#5d9cec;
+        font-size: 1.6rem;
+    }
+    .main>.nav>li:not(:last-child)>a:after{
+        display: inline;
+        content: '';
+        padding:1px 2.133vw;
+        background: url("/home/images/book/right.png") center center no-repeat;
+        background-size:1.6vw 3.2vw;
+    }
+
+
+
+    .main .lists{
+        width:100%;
+    }
+    .main .lists>li{
+        box-sizing: border-box;
+        font-size: 1.4rem;
+        color: #666;
+    }
+    .main .lists .list_header{
+        height:14.4vw;
+        line-height: 14.4vw;
+        box-sizing: border-box;
+        border-bottom: 1px solid #f1f1f1;
+        color: #666;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding:0 4vw;
+    }
+    .main .lists .list_header.type1>span:first-child{
+        width:90vw;
+        height:100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .result_box>li{
+        box-sizing: border-box;
+        font-size: 1.4rem;
+        color: #666;
+    }
+    .result_box a{
+        padding-left: 4vw;
+        display: flex;
+        align-items: center;
+        height:14.4vw;
+        font-size: 1.4rem;
+        color: #333;
+        line-height: 14.4vw;
+        box-sizing: border-box;
+        justify-content: space-between;
+    }
+    .result_box a img{
+        width:8vw;
+        height:8vw;
+        margin-right: 5.33vw;
+    }
+    .result_box a div{
+        border-bottom: 1px solid #f1f1f1;
+        width:82.66vw;
+    }
+    .result_box a .fr{
+        box-sizing: border-box;
+        width:13.33vw;
+        height:14.4vw;
+        text-align: right;
+        margin-right: 4vw;
+        color: #999;
+        background: url("/home/images/book/right.png") right center no-repeat;
+        background-size: 1.6vw 3.2vw;
+    }
+
+
+</style>
+{/block}
+{block name="body"}
+<div class="search ">
+    <div class="searchBox">
+        <div class="searchText"><span class="searchText_c">搜索</span></div>
+        <input type="text" class="searchInput">
+    </div>
+    <div class="unBtn">取消</div>
+</div>
+
+<!--搜索返回列表-->
+<ul class="result_box hidden">
+
+</ul>
+<div class="main">
+
+    <ul class="nav clear">
+        <li><a data-pid="">宁波之图党建</a></li>
+        <li>{$depart}</li>
+    </ul>
+    <ul class="lists">
+        {volist name="list" id="lo"}
+        <li>
+            <a href="/home/book/userlist/did/{$lo.id}" class="list_header " data-pid="{$lo.id}">
+                <span>{$lo.name}</span><span class="fr rt_icon"></span>
+            </a>
+        </li>
+        {/volist}
+    </ul>
+</div>
+{/block}
+{block name="script"}
+<script>
+    $(function(){
+        //跳转
+        $(".nav>li:first-child a").on('click',function () {
+            window.history.go(-1);
+        })
+        //        创建导航的sessionStorage
+//        function addToSession() {
+//            var list=$(".nav>li>a");
+//                list.on("click",function(e){
+//                    e.preventDefault();
+//                    var index=list.index(this);
+//                    var pid=[];
+//                    for(var i=0;i<index;i++){
+//                        var val=list.eq(i).attr('data-pid');
+//                        pid.push(val);
+//                    }
+//                    sessionStorage.setItem('nav-pid',pid);
+//                })
+//        }
+//        addToSession();
+//        //  获取储存
+//        function getStorage(){
+//            var pid=sessionStorage.getItem("nav-pid");
+//            console.log(pid);
+//            if(pid){
+//                pid=pid.split(",");
+//                console.log(pid);
+//                var lists=$(".main>.lists>li");
+//                for(var i=0;i<pid.length-1;i++){
+//                    console.log(pid[i]);
+//                    var shouldOpen=lists.find("[data-pid="+pid[i]+"]").eq(0);
+//                    console.log(shouldOpen);
+//                    if(shouldOpen){
+//                        shouldOpen.addClass("open").removeClass("close");
+//                        shouldOpen.siblings(".lists").removeClass("hidden");
+//                    }
+//                }
+//                sessionStorage.removeItem("nav-pid")
+//            }else{
+//                console.log('nopid')
+//            }
+//        }
+//获取储存
+//        getStorage();
+        //点击输入
+        onInput();
+        //取消输入
+        $(".search .unBtn").on("click",function(){
+            offInput();
+            onInput();
+            $(".searchInput").val('');
+        });
+        //搜索ajax
+        $(".searchInput").on("keyup",function(){
+            var val=$(this).val();
+            if(!val)
+            {
+                $(".result_box").html('');
+                return '';
+            }
+            $.ajax({
+                type:"post",
+                url:"{:Url('Book/search')}",
+                data:{
+                    val:val
+                },
+                beforeSend:function(XMLHttpRequest){
+                    $(".onloading").removeClass("hidden");
+                },
+                success:function(data){
+                    $(".onloading").addClass("hidden");
+                    $(".result_box").removeClass("hidden");
+                    $(".result_box").html('');
+                    addToList(data)
+                }
+            });
+
+
+
+//            添加到网页
+            function addToList(data) {
+                var lists = data.data;
+                var html="";
+                for(var i=0;i<lists.length;i++){
+                    if ({$visit} == 0){
+                        html+= "<li><a href='/home/book/userinfo/id/"+lists[i].id+"/did/"+lists[i].did+"'>"
+                    }else {
+                        html+= "<li><a href=''>"
+                    }
+                    if (lists[i].header == ''){
+                        html+="<img src='/home/images/book/pb.png' alt='头像'>";
+                    }else{
+                        html+="<img src='"+lists[i].header+"' alt='头像'>";
+                    }
+                    html+="<div>"+lists[i].name+" <span class='fr'></span></div></a></li>";
+                }
+                $(".result_box").append(html);
+            }
+        });
+//点击进入输入框函数
+        function onInput() {
+            $(".searchBox").off('click').on('click',function(){
+                $(".search").addClass('isClick');
+                $(this).off('click').find('.searchInput').focus();
+                $('.main').addClass('hidden');
+            })
+        }
+        //关闭输入框函数
+        function offInput(){
+            $(".search").removeClass("isClick");
+            $('.main').removeClass('hidden');
+            $(".result_box").addClass('hidden');
+            $(".onloading").addClass('hidden');
+        }
+    })
+</script>
+{/block}
