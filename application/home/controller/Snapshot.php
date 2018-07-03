@@ -9,7 +9,7 @@
 namespace app\home\controller;
 use app\home\model\Picture;
 use app\home\model\Snapshot as SnapshotModel;
-use com\wechat\TPWechat;
+use com\wechat\TPQYWechat;
 use think\Config;
 /**随手拍控制器
  * Class Snapshot
@@ -33,9 +33,9 @@ class Snapshot extends Base
      * 发布页
     */
     public function publish(){
-        $this->checkAnonymous();
+        $this->checkRole();
         $this->jssdk();
-        $Wechat = new TPWechat(Config::get('party'));
+        $Wechat = new TPQYWechat(Config::get('pic'));
         if (IS_POST) {
             $data = input('post.');
             $data['uid'] = session('userId');
