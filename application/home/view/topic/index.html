@@ -73,34 +73,26 @@
 
 <script src="/home/js/reset.js"></script>
 <script>
+    var type = parseInt(window.location.href.split("/id/")[1]);;
+    console.log(type)
     var scrollNow = true;//判断下拉请求是否执行中.false为正在请求
     $(function(){
-        var heigth = $(".banner a span").height();
-        var width = $(".banner a span").width();
-        $(".banner a div").css({"height":heigth,"width":width});
         //初始化数据
-        var ntc = $(".notice");
-        var tab = $(".tabs .tab");
-        var co = getCookie("type") || 0;
-        co = parseInt(co);
-        tab.eq(co).addClass("active").siblings(".tab").removeClass("active");
-        ntc.eq(co).removeClass("hidden").siblings(".notice").addClass("hidden");
-        var len  = ntc.eq(co).find(".list").length;
-        if(len >= 7 ){
+        var ntc = $(".list");
+        var len  = ntc.length;
+        if(len >= 12 ){
             $('.tip').text('上拉加载更多');
-            loadScroll(co + 1);
+            loadScroll();
         }
     });
-    function loadScroll(type){
-        if(!type){
-            return;
-        }
+    function loadScroll(){
+
         $(window ).off("scroll" ).on("scroll",function(){
-            var ntc = $(".notice");
+            var ntc = $(".list");
             var dh = $(document).height();
 //		console.log("dh"+dh);
             var end = $(window).height() + $(window ).scrollTop();
-            var len  = ntc.eq(type - 1).find(".list").length;
+            var len  = ntc.length;
             var tip = $(".tip");
             var loading = $('.loading');
             if(dh == end){
@@ -110,7 +102,7 @@
                     url:"{:Url('Special/more')}",
                     data:{
                         length:len,
-                        type:2
+                        type:type
                     },
                     beforeSend: function(XMLHttpRequest){
                         tip.hide();
@@ -120,7 +112,7 @@
                         loading.toggleClass('hidden');
                         tip.show();
                         if(data.code == 1){
-                            addNews(data,type);
+                            addNews(data);
                             var dataLen =data.data.length;
                             if(data.data.length == 6){
                                 tip.text('上拉加载更多');
@@ -135,7 +127,7 @@
             }
         })
     }
-    function addNews(data,type){
+    function addNews(data){
         var html = '';
         var lists = data.data;
         var len = lists.length;
@@ -156,7 +148,7 @@
                     '</div>'+
                     '</a>'
         }
-        ntc.eq(type - 1).children(".lists").append(html);
+        ntc.append(html);
     }
 </script>
 {/block}
