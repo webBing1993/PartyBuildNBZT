@@ -13,7 +13,7 @@
 	width: 32vw;
 	height: 100%;
 	color: #333333;
-	font-size: 1.5rem;
+	font-size:0.4rem;
 	line-height: 28px;
 	text-align: center;
 	border-right: 1px solid #e5e5e5;
@@ -26,7 +26,7 @@
 }
  /*新闻列表*/
 .list{
-	display: block;
+	display: inline-block;
 	width: 100%;
 	padding-left: 13px;
 	padding-right: 13px;
@@ -44,15 +44,15 @@
 	width: calc(100% - 28vw);
 }
 .list .lr .title{
-	height:38px;
-	font-size: 1.4rem;
+/*	height:38px;*/
+	font-size: 0.37rem;
 	margin-top: 4vw;
 	margin-bottom: 8px;
 	color:#333333;
 }
 .list .lr .clear{
 	width:calc(100% - 35vw);
-	font-size: 1.2rem;
+	font-size: 0.32rem;
 	color:#999999;
 	position: absolute;
 	bottom:4vw;
