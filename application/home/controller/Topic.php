@@ -28,6 +28,7 @@ class Topic extends Base
         );
         $topic = TopicModel::where($map)->order('id','desc')->limit(12)->select();
         $this->assign('topic',$topic);
+        return $this->fetch();
     }
     /**
      * @return
