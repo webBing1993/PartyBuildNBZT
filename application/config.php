@@ -18,7 +18,7 @@ return [
 
     /* 默认模块和控制器 */
     'default_module' => 'home',
-    'app_debug' => false,
+    'app_debug' => true,
 
     /* URL配置 */
     'base_url'=>'',
@@ -33,36 +33,35 @@ return [
     'party' => array(
 //        'token' => 'ZfqkOC4Fhd7D',
 //        'encodingaeskey' => 'SWWdiNibALNG3hZfvqqAzQ48rmibi5KTc1JnqouajTC',
-        'appid' => 'ww678237a01774a2fb',
-        'appsecret' => 'pyXyO5cw8DfEbFr6dG-veoVo8Lv7izqMZoakYTAymro',
+        'appid' => ' ',
+        'appsecret' => ' ',
     ),
      /*个人中心*/
      'user' => array(
-         'login' => 'http://rh.0571ztnet.com/home/verify/login',
+         'login' => ' ',
 //        'token' => 'ZfqkOC4Fhd7D',
 //        'encodingaeskey' => 'SWWdiNibALNG3hZfvqqAzQ48rmibi5KTc1JnqouajTC',
-         'appid' => 'ww678237a01774a2fb',
-         'appsecret' => 'HdHeFsMy_5ezrO90p_fSqC_v21nPXucM5WeBpfOVYMA',
+         'appid' => ' ',
+         'appsecret' => ' ',
          'agentid' => 1000005
      ),
     /*消息审核*/
     'review' => array(
-        'appid' => 'ww678237a01774a2fb',
-        'appsecret' => 'wzp_OlcYTgH2IjTbjFgA7oLrF8zXHhQXc4Oaz9KVwwo',
+        'appid' => ' ',
+        'appsecret' => ' ',
         'agentid' => 1000004
     ),
     /*活动签到*/
     'sign' => array(
-        'appid' => 'ww678237a01774a2fb',
-        'appsecret' => '-njGAjJ7EnSKMXlzSoUxcJO6RDGhYtbVEiY5KSiry3s',
+        'appid' => ' ',
+        'appsecret' => ' ',
         'agentid' => 1000003
     ),
     /* UC用户中心配置 */
     'uc_auth_key' => '(.t!)=JTb_OPCkrD:-i"QEz6KLGq5glnf^[{p;je',
     /*直播地址*/
 
-    'live_path' => 'http://pullhls36734237.live.126.net/live/6cb0985ea48d4af6876a397c0858f3d4/playlist.m3u8',
-    define('hostUrl','http://rh.0571ztnet.com'),
+    define('hostUrl',''),
     define('agentId',1000004),
 //    define('toUser','@all')
     define('toUser','13588359175')

@@ -18,7 +18,7 @@ return [
     // 服务器地址
     'hostname'    => '192.168.1.60',
     // 数据库名
-    'database'    => 'rhpb',
+    'database'    => 'nbztpb',
     // 数据库用户名
     'username'    => 'root',
     // 数据库密码
