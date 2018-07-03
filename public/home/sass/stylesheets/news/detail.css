@@ -172,16 +172,17 @@
   color: #999999;
 }
 .comment .lists .list .good {
-  background: url('/home/images/detail/good.png') 0 2px no-repeat;
+  background: url('/home/images/detail/good.png') 0 1px no-repeat;
 }
 .comment .lists .list .good_ {
   animation: shake 300ms ease;
   -webkit-animation: shake 300ms ease;
-  background: url('/home/images/detail/good_.png') 0 2px no-repeat;
+  background: url('/home/images/detail/good_.png') 0 1px no-repeat;
 }
 .comment .lists .list .isgood {
   background-size: 15px 15px;
   padding-left: 18px;
+  padding-top: 1vw;
 }
 .comment .tip {
   height: 40px;
