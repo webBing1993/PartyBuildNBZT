@@ -1,7 +1,7 @@
 @charset "utf-8";
 /*public*/
 .t_b {
-  font-size: 1.8rem;
+  font-size: 0.48rem;
   font-weight: 600;
 }
 .banner{
@@ -17,12 +17,12 @@
 }
 .title{
   text-align: center;
-  font-size: 16px;
+  font-size: 0.42px;
   font-weight: 600;
 }
 .note{
   color: #999999;
-  font-size: 12px;
+  font-size: 0.32px;
   text-align: right;
 }
 .note_{
@@ -37,12 +37,12 @@
 }
 .article .title {
   color: #333333;
-  font-size: 1.8rem;
+  font-size: 0.48rem;
   font-weight: 600;
 }
 .article .note {
   color: #999999;
-  font-size: 1.2rem;
+  font-size: 0.32rem;
   line-height: 30px;
 }
 .article .note span {
@@ -89,7 +89,7 @@
 }
 .article .content .note {
   color: #999999;
-  font-size: 14px;
+  font-size: 0.37px;
 }
 .article .content .note span {
   height: 40px;
@@ -127,7 +127,7 @@
   background: #fcfcfc;
   border-top: 1px solid #f1f1f1;
   border-bottom: 1px solid #f1f1f1;
-  font-size: 1.2rem;
+  font-size: 0.32rem;
   line-height: 30px;
 }
 .comment .lists .list {
@@ -163,7 +163,7 @@
   margin-bottom: 2vw;
 }
 .comment .lists .list .mid .time {
-  font-size: 1.2rem;
+  font-size: 0.32rem;
   line-height: 20px;
   color: #999999;
 }
@@ -211,7 +211,7 @@
 .bottom .collect {
   width: 60px;
   height: 100%;
-  font-size: 1.2rem;
+  font-size: 0.32rem;
   text-align: center;
   background-size: 20px 20px;
   padding-top: 24px;
@@ -262,4 +262,10 @@ input::-webkit-input-placeholder{
   position: relative;
   top: 17px;
   left: calc( 50vw - 20px );
+}
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
 }
