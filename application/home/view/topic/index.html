@@ -47,7 +47,7 @@
     {else/}
     <div class="lists">
         {volist name="list" id="vo"}
-        <a class="list clear" href="{:Url('Special/detail?id='.$vo['id'])}">
+        <a class="list clear" href="{:Url('Topic/detail?id='.$vo['id'])}">
             <div class="fl">
                 <img src="{$vo['front_cover']|get_cover='path'}" alt="{$vo.title}">
             </div>
@@ -99,10 +99,10 @@
                 scrollNow = false;
                 $.ajax({
                     type:"post",
-                    url:"{:Url('Special/more')}",
+                    url:"{:Url('Topic/more')}",
                     data:{
                         length:len,
-                        type:type
+                        id:type
                     },
                     beforeSend: function(XMLHttpRequest){
                         tip.hide();
@@ -113,8 +113,7 @@
                         tip.show();
                         if(data.code == 1){
                             addNews(data);
-                            var dataLen =data.data.length;
-                            if(data.data.length == 6){
+                            if(data.data.length == 12){
                                 tip.text('上拉加载更多');
                             }
                         }else{
@@ -135,7 +134,7 @@
         for(var i = 0; i< len;i++){
             var list = lists[i];
             html +=
-                    '<a class="list clear" href="/home/special/detail/id/'+list.id+'.html">'+
+                    '<a class="list clear" href="/home/topic/detail/id/'+list.id+'.html">'+
                     '<div class="fl">'+
                     '<img src="'+ list.src+'" alt="图片">'+
                     '</div>'+

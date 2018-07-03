@@ -73,7 +73,7 @@ class Topic extends Base
         $this->anonymous();
         $this->jssdk();
         $id = input('id');
-        $this->content(9,$id);
+        $this->assign('new',$this->content(9,$id));
         return $this->fetch();
     }
     /*
