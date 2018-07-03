@@ -1,0 +1,164 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/static/mobiscroll/mobiscroll.2.13.2.css">
+<link rel="stylesheet" href="/home/sass/stylesheets/pat/publish.css">
+<style>
+    .publish-time {
+        height: 12vw;
+        line-height: 12vw;
+        text-align: center;
+    }
+    .publish-time p {
+        font-size: .43rem;
+        color: #333;
+    }
+    .line {
+        width: 100vw;
+        height: 1.6vw;
+        background-color: #f1f1f1;
+    }
+    .list ul textarea {
+        height: 45vh;
+    }
+</style>
+{/block}
+
+{block name="body"}
+<div class="publish-time">
+    <p></p>
+</div>
+<div class="line"></div>
+<div class="main">
+    <div class="list">
+        <ul>
+            <li>
+                工作内容
+                <input type="text" placeholder="请填写主要工作内容" name="substance" value="">
+            </li>
+            <li>
+                工作进度
+                <input type="text" placeholder="请填写已完成工作内容" name="advance" value="">
+            </li>
+            <div class="content">
+                <textarea placeholder="请写下您的心得与反思" name="content"></textarea>
+                <div class="imgs clear">
+                    <!--<div class="img fl "><img src="" alt="" data-tab=""></div>-->
+                    <div class="img fl hide"></div>
+                    <div class="img fl hide"></div>
+                    <div class="img fl hide"></div>
+                    <div class="img fl hide"></div>
+                    <div class="add fl"></div>
+                </div>
+                <input type="file" class="hide" id="upimg" accept="image/*">
+                <input type="hidden" name="id" value="">
+                <p>(您最多上传4张图片，图片小于5M)</p>
+            </div>
+        </ul>
+    </div>
+
+
+    <div class="submit">提交日志</div>
+</div>
+
+<div class="showbox">
+    <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script src="/home/js/publish.js"></script>
+<script>
+    $(function(){
+        $("title").text("民情日志");
+        imgresize();
+        if($(".img img").length==3){
+            $(".add").hide();
+        }
+        var d=new Date(),str='';
+        var weekday=new Array(7);
+        weekday[1]="星期一";
+        weekday[2]="星期二";
+        weekday[3]="星期三";
+        weekday[4]="星期四";
+        weekday[5]="星期五";
+        weekday[6]="星期六";
+        weekday[7]="星期日";
+        str +=d.getFullYear()+'年';
+        str +=d.getMonth()+1+'月';
+        str +=d.getDate()+'日';
+        str +='&nbsp;&nbsp;'+weekday[d.getDay()];
+        $(".publish-time p").html(str)
+    });
+
+
+
+    //保存
+    $(".submit").click(function(){
+        var isTrue = false;
+        if ($("input[name='substance']").val() != '' && $("input[name='content']").val() != '' && $("textarea").val() != "") {
+            isTrue = false;
+        }else {
+            swal({
+                title: ' ',
+                text: "请填写完全",
+                type: 'error',
+                showConfirmButton:false,
+                timer:1500
+            });
+            isTrue = true;
+        }
+        var userid = "";
+        var data={
+            content: $("input[name='substance']").val(),
+            progress: $("input[name='advance']").val(),
+            reflection: $("textarea[name='content']").val(),
+            id: $("input[name='id']").val(),
+            status: 0
+        };
+        if(!isTrue) {
+
+            data['list_images']=[];
+            $(".img img").each(function(){
+                if($(this).data("tab")){
+                    data['list_images'].push($(this).data("tab")+"");
+                }
+            });
+            $.ajax({
+                type:"post",
+                url:"{:Url('Pat/publish')}",
+                data: data,
+                success:function(data){
+                    if(data.code == 1){
+                        swal({
+                            title: "",
+                            text: '提交成功',
+                            type: 'success',
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            allowOutsideClick:false
+                        });
+                        setTimeout(function(){
+                            window.history.go(-1);
+                        },1500)
+                    }else{
+                        swal({
+                            title: ' ',
+                            text: data.msg,
+                            type: 'error',
+                            showConfirmButton:false,
+                            timer:1500
+                        });
+                    }
+                }
+            });
+        }
+    });
+
+</script>
+
+{/block}

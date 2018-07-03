@@ -1,0 +1,66 @@
+{extend name="public/common"}
+{block name="style"}
+<link rel="stylesheet" href="/home/sass/stylesheets/pat/detail.css">
+<link rel="stylesheet" href="/static/viewer/viewer.min.css">
+
+{/block}
+{block name="body"}
+<!--没有权限-->
+<!--<div class="no_">
+    <img class="denied" src="/home/images/common/404.png" alt="">
+</div>-->
+<div class="personal-intro">
+    <div class="data clearfix">
+        <div class="time_ fl">{$msg.time}</div>
+        <div class="position_ fl">{$msg.depart}</div>
+    </div>
+    <div class="intro">
+        <img src="{$msg.header}">
+        <div>
+            <p class="name">{$msg.name}</p>
+            <p class="position">{$msg.position} / {$msg.times}</p>
+        </div>
+    </div>
+</div>
+<div class="work-descri">
+    <p>工作内容</p>
+    <div>
+        <span>{$msg.content}</span>
+    </div>
+</div>
+<div class="work-problem">
+    <p>工作进度</p>
+    <div>
+        <span>{$msg.progress}</span>
+    </div>
+</div>
+<div class="line"></div>
+<div class="work-solution">
+    <div>
+        <span>{$msg.reflection}</span>
+        {notempty name="$msg.description_pic"}
+        <div class="imgs">
+            {volist name="msg.description_pic" id="vo"}
+            <img src="{$vo|get_cover='path'}" alt="">
+            {/volist}
+        </div>
+        {/notempty}
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script src="/static/viewer/viewer-jquery.min.js"></script>
+<script>
+    localStorage.setItem("state","1");
+    $('title').text('民情日志');
+
+    $('.imgs').viewer({
+        url: 'data-original',
+        toolbar:false,
+        title:false
+    });
+
+
+</script>
+
+{/block}

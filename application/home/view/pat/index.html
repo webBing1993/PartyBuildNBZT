@@ -1,0 +1,217 @@
+{extend name="public/common"}
+
+{block name="style"}
+<link rel="stylesheet" href="/home/sass/stylesheets/pat/index.css">
+<style>
+    #popover {
+        height: 50vw;
+    }
+    .mui-table-view-cell:after {
+        left: 0;
+    }
+</style>
+{/block}
+
+{block name="body"}
+<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="mui-slider-group">
+            <div class="title"><a id="openPopover" href="#popover"><span>宁波之图党建</span> <i class="hide"></i><i class="fa fa-angle-down" aria-hidden="true"></i></a></div>
+            <div class="lists">
+                <!-- 循环体-->
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popover" class="mui-popover" >
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <ul class="mui-table-view">
+                {volist name="deps" id="v"}
+                <li class="mui-table-view-cell"><a>{$v.name}</a><span class="hide">{$v.id}</span></li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="default"><img src="/home/images/common/nomessage.png" alt=""></div>
+{/block}
+
+{block name="script"}
+<script src="/home/js/reset.js"></script>
+<script>
+
+    $(function () {
+        $("title").text("民情日志");
+        mui('.mui-scroll-wrapper').scroll();
+
+        if (getCookie("id") == null) {
+            setCookie("id",-1);
+        }
+        
+        for (var i = 0; i < $("#popover ul li").length; i++) {
+            if ($("#popover ul li").eq(i).children(".hide").text() == getCookie("id")) {
+                $("#openPopover span").html($("#popover ul li").eq(i).children("a").text());
+                ajax($("#popover ul li").eq(i).children(".hide").text());
+            }else if (getCookie("id") == -1) {
+                $("#openPopover span").html($("#popover ul li").eq(0).children("a").text());
+                ajax($("#popover ul li").eq(0).children(".hide").text());
+            }
+        }
+        $("#popover ul li").on("tap",function(){
+            var select_it = $(this).children("a").text();
+            $("#openPopover span").html(select_it);
+            $("#openPopover i:first-of-type").html($(this).children("span").text());
+            mui('#popover').popover("hide");
+            var id =  parseInt($(this).children("span").text());
+            ajax(id);
+            setCookie("id",id);
+        });
+    });
+
+    var ajax = function(title){
+        $.ajax({
+            type:"post",
+            url: "{:url('pat/index')}",
+            data:{
+                title: title
+            },
+            beforeSend: function(XMLHttpRequest){
+
+            },
+            success:function(data){
+                if(data.data.length !== 0){
+                    $(".lists").children().remove();
+                    addCourse(data);
+                    if(data.code == 1){
+                        if(data.data.length >= 4){
+                            mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+                        }else{
+                            mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+                        }
+                    }else{
+                        mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+                    }
+                }else{
+                    mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+                    $(".lists").html('<div class="defaults"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>')
+                }
+            }
+        })
+    };
+
+    setTimeout(function () {
+        if ($(".lists .list").length < 4) {
+            mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
+        } else {
+            mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
+        }
+    },500);
+    mui.init({
+        pullRefresh : {
+            container: "#refreshContainer",
+            up : {
+                callback : loadScroll
+            }
+        }
+    });
+    function loadScroll() {
+        var len = $(".lists .list").length;
+        var t = getCookie("id");
+        if (getCookie("id") == -1) {
+            t = 1;
+        }
+        var id = t;
+        $.ajax({
+            type: "post",
+            url: "{:url('pat/indexMore')}",
+            data: {
+                length: len,
+                depart_id:id
+            },
+            beforeSend: function(XMLHttpRequest){
+            },
+            success:function(data){
+                console.log(data);
+                addCourse(data);
+                if(data.code == 1){
+                    var dataLen =data.data.length;
+                    if(data.data.length == 6){
+                        mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
+                    }else{
+                        mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+                    }
+                }else{
+                    mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
+                }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        })
+    }
+
+    function addCourse(data) {
+        var html = '';
+        var lists = data.data;
+        var len = lists.length;
+        var href;
+        for(var i = 0; i< len;i++){
+            var list = lists[i];
+            if (list.log.content != "暂无") {
+                href = '/home/pat/detail/id/' + list.log.id + '.html';
+            }else {
+                href = 'JavaScript:;';
+            }
+            html +=
+                    '<div class="list clearfix">' +
+                    '<a href="'+
+                    href +
+                    '">'+
+                    '<div class="header clearfix">'+
+                    '<img src="' +
+                    list.header +
+                    '" alt="">'+
+                    '<div class="fl">'+
+                    '<p class="name">' +
+                    list.name +
+                    '</p>'+
+                    '<p class="position">' +
+                    list.position +
+                    '</p>'+
+                    '</div>'+
+                    '</div>'+
+                    '<div class="time">' +
+                    list.log.time +
+                    '</div>'+
+                    '<div class="content">' +
+                    list.log.content +
+                    '</div>'+
+                    '<div class="notes clearfix">'+
+                    '<div class="fl time_">' +
+                    list.times +
+                    '</div>'+
+                    '</div>'+
+                    '</a>' +
+                    '<a class="more" href="/home/pat/more/userid/' +
+                    list.userid +
+                    '">全部日志</a>'+
+                    '</div>';
+        }
+        $(".lists" ).append(html);
+    }
+    mui("#refreshContainer").on("touchstart","a",function(){
+        $(this).css("backgroundColor","rgba(0,0,0,.1)");
+    }).on("touchend","a", function () {
+        $(this).css("backgroundColor","#fff");
+    });
+    mui("#refreshContainer").on("tap","a",function(){
+        var url = this.getAttribute("href");
+        window.location.href = url;
+    })
+
+</script>
+{/block}

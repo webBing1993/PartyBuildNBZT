@@ -1,0 +1,207 @@
+{extend name="public/common"}
+{block name="style"}
+<link rel="stylesheet" href="/home/sass/stylesheets/pat/more.css">
+<style>
+    .mui-table-view-cell:after {
+        left: 0;
+    }
+</style>
+{/block}
+{block name="body"}
+
+<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
+    <div class="mui-scroll">
+        <div class="mui-slider-group">
+            <!--没有权限-->
+            <!--<div class="no_">-->
+            <!--<img class="denied" src="/home/images/common/404.png" alt="">-->
+            <!--</div>-->
+            <div class="personal-intro">
+                <div class="date">
+                    <a class="year" id="openPopover" href="#popover"><span>{$msg.year}年</span> <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                    <a class="mouth" id="openPopover2" href="#popover2"><span>所有</span> <i class="fa fa-angle-down" aria-hidden="true"></i></a>
+                </div>
+                <div class="intro">
+                    <img src="{$msg.header}">
+                    <div>
+                        <p class="name">{$msg.name}</p>
+                        <p class="position">{$msg.depart} / {$msg.position}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="lists">
+                <!-- 循环体1-->
+                {volist name="$list" id="v"}
+                <div class="list">
+                    <!--<div class="defaults"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>-->
+                    <div class="daily">
+                        <p>{$key}月（共{$v|count}篇日志）</p>
+                    </div>
+                    <ul>
+                        <!-- 循环体2-->
+                        {volist name="v" id="vo"}
+                        <a href="/home/pat/detail/id/{$vo.id}">
+                            <span class="time">{$vo.day}</span>
+                            <span class="title">{$vo.content}</span>
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </a>
+                        {/volist}
+                    </ul>
+                </div>
+                {/volist}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popover" class="mui-popover" >
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <ul class="mui-table-view">
+                {volist name="years" id="v"}
+                <li class="mui-table-view-cell"><a>{$v.year}年</a></li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div id="popover2" class="mui-popover" >
+    <div class="mui-scroll-wrapper">
+        <div class="mui-scroll">
+            <ul class="mui-table-view">
+                <li class="mui-table-view-cell"><a>所有</a></li>
+                <li class="mui-table-view-cell"><a>1月</a></li>
+                <li class="mui-table-view-cell"><a>2月</a></li>
+                <li class="mui-table-view-cell"><a>3月</a></li>
+                <li class="mui-table-view-cell"><a>4月</a></li>
+                <li class="mui-table-view-cell"><a>5月</a></li>
+                <li class="mui-table-view-cell"><a>6月</a></li>
+                <li class="mui-table-view-cell"><a>7月</a></li>
+                <li class="mui-table-view-cell"><a>8月</a></li>
+                <li class="mui-table-view-cell"><a>9月</a></li>
+                <li class="mui-table-view-cell"><a>10月</a></li>
+                <li class="mui-table-view-cell"><a>11月</a></li>
+                <li class="mui-table-view-cell"><a>12月</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- 悬浮按钮-->
+{if condition="empty($leader)"}
+<a href="/home/pat/publish.html" class="after manager" id="publish"></a>
+{/if}
+{/block}
+{block name="script"}
+<script src="/home/js/reset.js"></script>
+<script>
+
+    $(function () {
+        $('title').text('民情日志');
+        // 发布按钮拖拽效果
+        "{if condition="empty($leader)"}"
+        moveanyway();
+        "{/if}"
+        if ($("#popover li").length == 1) {
+            $("#popover").height("15vw");
+        }
+    });
+
+    localStorage.setItem("state","1");
+    mui('.mui-scroll-wrapper').scroll();
+    $("#popover ul li").on("tap",function(){
+        var select_it = $(this).text();
+        $("#openPopover span").html(select_it);
+        mui('#popover').popover("hide");
+        var year =  parseInt($("#openPopover span").html());
+        if($("#openPopover2 span").html()=="所有"){
+            var month =  0;
+        }else{
+            var month =  parseInt($("#openPopover2 span").html());
+        }
+        ajax(year,month);
+
+    });
+
+    $("#popover2 ul li").on("tap",function(){
+        var select_it = $(this).text();
+        $("#openPopover2 span").html(select_it);
+        var year =  parseInt($("#openPopover span").html());
+        if($("#openPopover2 span").html()=="所有"){
+            var month =  0;
+            if(location.href.indexOf('#reloaded')==-1){
+                location.href=location.href+"#reloaded";
+                location.reload();
+            }
+        }else{
+            var month =  parseInt($("#openPopover2 span").html());
+            ajax(year,month);
+        }
+        mui('#popover2').popover("hide");
+    });
+
+
+    var ajax = function(year,month){
+        $.ajax({
+            type:"post",
+            url: "{:url('pat/more')}",
+            data:{
+                year: year,
+                month: month,
+                userid:"{$userid}"
+            },
+            beforeSend: function(XMLHttpRequest){
+
+            },
+            success:function(data){
+                if(data.data.length !== 0){
+                    addCourse(data);
+                } else {
+                    $(".list").html('<div class="defaults"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>')
+                }
+            }
+        })
+    };
+
+
+
+    function addCourse(data){
+        var html = '';
+        var lists = data.data;
+
+        for(var j in lists){
+            var len = lists[j].length;
+            html += '<div class="list">'+
+                    '<div class="daily">'+
+                    '<p>'+j+'月（共'+len+'篇日志）</p>'+
+                    '</div>'+
+                    '<ul>';
+            for(var i = 0; i< len;i++){
+                var list = lists[j][i];
+                html +=
+                        '<a href="/home/pat/detail/id/'+list.id+'.html">'+
+                        '<span class="time">'+list.day+'</span>'+
+                        '<span class="title">'+list.content+'</span>'+
+                        '<i class="fa fa-angle-right" aria-hidden="true"></i>'+
+                        '</a>'
+            }
+            html+='</ul></div>';
+        }
+
+        $('.lists').html(html);
+    }
+    mui("#refreshContainer").on("touchstart","a",function(){
+        $(this).css("backgroundColor","rgba(0,0,0,.1)");
+    }).on("touchend","a", function () {
+        $(this).css("backgroundColor","#fff");
+    });
+    mui("#refreshContainer").on("tap","a",function(e){
+        var url = this.getAttribute("href");
+        window.location.href = url;
+    })
+
+</script>
+
+{/block}
