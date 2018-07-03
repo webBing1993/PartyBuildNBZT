@@ -111,7 +111,7 @@ class Base extends Controller {
      * 6 redbook 红色文学
      * 7 redmusic 红色音乐
      * 8 companys  志愿之家风采展详情
-     * 9 self_flaw  流动党员
+     * 9
      */
     public function like(){
         $uid = session('userId'); //点赞人
@@ -144,9 +144,6 @@ class Base extends Controller {
                 break;
             case 8:
                 $table = "companys";
-                break;
-            case 9:
-                $table = "self_flaw";
                 break;
             default:
                 return $this->error("无该数据表");
@@ -256,7 +253,7 @@ class Base extends Controller {
      * 6 redbook 红色文学
      * 7 redmusic 红色音乐
      * 8 companys  志愿之家风采展详情
-     * 9 self_flaw  流动党员
+     * 9
      */
     public function comment(){
         if(IS_POST){
@@ -288,30 +285,9 @@ class Base extends Controller {
                 case 8:
                     $table = "companys";
                     break;
-                case 9:
-                    $table = "self_flaw";
-                    break;
                 default:
                     return $this->error("无该数据表");
                     break;
-            }
-            if($type == 9) {//流动党员的积分规则
-                $maps = [
-                    'userid'=>session('userId'),
-                    'status'=>1,
-                    'detail_id'=>$aid
-                ];
-                $rank = db('self_rank')->where($maps) ->find();
-                if(empty($rank)) {
-                    $info = [
-                        'userid'=>session('userId'),
-                        'detail_id'=>$aid,
-                        'rank'=>0.5,
-                        'status'=>1,
-                        'create_time'=>time()
-                    ];
-                    db('self_rank')->insert($info);
-                }
             }
             $commentModel = new Comment();
             $data = array(
@@ -469,7 +445,7 @@ class Base extends Controller {
      * 6 redbook 红色文学
      * 7 redmusic 红色音乐
      * 8 companys  志愿之家风采展详情
-     * 9 self_flaw  流动党员
+     *
      */
     public function content($type,$id){
         $userId = session('userId');
@@ -497,9 +473,6 @@ class Base extends Controller {
                 break;
             case 8:
                 $table = "companys";
-                break;
-            case 9:
-                $table = "self_flaw";
                 break;
             default:
                 return $this->error("无该数据表");
