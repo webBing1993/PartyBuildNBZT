@@ -30,9 +30,9 @@
                 <span class="read">{$new.views}</span>
                 {eq name="visit" value="0"}
                 {eq name="new.is_like" value="1"}
-                <span class="isgood good_" onclick="isGood(this,6,{$new.id})">{$new.likes}</span>
+                <span class="isgood good_" onclick="isGood(this,9,{$new.id})">{$new.likes}</span>
                 {else/}
-                <span class="isgood good" onclick="isGood(this,6,{$new.id})">{$new.likes}</span>
+                <span class="isgood good" onclick="isGood(this,9,{$new.id})">{$new.likes}</span>
                 {/eq}
                 {else/}
                 <span class="isgood good">{$new.likes}</span>
@@ -72,7 +72,7 @@
     </div>
 </div>
 {eq name="visit" value="0"}
-<div class="bottom clear" onclick="send(this,6,{$new['id']})">
+<div class="bottom clear" onclick="send(this,9,{$new['id']})">
     <div class="myword fl">
         <input type="text" placeholder="说说你的感想！" disabled>
     </div>
@@ -86,8 +86,6 @@
 <script>
     var scrollNow = true;//判断下拉请求是否执行中.false为正在请求
     $(function(){
-        timer();
-        setInterval(timer,5000);
         //reset
         var len = $(".list" ).length;
         if(len >= 7){
@@ -261,7 +259,7 @@
                     type:"post",
                     url:"{:Url('Base/morecomment')}",
                     data:{
-                        type:6,
+                        type:9,
                         aid:id,
                         length:len
                     },
@@ -327,21 +325,6 @@
                 $(this ).width(ww)
             }
         });
-    }
-
-    //计时
-    var timer = function(){
-        var iid = {$insert_id};
-        $.ajax({
-            type:"post",
-            url:"{:Url('Special/detail')}",
-            data:{
-                insert_id:iid
-            },
-            success:function(){
-
-            }
-        })
     }
 </script>
 <script src="http://res.wx.qq.com/open/js/jweixin-1.1.0.js"></script>
