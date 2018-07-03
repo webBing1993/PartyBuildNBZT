@@ -1,0 +1,227 @@
+{extend name="public/pure"}
+{block name="style"}
+<link rel="stylesheet" href="/home/sass/stylesheets/country/publish.css">
+<title>随手拍</title>
+<style>
+    .closed{
+        display: inline-block;
+        background: url("/home/images/country/close.png");
+        width: 6vw;
+        height: 6vw;
+        background-size: 6vw 6vw;
+        z-index: 999;
+        margin-left: -4vw;
+        margin-top: -3vw;
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="content scroll" style="position:absolute; overflow:scroll; -webkit-overflow-scrolling: touch; top:0; left:0; bottom:0; right:0">
+    <textarea placeholder="请输入内容..." name="content"></textarea>
+    <div class="imgs clear" style="display: flex;">
+        <input type="file" class="hide" id="upimg" accept="image/jpg, image/png, image/gif, image/jpeg">
+        <div class="add" style="display: inline-block"></div>
+    </div>
+    <input type="file" class="hide" id="upimg" accept="image/*">
+    <input type="hidden" name="id" value="{$msg.id || default=''}">
+    <p style="font-size: 0.32rem;color: #999;padding-left: 5vw;">字数限400，图片限3张（可不传）</p>
+
+<div class="goreview">发 布</div>
+<p class="tip" style="font-size: 0.32rem;color: #999;padding-left:5vw">注：点击发布后将发布到随手拍中，同时将保存到个人中心-我的发布中。</p>
+</div>
+
+
+<div class="showbox">
+    <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+        </svg>
+    </div>
+</div>
+{/block}
+{block name="script"}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    var	serverId=[],localIds;
+    var u = navigator.userAgent;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+    var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+    wx.config({
+        debug: false,
+        appId: '{$jsSign.appId}', // 必填，公众号的唯一标识
+        timestamp: {$jsSign['timestamp']}, // 必填，生成签名的时间戳，切记时间戳是整数型，别加引号
+        nonceStr: '{$jsSign.nonceStr}', // 必填，生成签名的随机串
+        signature: '{$jsSign.signature}', // 必填，签名，见附录1
+        jsApiList: [
+            'checkJsApi',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+        ]
+    });
+
+    wx.ready(function () {
+
+    });
+
+
+    var imgArr = [];
+    var deleteIds=[];
+    $('.add').on('click',function() {
+        var lens = $('.img').length;
+        var imglen = parseInt(3 - lens);
+        wx.chooseImage({
+            count: imglen, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                if(localIds.length==3){
+                    $('.add').fadeOut();
+                }
+                for(i=0;i<localIds.length;i++){
+                    $('.add').before('<div class="img" style="display: inline-block;position: relative;"><img src=' + localIds[i] + ' data-tab=' + localIds[i] + '></div><span class="closed"></span>');
+                    deleteIds.push(localIds[i]);
+                }
+                syncUpload(localIds);
+
+                $('.imgs').off("click",'.closed').on('click','.closed',function () {
+                    var that = $(this);
+                    var id = that.prev(".img").find("img").attr('data-tab');//每张图片上都有一个自定义属性保存了图片在后台中的id
+                        for (var i = 0; i < deleteIds.length; i++) {
+                            if (deleteIds[i] == id) {
+                                 deleteIds.splice(i, 1);
+                                 serverId.splice(i, 1);
+                            }
+                        }
+                        that.prev(".img").remove();
+                        that.remove();
+                        $('.add').show();
+                });
+                var len = $('.imgs .img').length;
+                if(len==3){
+                    $('.add').fadeOut();
+                }
+            }
+        });
+    });
+
+    //用户选好图片后,点击图片进行预览
+    $('.imgs').on('click','.img',function () {
+        var currentSrc = $(this).find("img").attr("data-tab");
+        //调用预览图片的接口
+        wx.previewImage({
+            current:currentSrc,//当前显示图片的http连接
+            urls: deleteIds//需要预览图片的http连接列表
+        });
+    });
+
+
+    var syncUpload = function(localIds){
+        var localId = localIds.shift();
+        wx.uploadImage({
+            localId: localId,
+            success: function (res) {
+                serverId.push(res.serverId); // 返回图片的服务器端ID
+                //其他对serverId做处理的代码
+                if(localIds.length > 0){
+                    if(isiOS){
+                        syncUpload(localIds);
+                    }else{
+                        setTimeout(function(){
+                            syncUpload(localIds);
+                        },500)
+                    }
+
+                }
+            }
+        });
+    };
+
+
+//去上传
+var flag = true;
+$(".goreview").click(function(){
+    var content = $("textarea[name='content']").val();
+    if(content!==''||serverId.length!=0) {
+        var data = {
+            content: content,
+            images: serverId
+        };
+        if (flag){
+            flag = false;
+            $.ajax({
+                type: "post",
+                url: "{:Url('Snapshot/publish')}",
+                data: data,
+                beforeSend: function(XMLHttpRequest){
+                    $(".showbox").show();
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        $(".showbox").show();
+                        swal({
+                            title: "提交成功",
+                            type: 'success',
+                            showCancelButton: false,
+                            confirmButtonText: "确定",
+                            allowOutsideClick: false
+                        });
+                        setTimeout(function () {
+                            flag = true;
+                            window.history.go(-1);
+                        }, 1500)
+                    } else {
+                        $(".showbox").show();
+                        swal({
+                            title: ' ',
+                            text: data.msg,
+                            type: 'error',
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        flag = true;
+                    }
+                }
+
+            });
+    }
+    }else{
+        swal({
+            title: ' ',
+            text: '发布信息不能为空',
+            type: 'error',
+            showConfirmButton:false,
+            timer:1500
+        });
+    }
+});
+
+var overscroll = function(el) {
+    el.addEventListener('touchstart', function() {
+        var top = el.scrollTop
+                , totalScroll = el.scrollHeight
+                , currentScroll = top + el.offsetHeight;
+        if(top === 0) {
+            el.scrollTop = 1;
+        } else if(currentScroll === totalScroll) {
+            el.scrollTop = top - 1;
+        }
+    });
+    el.addEventListener('touchmove', function(evt) {
+        if(el.offsetHeight < el.scrollHeight)
+            evt._isScroller = true;
+    });
+};
+
+overscroll(document.querySelector('.scroll'));
+document.body.addEventListener('touchmove', function(evt) {
+    if(!evt._isScroller) {
+        evt.preventDefault();
+    }
+});
+</script>
+{/block}

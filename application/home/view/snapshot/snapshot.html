@@ -1,0 +1,328 @@
+{extend name="public/pure"}
+{block name="style"}
+<link rel="stylesheet" href="/home/sass/stylesheets/country/snapshot.css">
+<title>随手拍</title>
+<style>
+
+</style>
+{/block}
+{block name="body"}
+<div class="scroll" style="position:absolute; overflow:scroll; -webkit-overflow-scrolling: touch; top:0; left:0; bottom:10.7vw; right:0">
+    <img src="/home/images/index/banner.png" class="banner">
+    <div class="notices">
+        <div class="lists">
+            {empty name="list"}
+                <div class="default"><img src="/home/images/common/nomessage.png"></div>
+            {else/}
+            {volist name="list" id="vo"}
+            <div class="list clear">
+                <div class="fl">
+                    <img src="{$vo.header}" alt="用户头像">
+                </div>
+                <div class="fr">
+                    <div class="name limit">{$vo.user}</div>
+                    <div class="content">{$vo.content}</div>
+                    <div class="imgs">
+                        {volist name = "$vo.img" id="pic"}
+                        <div class="img">
+                            <img src="{$pic}" alt="评论图">
+                        </div>
+                        {/volist}
+                    </div>
+                    <div class="note clear">
+                        <span style="width:80%">{$vo.department}/{$vo.time}发布</span>
+
+                        {eq name="visit" value="0"}
+                        {eq name="vo.is_like" value="1"}
+                        <span class="good_" onclick="isGood(this,4,'{$vo.id}')"></span>
+                        {else/}
+                        <span class="good" onclick="isGood(this,4,'{$vo.id}')"> </span>
+                        {/eq}
+                        <span class="goodnum">{$vo.likes}</span>
+                        <span class="fr message" onclick="send(this,{$vo.id})"></span>
+                        {else/}
+                        <span class="good"></span>
+                        <span class="goodnum">{$vo.likes}</span>
+                        <span class="message"></span>
+                        {/eq}
+                    </div>
+                    <ul class="comments">
+                        {notempty name="$vo.comment"}
+                        {volist name ="$vo.comment" id="co"}
+                        <li>
+                            <span class="name">{$co.nickname}：</span>
+                            <span class="comment">{$co.content}</span>
+                        </li>
+                        {/volist}
+                        {/notempty}
+                    </ul>
+                </div>
+            </div>
+            {/volist}
+            {/empty}
+        </div>
+    </div>
+    <div class="tip"></div>
+    <div class="loading hidden">
+        <div class="typing_loader"></div>
+    </div>
+</div>
+
+
+<a id="publish" href="{:Url('Snapshot/publish')}">我要发布</a>
+
+{/block}
+{block name="script"}
+<script src="/home/js/reset.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    $(function(){
+        var len = $('.lists .list').length;
+        if(len >= 12){
+            $('.tip' ).text('上拉加载更多');
+            document.getElementsByClassName("scroll")[0].addEventListener('scroll',loadScroll);
+
+        }
+    });
+
+    //点赞
+    var flag = true;
+    var isGood = function(e,type,id){
+        if(flag){
+            flag = false;
+            //样式变化，移到suc
+            var n = $(e).next('.goodnum').text();
+            $.ajax({
+                type:"post",
+                url:"{:Url('Base/like')}",
+                data:{
+                    type:type,
+                    aid:id,
+                },
+                success:function(data){
+                    $(e).toggleClass('good' ).toggleClass('good_');
+                    $(e ).hasClass('good')?n--:n++;
+                    $(e ).next('.goodnum').text(n);
+                    flag = true;
+                }
+            })
+        }
+    };
+
+    //发送评论
+    var send = function(e,id){
+        var index = $(e).parents('.lists .list' ).index();
+        swal({
+                    title: "",
+                    text: "请输入评论内容！",
+                    type: "input",
+                    showCancelButton: true,
+                    animation: "slide-from-top",
+                    inputPlaceholder: "",
+                    confirmButtonText: "确定",
+                    cancelButtonText: "取消",
+                    closeOnConfirm: false
+                },
+                function(inputValue){
+                    if (inputValue === false) {
+                        $(".bottom").show();
+                        setTimeout(function(){
+                            $("input").blur();
+                        },0)
+                        return false
+                    }else if (inputValue === "" || inputValue.length<1)
+                    {
+                        swal.showInputError("评论不少于1个字");
+                        return false
+                    }else if(inputValue.length>300){
+                        swal.showInputError("评论不得多于300字");
+                    }else{
+                        $.ajax({
+                            type:"post",
+                            url:"{:Url('Base/comment')}",
+                            data:{
+                                type :4,
+                                aid:id,
+                                content:inputValue
+                            },
+                            success:function(msg){
+                                console.log(msg)
+                                var data = msg.data;
+                                var html = '';
+                                html +=
+                                        '<li>'+
+                                        '<span class="name">'+data.nickname+'：</span>'+
+                                        '<span class="comment">&nbsp;'+data.content+'</span>'+
+                                        '</li>';
+
+                                $('.lists .list').eq(index).find('.comments').removeClass('hide').prepend(html);
+                                swal({
+                                    title: ' ',
+                                    text: '评论成功',
+                                    type: 'success',
+                                    confirmButtonText:'确定',
+                                    timer:3000
+                                });
+                            }
+                        });
+                    }
+                    setTimeout(function(){
+                        $("input").blur();
+                    },0)
+                });
+    };
+
+    var scrollNow = true;
+    function loadScroll(){
+        var len = $('.lists .list').length;
+        var tip = $(".tip");
+        var loading = $('.loading');
+        var el = document.getElementsByClassName("scroll")[0];
+        if(el.scrollTop + el.offsetHeight +2 >= el.scrollHeight && scrollNow){
+            scrollNow = false;//请求执行中
+            $.ajax({
+                type: 'post',
+                url: "{:Url('Snapshot/listMore')}",
+                data: {
+                    length:len
+                },
+                beforeSend: function(XMLHttpRequest){
+                    tip.hide();
+                    loading.toggleClass('hidden');
+                },
+                success:function(data){
+                    loading.toggleClass('hidden');
+                    tip.show();
+                    if(data.code == 1){
+                        addLists(data);
+                        var dataLen =data.data.length;
+                        if(data.data.length == 5){
+                            tip.text('上拉加载更多');
+                        }else{
+                            tip.text('没有更多了');
+                            document.getElementsByClassName("scroll")[0].removeEventListener('scroll',loadScroll);
+                        }
+                    }else{
+                        tip.text('没有更多了');
+                        document.getElementsByClassName("scroll")[0].removeEventListener('scroll',loadScroll);
+                    }
+                    scrollNow = true;//请求结束
+                }
+            })
+        }
+    }
+
+    function addLists(data){
+        console.log(data)
+        var html = '';
+        var lists = data.data;
+        var len = lists.length;
+        for(var i = 0; i< len;i++){
+            var list = lists[i];
+                html +=
+                        '<div class="list clear">'+
+                        '<div class="fl">'+
+                        '<img src="'+list.header+'" alt="用户头像">'+
+                        '</div>'+
+                        '<div class="fr">'+
+                        '<div class="name limit">'+list.user+'</div>'+
+                        '<div class="content">'+list.content+'</div>'+
+                        '<div class="imgs">';
+                var imglen = list.img.length;
+                for(var j = 0 ;j<imglen ;j++){
+                    html+=
+                            '<div class="img">'+
+                            '<img src='+list.img[j]+' alt="评论图" data-original="">'+
+                            '</div>';
+                }
+                var good = list.is_like == 0?'good':'good_';
+                html +=
+                        '</div>'+
+                        '<div class="note clear">'+
+                        '<span style="width:80%">'+list.department+'/'+list.time+'发布</span>'
+            if ({$visit} == 0){
+                    html+= '<span class="'+good+'" onclick="isGood(this,4,'+list.id+')"></span>'+
+                            '<span class="fr goodnum">'+list.likes+'</span>'+
+                            '<span class="message" onclick="send(this,'+list.id+')"></span>'+
+                            '</div>'+
+                            '<ul class="comments">';
+            }else{
+                html+= '<span class="'+good+'"></span>'+
+                        '<span class="goodnum">'+list.likes+'</span>'+
+                        '<span class="message"></span>'+
+                        '</div>'+
+                        '<ul class="comments">';
+            }
+                var commentlen = list.comment.length;
+                for(var x = 0 ;x <commentlen ;x++){
+                    html+=
+                            '<li>'+
+                            '<span class="name">'+list.comment[x].nickname+'：</span>'+
+                            '<span class="comment">'+list.comment[x].content+'</span>'+
+                            '</li>'
+                }
+                html+=
+                        '</ul>'+
+                        '</div>'+
+                        '</div>';
+        }
+            $(".lists" ).append(html);
+        layout();
+        $(".img img").on('click',function(event) {
+            var imgArray = [];
+            var curImageSrc = window.location.protocol+'//'+window.location.host+$(this).attr('src');
+            var oParent = $(this).parent();
+            if (curImageSrc && !oParent.attr('href')) {
+                oParent.parent().find("img").each(function(index, el) {
+                    var itemSrc = window.location.protocol+'//'+window.location.host+$(this).attr('src');
+                    imgArray.push(itemSrc);
+                });
+                wx.previewImage({
+                    current: curImageSrc,
+                    urls: imgArray
+                });
+            }
+        });
+    }
+
+
+    var layout = function(){
+        $('.list').each(function(){
+            var this_ = $(this);
+            var n_img = this_.find('.imgs .img' ).length;
+            var n_li = this_.find('.comments li' ).length;
+            console.log(n_li)
+            if(n_img == 4){
+                this_.find('.imgs .img' ).eq(1).after('')
+            }
+            if(n_li == 0){
+                this_.find('.comments').addClass('hide');
+            }
+        })
+    };
+
+    //图片排版、评论框
+    layout();
+
+    window.onpageshow = function (e) {
+        if (e.persisted) {
+            window.location.reload(true)
+        }
+    }
+    $(".img img").on('click',function(event) {
+        var imgArray = [];
+        var curImageSrc = window.location.protocol+'//'+window.location.host+$(this).attr('src');
+        var oParent = $(this).parent();
+        if (curImageSrc && !oParent.attr('href')) {
+            oParent.parent().find("img").each(function(index, el) {
+                var itemSrc = window.location.protocol+'//'+window.location.host+$(this).attr('src');
+                imgArray.push(itemSrc);
+            });
+            wx.previewImage({
+                current: curImageSrc,
+                urls: imgArray
+            });
+        }
+    });
+</script>
+{/block}
