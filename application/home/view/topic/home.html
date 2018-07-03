@@ -6,16 +6,17 @@
 {/block}
 {block name="body"}
 <div class="content">
-    {volist name="$list" id="v" key="k"}
-    <a href="/home/theory/index/id/{$k}.html" class="pic">
+    {volist name="$list" id="v"}
+    <a href="{:Url('Topic/index?id='.$v['id'])}" class="pic">
         <span>{$v.title}</span>
         <img src="{$v.front_cover|get_cover='path'}">
     </a>
     {/volist}
-    <div class="tip"></div>
-    <div class="loading hidden">
-        <div class="typing_loader"></div>
-    </div>
+
+</div>
+<div class="tip"></div>
+<div class="loading hidden">
+    <div class="typing_loader"></div>
 </div>
 {/block}
 {block name="script"}
@@ -43,10 +44,9 @@
                 scrollNow = false;
                 $.ajax({
                     type:"post",
-                    url:"{:Url('Special/more')}",
+                    url:"{:Url('Topic/homemore')}",
                     data:{
                         length:len,
-
                     },
                     beforeSend: function(XMLHttpRequest){
                         tip.hide();
@@ -56,7 +56,7 @@
                         loading.toggleClass('hidden');
                         tip.show();
                         if(data.code == 1){
-                            addNews(data,type);
+                            addNews(data);
                             var dataLen =data.data.length;
                             if(data.data.length == 6){
                                 tip.text('上拉加载更多');
@@ -77,9 +77,9 @@
         var len = lists.length;
         for(var i = 0; i< len;i++){
             var list = lists[i];
-            html +='<a href="/home/theory/index/id/'+list.id+'.html" class="pic">' +
+            html +='<a href="/home/topic/index/id/'+list.id+'.html" class="pic">' +
                 '<span>'+list.title+'</span>' +
-                '<img src="'+list.img+'">' +
+                '<img src="'+list.src+'">' +
                 '</a>'
         }
         $(".content").append(html);

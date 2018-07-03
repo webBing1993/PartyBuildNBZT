@@ -34,7 +34,7 @@ class Topic extends Base
      * @return
      * 主题更多
      */
-    public function home_more(){
+    public function homemore(){
         $len = input('length');
         $map = array(
             'type' => 1,

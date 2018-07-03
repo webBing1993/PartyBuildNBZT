@@ -25,9 +25,12 @@
         left: 50%;
         -webkit-transform: translate(-50%,-50%);
     }
-    .default{
-        background:#eee;
-        height:0;
+    .default img {
+        width: 16vw;
+        position: absolute;
+        left: 50%;
+        margin-top: 50%;
+        margin-left: -8vw;
     }
     /*.banner a:active{*/
         /*background: none!important;*/
@@ -40,7 +43,7 @@
 <!--新闻聚焦-->
 <div class="notice">
     {empty name="list"}
-    <div class="default"><img src="/home/images/notice/nomessage.png" alt="暂无消息"> </div>
+    <div class="default"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>
     {else/}
     <div class="lists">
         {volist name="list" id="vo"}
