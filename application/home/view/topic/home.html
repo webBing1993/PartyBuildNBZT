@@ -7,15 +7,82 @@
 {block name="body"}
 <div class="content">
     {volist name="$list" id="v" key="k"}
-    <a href="/home/theory/index/id/{$k}.html">
+    <a href="/home/theory/index/id/{$k}.html" class="pic">
         <span>{$v.title}</span>
         <img src="{$v.front_cover|get_cover='path'}">
     </a>
     {/volist}
+    <div class="tip"></div>
+    <div class="loading hidden">
+        <div class="typing_loader"></div>
+    </div>
 </div>
 {/block}
 {block name="script"}
 <script>
     $("title").text("专题模块");
+    var scrollNow = true;//判断下拉请求是否执行中.false为正在请求
+    $(function(){
+        //初始化数据
+        var ntc = $(".pic");
+        var len  = ntc.length;
+        if(len >= 12 ){
+            $('.tip').text('上拉加载更多');
+            loadScroll();
+        }
+    });
+    function loadScroll(){
+        $(window ).off("scroll" ).on("scroll",function(){
+            var ntc = $(".pic");
+            var dh = $(document).height();
+            var end = $(window).height() + $(window ).scrollTop();
+            var len  = ntc.length;
+            var tip = $(".tip");
+            var loading = $('.loading');
+            if(dh == end){
+                scrollNow = false;
+                $.ajax({
+                    type:"post",
+                    url:"{:Url('Special/more')}",
+                    data:{
+                        length:len,
+
+                    },
+                    beforeSend: function(XMLHttpRequest){
+                        tip.hide();
+                        loading.toggleClass('hidden');
+                    },
+                    success:function(data){
+                        loading.toggleClass('hidden');
+                        tip.show();
+                        if(data.code == 1){
+                            addNews(data,type);
+                            var dataLen =data.data.length;
+                            if(data.data.length == 6){
+                                tip.text('上拉加载更多');
+                            }
+                        }else{
+                            tip.text('没有更多了');
+                            $(window ).off("scroll");
+                        }
+                        scrollNow = true;
+                    }
+                })
+            }
+        })
+    }
+    function addNews(data){
+        var html = '';
+        var lists = data.data;
+        var len = lists.length;
+        for(var i = 0; i< len;i++){
+            var list = lists[i];
+            html +='<a href="/home/theory/index/id/'+list.id+'.html" class="pic">' +
+                '<span>'+list.title+'</span>' +
+                '<img src="'+list.img+'">' +
+                '</a>'
+        }
+        $(".content").append(html);
+    }
 </script>
 {/block}
