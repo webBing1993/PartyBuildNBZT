@@ -2,7 +2,7 @@
 
 {block name="style"}
 <title>专题模块</title>
-<link rel="stylesheet" href="/static/swiper/swiper-3.3.1.min.css">
+
 <link rel="stylesheet" href="/home/sass/stylesheets/news/news.css">
 <style>
     /*.banner a div{*/
@@ -36,21 +36,7 @@
 {/block}
 
 {block name="body"}
-{notempty name="topic"}
-<div class="banners">
-    <div class="swiper-container">
-        <div class="imgs swiper-wrapper">
-            <div class="banner swiper-slide">
-                <a>
-                    <img src="/home/images/special/banner.jpeg" alt="图片">
-                    <div></div>
-                    <!--<span>{$topic.title}</span>-->
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-{/notempty}
+
 <!--新闻聚焦-->
 <div class="notice">
     {empty name="list"}
@@ -81,7 +67,7 @@
 {/block}
 
 {block name="script"}
-<script src="/static/swiper/swiper-3.3.1.jquery.min.js"></script>
+
 <script src="/home/js/reset.js"></script>
 <script>
     var scrollNow = true;//判断下拉请求是否执行中.false为正在请求
