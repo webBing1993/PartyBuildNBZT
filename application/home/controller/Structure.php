@@ -14,7 +14,7 @@ class Structure extends Base{
      * 组织架构主页
      */
     public function index(){
-        $departments = WechatDepartment::where(['id' => ['notin',[1,2,185,186]]])->order('order','asc')->field('id,name')->select();
+        $departments = WechatDepartment::where([])->order('order','asc')->field('id,name')->select();
         $this->assign('msg',$departments);
         return $this->fetch();
     }
