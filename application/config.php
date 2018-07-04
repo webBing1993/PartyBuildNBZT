@@ -86,6 +86,8 @@ return [
 
     // 民情日志 大领导权限
     define('tagId',5),
+    // 会议签到  扫码权限
+    define('scanId',2),
     define('hostUrl','http://nbzt.0571ztnet.com'),
 //    define('toUser','@all')
     define('toUser','13588359175'),

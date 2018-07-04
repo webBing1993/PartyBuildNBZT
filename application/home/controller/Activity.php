@@ -143,25 +143,23 @@ class Activity extends Base
                 $content = str_replace("&nbsp;","",$des);  //空格符替换成空
                 $pre = '【会议纪要】';
                 $url ="/home/review/detail/id/";
-                $url = "http://".$_SERVER['HTTP_HOST'].$url.$id.".html";
+                $url = hostUrl.$url.$id.".html";
                 $image = Picture::get($data['front_cover']);
-                $path = "http://".$_SERVER['HTTP_HOST'].$image['path'];
-                $information = array(
-                    'title' => $pre.$data['title'],
-                    'description' => $content,
-                    'url'  => $url,
-                    'picurl' => $path
-                );
+                $path = hostUrl.$image['path'];
                 $send = array(
                     "articles" => array(
-                        0 => $information
+                        array(
+                            'title' => $pre.$data['title'],
+                            'description' => $content,
+                            'url'  => $url,
+                            'picurl' => $path
+                        )
                     )
                 );
                 $message = array(
-//                    "totag" => 1,  // 审核组
-                    "touser" => "17557289172",
+                    "totag" => toTag,  // 审核组
                     "msgtype" => 'news',
-                    "agentid" =>1000004,
+                    "agentid" => Config::get('review.agentid'),
                     "news" => $send,
                 );
                 //发送给企业号
@@ -179,6 +177,4 @@ class Activity extends Base
             return $this->fetch();
         }
     }
-
-
 }

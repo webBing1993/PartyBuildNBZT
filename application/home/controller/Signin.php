@@ -58,7 +58,7 @@ class Signin extends Base {
         $this->jssdk();
         $id=input('id');
         $userId = session('userId');
-        $res = WechatUserTag::where(['tagid' => 5,'userid' => $userId])->find();
+        $res = WechatUserTag::where(['tagid' => scanId,'userid' => $userId])->find();
         if ($res){
             $is = 1;
         }else{
