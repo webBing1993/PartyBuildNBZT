@@ -42,7 +42,7 @@
 	</div>
 	<div class="list clear">
 		<span class="fl">出生日期</span>
-		<span class="fr">{$user.birthday|time_format="Y-m-d"}</span>
+		<span class="fr">{empty name="$user.birthday"} 暂无 {else/} {$user.birthday|time_format="Y-m-d"} {/empty}</span>
 	</div>
 	<div class="list clear">
 		<span class="fl">手机号</span>

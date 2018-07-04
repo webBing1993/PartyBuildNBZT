@@ -80,12 +80,12 @@ body {
 }
 
 .lists .list:nth-child(1) span {
-  background: url("/home/images/user/info.png") 0 3vw no-repeat;
+  background: url("/home/images/user/message.png") 0 3vw no-repeat;
   background-size: 7.5vw 7.5vw;
 }
 
 .lists .list:nth-child(2) span {
-  background: url("/home/images/user/checkin.png") 0 3vw no-repeat;
+  background: url("/home/images/user/join.png") 0 3vw no-repeat;
   background-size: 7.5vw 7.5vw;
 }
 
@@ -100,7 +100,7 @@ body {
 }
 
 .lists .list:nth-child(5) span {
-  background: url("/home/images/user/feedback.png") 0 3vw no-repeat;
+  background: url("/home/images/user/notes.png") 0 3vw no-repeat;
   background-size: 7.5vw 7.5vw;
 }
 

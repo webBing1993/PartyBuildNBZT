@@ -97,7 +97,7 @@
     <div class="top">
         <div class="top_top">
             {eq name="visit" value="1"}
-            <img src="/home/images/vistor.jpg">
+            <img src="/home/images/rank/vistor.jpg">
             <p>游客</p>
             {else/}
             <img id="pic" src="{$personal.userid|get_header}">
@@ -105,7 +105,6 @@
                 <img src="/home/images/score.png" alt="规则" data-toggle="modal" data-target="#myModal">
                 <span data-toggle="modal" data-target="#myModal">积分规则</span>
             </div>
-
             <p>{$personal.name}</p>
             <p>{$personal.dpname}</p>
 
@@ -151,7 +150,7 @@
                     <h5>评论文章：<b>1分</b></h5>
                     <!--<h5>参加党群服务中心举办集中培训或活动：<b>20分</b></h5>-->
                     <!--<h5>参加中心组织的志愿服务：<b>20分</b></h5>-->
-                    备注:<br/> &emsp;&emsp; 同一篇文章重复浏览、点赞不累积得分，且积分对象仅限于箬横镇内部党员!
+                    备注:<br/> &emsp;&emsp; 同一篇文章重复浏览、点赞不累积得分，且积分对象仅限于企业号内部人员!
                 </div>
             </div>
         </div>
@@ -184,9 +183,6 @@
                     <span class="ranking">{$k}</span>
                     <img src="{$fi.userid|get_header}">
                     <span class="department">{$fi.name}</span>
-                    {eq name="$fi.tag" value="1"}
-                    <span class="flowing">流动党员</span>
-                    {/eq}
                     <span class="int">积分{$fi.score}分</span>
                 </li>
                 {/volist}
@@ -199,9 +195,6 @@
                     <span class="ranking">{$k}</span>
                     <img src="{$mo.userid|get_header}">
                     <span class="department">{$mo.name}</span>
-                    {eq name="mo.tag" value="1"}
-                    <span class="flowing">流动党员</span>
-                    {/eq}
                     <span class="int">积分{$mo.score}分</span>
                 </li>
                 {/volist}
@@ -214,9 +207,6 @@
                     <span class="ranking">{$k}</span>
                     <img src="{$vo.userid|get_header}">
                     <span class="department">{$vo.name}</span>
-                    {eq name="vo.tag" value="1"}
-                    <span class="flowing">流动党员</span>
-                    {/eq}
                     <span class="int">积分{$vo.score}分</span>
                 </li>
                 {/volist}

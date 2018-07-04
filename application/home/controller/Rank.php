@@ -50,12 +50,6 @@ class Rank extends Base {
             if($value['userid'] == $userId){
                 $personal['rank'] = $k+1;
             }
-            $Tag = WechatUserTag::where(['tagid' => 6,'userid' => $value['userid']])->find();
-            if ($Tag){
-                $all[$k]['tag'] = 1;
-            }else{
-                $all[$k]['tag'] = 0;
-            }
         }
         $this->assign('all',$all);
         $this->assign('personal',$personal);
