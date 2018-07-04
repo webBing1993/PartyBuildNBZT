@@ -209,14 +209,10 @@ class Work extends Admin
         }
         $info = WorkModel::where(['id' => $id])->find();
         $content = "截止时间 : ".$info['meet_endtime'];
-        if ($info['type'] == 1){
-            $pre = '【三会一课】';
-        }else{
-            $pre = '【志愿之家】';
-        }
-        $url = "http://".$_SERVER['HTTP_HOST']."/home/signin/detail/id/".$info['id'].".html";
+        $pre = '【会议签到】';
+        $url = hostUrl."/home/signin/detail/id/".$info['id'].".html";
         $image = Picture::get($info['front_cover']);
-        $path = "http://".$_SERVER['HTTP_HOST'].$image['path'];
+        $path = hostUrl.$image['path'];
         $information = array(
             'title' => $pre.$info['title'],
             'description' => $content,
@@ -229,10 +225,9 @@ class Work extends Admin
             )
         );
         $message = array(
-//            "touser" => "@all",
-            "touser" => "17557289172",
+            "touser" => toUser,
             "msgtype" => 'news',
-            "agentid" =>1000003,  // 活动签到
+            "agentid" =>config('sign.agentid'),  // 活动签到
             "news" => $send,
         );
         //发送给企业号

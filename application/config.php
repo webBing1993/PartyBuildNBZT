@@ -63,12 +63,32 @@ return [
         'appsecret' => ' ',
         'agentid' => 1000003
     ),
+    // 第一聚焦
+    'news' => array(
+        'appid' => ' ',
+        'appsecret' => ' ',
+        'agentid' => 1000003
+    ),
+    // 通知公告
+    'notice' => array(
+        'appid' => ' ',
+        'appsecret' => ' ',
+        'agentid' => 1000003
+    ),
+    // 党员教育
+    'learn' => array(
+        'appid' => ' ',
+        'appsecret' => ' ',
+        'agentid' => 1000003
+    ),
     /* UC用户中心配置 */
     'uc_auth_key' => '(.t!)=JTb_OPCkrD:-i"QEz6KLGq5glnf^[{p;je',
-    /*直播地址*/
 
-    define('hostUrl',''),
-    define('agentId',1000004),
+    // 民情日志 大领导权限
+    define('tagId',5),
+    define('hostUrl','http://nbzt.0571ztnet.com'),
 //    define('toUser','@all')
-    define('toUser','13588359175')
+    define('toUser','13588359175'),
+    // 审核标签
+    define('toTag',1),
 ];

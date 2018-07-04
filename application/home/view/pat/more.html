@@ -5,6 +5,13 @@
     .mui-table-view-cell:after {
         left: 0;
     }
+    .defaults img {
+        width: 16vw;
+        position: absolute;
+        left: 50%;
+        margin-left: -8vw;
+        top: 80%;
+    }
 </style>
 {/block}
 {block name="body"}
@@ -31,9 +38,11 @@
             </div>
             <div class="lists">
                 <!-- 循环体1-->
+                {empty name="$list"}
+                <div class="defaults"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>
+                {else/}
                 {volist name="$list" id="v"}
                 <div class="list">
-                    <!--<div class="defaults"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>-->
                     <div class="daily">
                         <p>{$key}月（共{$v|count}篇日志）</p>
                     </div>
@@ -49,6 +58,7 @@
                     </ul>
                 </div>
                 {/volist}
+                {/empty}
             </div>
         </div>
     </div>

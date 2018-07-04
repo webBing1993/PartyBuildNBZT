@@ -135,7 +135,6 @@
             beforeSend: function(XMLHttpRequest){
             },
             success:function(data){
-                console.log(data);
                 addCourse(data);
                 if(data.code == 1){
                     var dataLen =data.data.length;

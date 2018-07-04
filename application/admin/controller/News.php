@@ -122,13 +122,13 @@ class News extends Admin {
         $str = strip_tags($info['content']);
         $des = mb_substr($str,0,40);
         $content = str_replace("&nbsp;","",$des);  //空格符替换成空
-        $pre = '【箬横动态】';
+        $pre = '【第一聚焦】';
         $url = hostUrl."/home/Reviews/detail/class/2/id/".$id.".html";
         $image = Picture::get($info['front_cover']);
         $path = hostUrl.$image['path'];
         $send = [
             'articles' => [
-                0 => [
+                [
                     'title' => $pre.$info['title'],
                     'description' => $content,
                     'url'  => $url,
@@ -138,11 +138,10 @@ class News extends Admin {
         ];
         //发送给企业号
         if ($status == 0){
-            // 待审核
             $Wechat = new TPQYWechat(Config::get('review'));
+            // 待审核
             $message = array(
-//                "touser" => toUser,
-                "totag" => 1,
+                "totag" => toTag,
                 "msgtype" => 'news',
                 "agentid" => config('review.agentid'),  // 消息审核
                 "news" => $send,
@@ -150,11 +149,11 @@ class News extends Admin {
             );
         }elseif ($status == 1){
             // 通过
-            $Wechat = new TPQYWechat(Config::get('user'));
+            $Wechat = new TPQYWechat(Config::get('news'));
             $message = array(
                 "touser" => toUser,
                 "msgtype" => 'news',
-                "agentid" => config('user.agentid'),  // 个人中心
+                "agentid" => config('news.agentid'),  // 第一聚焦
                 "news" => $send,
                 "safe" => "0"
             );

@@ -126,7 +126,7 @@ class Special extends Admin
         $path = hostUrl.$image['path'];
         $send = [
             'articles' => [
-                0 => [
+                [
                     'title' => $pre.$info['title'],
                     'description' => $content,
                     'url'  => $url,
@@ -139,8 +139,7 @@ class Special extends Admin
             // 待审核
             $Wechat = new TPQYWechat(Config::get('review'));
             $message = array(
-//                "touser" => toUser,
-                "totag" => 1,
+                "totag" => toTag,
                 "msgtype" => 'news',
                 "agentid" => config('review.agentid'),  // 消息审核
                 "news" => $send,
@@ -148,11 +147,11 @@ class Special extends Admin
             );
         }elseif ($status == 1){
             // 通过
-            $Wechat = new TPQYWechat(Config::get('user'));
+            $Wechat = new TPQYWechat(Config::get('notice'));
             $message = array(
                 "touser" => toUser,
                 "msgtype" => 'news',
-                "agentid" => config('user.agentid'),  // 个人中心
+                "agentid" => config('notice.agentid'),  // 个人中心
                 "news" => $send,
                 "safe" => "0"
             );

@@ -250,11 +250,11 @@ class Study extends Admin {
         }
 
         //发送给服务号
-        $Wechat = new TPQYWechat(Config::get('user'));
+        $Wechat = new TPQYWechat(Config::get('learn'));
         $message = array(
             "touser" => toUser,
             "msgtype" => 'news',
-            "agentid" => agentId,  // 个人中心
+            "agentid" => config('learn.agentid'),  // 个人中心
             "news" => $send,
             "safe" => "0"
         );
