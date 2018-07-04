@@ -89,7 +89,7 @@
     $(function(){
         //reset
         var len = $(".list" ).length;
-        if(len >= 7){
+        if(len >= 10){
             $('.tip' ).text('上拉加载更多');
             //上拉加载评论
             loadScroll();
@@ -274,7 +274,7 @@
                         if(data.code == 1){
                             addComment(data);
                             var dataLen =data.data.length;
-                            if(data.data.length == 5){
+                            if(data.data.length == 10){
                                 tip.text('上拉加载更多');
                             }
                         }else{
