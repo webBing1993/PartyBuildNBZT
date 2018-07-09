@@ -244,7 +244,7 @@ class Review extends Base{
             $message = array(
                 "touser" => $user_id,
                 "msgtype" => 'text',
-                "agentid" =>1000005,
+                "agentid" =>Config::get('user.agentid'),
                 "text" => array('content' => $content),
             );
             //发送给企业号

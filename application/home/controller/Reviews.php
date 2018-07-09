@@ -79,81 +79,72 @@ class Reviews extends Base
                     $info = Db::name('special')->where('id',$msg['id'])->find();
                     $pre = '【通知公告】';
                     $url = hostUrl."/home/Notice/detail/id/".$info['id'].".html";
+                    // 通过 则判断是否推送
+                    if($info['push'] == 1 && $msg['status']== 1){
+                        $str = strip_tags($info['content']);
+                        $des = mb_substr($str,0,40);
+                        $content = str_replace("&nbsp;","",$des);  //空格符替换成空
+                        $image = Picture::get($info['front_cover']);
+                        $path = hostUrl.$image['path'];
+                        $send = [
+                            'articles' => [
+                                [
+                                    'title' => $pre.$info['title'],
+                                    'description' => $content,
+                                    'url'  => $url,
+                                    'picurl' => $path
+                                ]
+                            ]
+                        ];
+                        $Wechat = new TPQYWechat(Config::get('notice'));
+                        $message = array(
+                            "touser" => toUser,
+                            "msgtype" => 'news',
+                            "agentid" => config('notice.agentid'),  // 通知公告
+                            "news" => $send,
+                            "safe" => "0"
+                        );
+                        $msg = $Wechat->sendMessage($message);
+                        if($msg['errcode'] !== 0){
+                            return $this->error('审核失败');
+                        }
+                    }
                     break;
                 case 2: // 箬横动态
                     Db::name('news')->where('id',$msg['id'])->update(['status' => $msg['status']]);
                     $info = Db::name('news')->where('id',$msg['id'])->find();
-                    $pre = '【箬横动态】';
+                    $pre = '【第一聚焦】';
                     $url = hostUrl."/home/News/detail/id/".$info['id'].".html";
-                    break;
-                case 4: // 流动党员
-                    Db::name('self_flaw')->where('id',$msg['id'])->update(['status' => $msg['status']]);
-                    $info = Db::name('self_flaw')->where('id',$msg['id'])->find();
-                    $pre = '【流动党员】';
-                    break;
-            }
-            // 通过 则判断是否推送
-            if($msg['type'] == 4 ) {
-                if($info['status'] == 1){
-                    $str = strip_tags($info['content']);
-                    $des = mb_substr($str,0,40);
-                    $content = str_replace("&nbsp;","",$des);  //空格符替换成空
-                    $url = hostUrl."/home/flaw/detail/id/".$info['id'].".html";
-                    $image = Picture::get($info['front_cover']);
-                    $path = hostUrl.$image['path'];
-                    $send = [
-                        'articles' => [
-                            0 => [
-                                'title' => $pre.$info['title'],
-                                'description' => $content,
-                                'url'  => $url,
-                                'picurl' => $path
+                    if($info['push'] == 1 && $msg['status']== 1){
+                        $str = strip_tags($info['content']);
+                        $des = mb_substr($str,0,40);
+                        $content = str_replace("&nbsp;","",$des);  //空格符替换成空
+                        $image = Picture::get($info['front_cover']);
+                        $path = hostUrl.$image['path'];
+                        $send = [
+                            'articles' => [
+                                [
+                                    'title' => $pre.$info['title'],
+                                    'description' => $content,
+                                    'url'  => $url,
+                                    'picurl' => $path
+                                ]
                             ]
-                        ]
-                    ];
-                    $Wechat = new TPQYWechat(Config::get('floating'));
-                    $message = array(
-                        "touser" => toUser,
-                        "msgtype" => 'news',
-                        "agentid" => config('floating.agentid'),  // 个人中心
-                        "news" => $send,
-                        "safe" => "0"
-                    );
-                    $msg = $Wechat->sendMessage($message);
-                    if($msg['errcode'] !== 0){
-                        return $this->error('审核失败');
+                        ];
+                        $Wechat = new TPQYWechat(Config::get('news'));
+                        $message = array(
+                            "touser" => toUser,
+                            "msgtype" => 'news',
+                            "agentid" => config('news.agentid'),  // 第一聚焦
+                            "news" => $send,
+                            "safe" => "0"
+                        );
+                        $msg = $Wechat->sendMessage($message);
+                        if($msg['errcode'] !== 0){
+                            return $this->error('审核失败');
+                        }
                     }
-                }
-            } else {
-                if($info['push'] == 1 && $msg['status']== 1){
-                    $str = strip_tags($info['content']);
-                    $des = mb_substr($str,0,40);
-                    $content = str_replace("&nbsp;","",$des);  //空格符替换成空
-                    $image = Picture::get($info['front_cover']);
-                    $path = hostUrl.$image['path'];
-                    $send = [
-                        'articles' => [
-                            0 => [
-                                'title' => $pre.$info['title'],
-                                'description' => $content,
-                                'url'  => $url,
-                                'picurl' => $path
-                            ]
-                        ]
-                    ];
-                    $Wechat = new TPQYWechat(Config::get('user'));
-                    $message = array(
-                        "touser" => toUser,
-                        "msgtype" => 'news',
-                        "agentid" => config('user.agentid'),  // 个人中心
-                        "news" => $send,
-                        "safe" => "0"
-                    );
-                    $msg = $Wechat->sendMessage($message);
-                    if($msg['errcode'] !== 0){
-                        return $this->error('审核失败');
-                    }
-                }
+                    break;
             }
             return $this->success('审核成功');
         }else{
@@ -177,9 +168,6 @@ class Reviews extends Base
                 break;
             case 2:
                 $info = Db::name('news')->where('id',$id)->find();
-                break;
-            case 4:
-                $info = Db::name('self_flaw')->where('id',$id)->find();
                 break;
         }
         $this->assign('detail',$info);
