@@ -30,15 +30,9 @@ return [
     ],
     
     /* 企业配置 */
-    'party' => array(
-//        'token' => 'ZfqkOC4Fhd7D',
-//        'encodingaeskey' => 'SWWdiNibALNG3hZfvqqAzQ48rmibi5KTc1JnqouajTC',
-        'appid' => ' ',
-        'appsecret' => ' ',
-    ),
      /*个人中心*/
      'user' => array(
-         'login' => '',
+         'login' => 'http://nbzt.0571ztnet.com/home/verify/lpgin',
          'appid' => 'wxdf4be446ff21c5a9',
          'appsecret' => 'YnBzPC7We-XPCMd8ZtTIQjuKwq6RRF_6iUqmapTe37w',
          'agentid' => 1000005
