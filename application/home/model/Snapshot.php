@@ -41,13 +41,13 @@ class Snapshot extends Model
             $message = $this->getUser($value['uid']);
             $value['user'] = $message['name'];
             $value['department'] = $message['department'];
-            $value['header'] = $message['headimgurl'];
+            $value['header'] = $message['header']?$message['header']:$message['avatar'];
             $path = [];
             //图片处理
             if ($value['front_cover']){
                 $pic = json_decode($value['front_cover'],true);
                 foreach ($pic as $item){
-                    $path[] = get_covers($item);
+                    $path[] = get_cover($item);
                 }
             }
             $value['img'] = $path;
@@ -67,7 +67,7 @@ class Snapshot extends Model
         if (isset(self::$userMessage[$uid])) {
             return self::$userMessage[$uid];
         } else {
-            $user = WechatUser::where('userid', $uid)->field('name,department,headimgurl')->find();
+            $user = WechatUser::where('userid', $uid)->field('name,department,header,avatar')->find();
             $department = WechatDepartment::where('id', $user['department'])->field('name')->find();
             $user['department'] = $department['name'];
             self::$userMessage[$uid] = $user;
