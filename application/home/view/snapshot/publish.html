@@ -48,9 +48,9 @@
     var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
     wx.config({
         debug: false,
-        appId: '{$jsSign.appId}', // 必填，公众号的唯一标识
+        appId: '{$jsSign.appid}', // 必填，公众号的唯一标识
         timestamp: {$jsSign['timestamp']}, // 必填，生成签名的时间戳，切记时间戳是整数型，别加引号
-        nonceStr: '{$jsSign.nonceStr}', // 必填，生成签名的随机串
+        nonceStr: '{$jsSign.noncestr}', // 必填，生成签名的随机串
         signature: '{$jsSign.signature}', // 必填，签名，见附录1
         jsApiList: [
             'checkJsApi',

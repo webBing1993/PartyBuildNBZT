@@ -80,7 +80,7 @@ class Base extends Controller {
      * 获取企业号签名
      */
     public function jssdk(){
-        $Wechat = new TPQYWechat(Config::get('party'));
+        $Wechat = new TPQYWechat(Config::get('user'));
         $url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
         $jsSign = $Wechat->getJsSign($url);
         $this->assign("jsSign", $jsSign);
