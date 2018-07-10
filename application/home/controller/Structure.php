@@ -7,6 +7,7 @@
  */
 namespace app\home\controller;
 use app\home\model\WechatDepartment;
+use app\home\model\WechatDepartmentUser;
 use app\home\model\WechatUser;
 
 class Structure extends Base{
@@ -24,8 +25,15 @@ class Structure extends Base{
     public function detail(){
         $id = input('id/d');
         $depart_name = WechatDepartment::where(['id' => $id])->value('name');
-        $list = WechatUser::where(['department' => json_encode([$id]),'position' => ['neq','']])->field('name,position,mobile')->select();
-        $this->assign('list',$list);
+        $users = WechatDepartmentUser::where(['departmentid' => $id])->select();
+        foreach ($users as $key => $value){
+            $list = WechatUser::where(['userid' => $value['userid']])->field('name,position,mobile')->find();
+            $users[$key]['name'] = $list['name'];
+            $users[$key]['position'] = $list['position'];
+            $users[$key]['mobile'] = $list['mobile'];
+        }
+
+        $this->assign('list',$users);
         $this->assign('name',$depart_name);
         return $this->fetch();
     }
