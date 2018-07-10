@@ -32,7 +32,7 @@ return [
     /* 企业配置 */
      /*个人中心*/
      'user' => array(
-         'login' => 'http://nbzt.0571ztnet.com/home/verify/lpgin',
+         'login' => 'http://nbzt.0571ztnet.com/home/verify/login',
          'appid' => 'wxdf4be446ff21c5a9',
          'appsecret' => 'YnBzPC7We-XPCMd8ZtTIQjuKwq6RRF_6iUqmapTe37w',
          'agentid' => 1000005
@@ -86,8 +86,8 @@ return [
     // 会议签到  扫码权限
     define('scanId',2),
     define('hostUrl','http://nbzt.0571ztnet.com'),
-//    define('toUser','@all'),
-    define('toUser','17557289172'),
+    define('toUser','@all'),
+//    define('toUser','17557289172'),
     // 审核标签
     define('toTag',3),
 ];
