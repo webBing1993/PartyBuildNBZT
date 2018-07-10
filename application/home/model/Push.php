@@ -40,15 +40,6 @@ class Push extends Model
                     $publish = $info['publisher'];
                     $time = $info['create_time'];
                     break;
-                case 4: // 流动党员
-                    $info = Db::name('self_flaw')->where('id',$value['focus_main'])->find();
-                    $title = $info['title'];
-                    $id = $info['id'];
-                    $class = 4;
-                    $front_cover = $info['front_cover'];
-                    $publish = $info['publisher'];
-                    $time = $info['create_time'];
-                    break;
             }
             $name = '暂无';
             $times = '暂无';
