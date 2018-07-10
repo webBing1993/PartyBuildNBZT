@@ -52,10 +52,10 @@ class Snapshot extends Model
             }
             $value['img'] = $path;
             //获取评论
-            $value['comment'] = $comment->getComment(4,$value['id'],$uid);
+            $value['comment'] = $comment->getComment(10,$value['id'],$uid);
             //点赞
             $likeModel = new Like();
-            $like = $likeModel->getLike(4,$value['id'],$uid);
+            $like = $likeModel->getLike(10,$value['id'],$uid);
             $value['is_like'] = $like;
             $list [] =$value;
         }

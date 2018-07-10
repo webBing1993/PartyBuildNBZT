@@ -34,9 +34,9 @@
 
                         {eq name="visit" value="0"}
                         {eq name="vo.is_like" value="1"}
-                        <span class="good_" onclick="isGood(this,4,'{$vo.id}')"></span>
+                        <span class="good_" onclick="isGood(this,10,'{$vo.id}')"></span>
                         {else/}
-                        <span class="good" onclick="isGood(this,4,'{$vo.id}')"> </span>
+                        <span class="good" onclick="isGood(this,10,'{$vo.id}')"> </span>
                         {/eq}
                         <span class="goodnum">{$vo.likes}</span>
                         <span class="fr message" onclick="send(this,{$vo.id})"></span>
@@ -141,7 +141,7 @@
                             type:"post",
                             url:"{:Url('Base/comment')}",
                             data:{
-                                type :4,
+                                type :10,
                                 aid:id,
                                 content:inputValue
                             },
@@ -196,7 +196,7 @@
                     if(data.code == 1){
                         addLists(data);
                         var dataLen =data.data.length;
-                        if(data.data.length == 5){
+                        if(data.data.length == 12){
                             tip.text('上拉加载更多');
                         }else{
                             tip.text('没有更多了');
