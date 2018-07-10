@@ -60,7 +60,7 @@ class Wechat extends Admin
      */
     public function synchronizeUser() {
         ini_set('max_execution_time', '480');
-        $Wechat = new QYWechat(Config::get('party'));
+        $Wechat = new QYWechat(Config::get('book'));
         if($Wechat->errCode != 40001) {
             return $this->error("同步出错");
         }
@@ -75,31 +75,31 @@ class Wechat extends Admin
                 $user['department'] = json_encode($user['department']);
                 $user['order'] = json_encode($user['order']);
                 if ($user['extattr']['attrs']){
-                    foreach ($user['extattr']['attrs'] as $val) {
-                        switch ($val['name']){
-                            case "出生日期":
-                                $user['birthday'] = $val['value'];
-                                break;
-                            case "学历":
-                                $user['education'] = $val['value'];
-                                break;
-                            case "入党日期":
-                                $user['partytime'] = $val['value'];
-                                break;
-                            case "民族":
-                                $user['nation'] = $val['value'];
-                                break;
-                            case "人员类别":
-                                $user['people'] = $val['value'];
-                                break;
-                            case "工作岗位":
-                                $user['work'] = $val['value'];
-                                break;
-                            case "基础分":
-                                $user['volunteer_base'] = intval($val['value']);
-                                break;
-                        }
-                    }
+//                    foreach ($user['extattr']['attrs'] as $val) {
+//                        switch ($val['name']){
+//                            case "出生日期":
+//                                $user['birthday'] = $val['value'];
+//                                break;
+//                            case "学历":
+//                                $user['education'] = $val['value'];
+//                                break;
+//                            case "入党日期":
+//                                $user['partytime'] = $val['value'];
+//                                break;
+//                            case "民族":
+//                                $user['nation'] = $val['value'];
+//                                break;
+//                            case "人员类别":
+//                                $user['people'] = $val['value'];
+//                                break;
+//                            case "工作岗位":
+//                                $user['work'] = $val['value'];
+//                                break;
+//                            case "基础分":
+//                                $user['volunteer_base'] = intval($val['value']);
+//                                break;
+//                        }
+//                    }
                 }
                 $user['extattr'] = json_encode($user['extattr']);
                 if(WechatUser::get(['userid'=>$user['userid']])) {
@@ -118,7 +118,7 @@ class Wechat extends Admin
      */
     public function synchronizeDp(){
         ini_set('max_execution_time', '120');
-        $Wechat = new QYWechat(Config::get('party'));
+        $Wechat = new QYWechat(Config::get('book'));
         if($Wechat->errCode != 40001) {
             return $this->error("同步出错");
         }
@@ -142,13 +142,6 @@ class Wechat extends Admin
                 if(empty(WechatDepartmentUser::where($data)->find())){
                     WechatDepartmentUser::create($data);
                 }
-                
-//                if($value['id'] != 1) {
-//                    $data1 = ['departmentid' => 1, 'userid' => $user['userid']];     //当部门补位1时补全用户
-//                    if(empty(WechatDepartmentUser::where($data1)->find())){
-//                        WechatDepartmentUser::create($data1);
-//                    }
-//                }
             }
         }
 
@@ -161,7 +154,7 @@ class Wechat extends Admin
      * 同步标签
      */
     public function synchronizeTag(){
-        $Wechat = new QYWechat(Config::get('party'));
+        $Wechat = new QYWechat(Config::get('book'));
         if($Wechat->errCode != 40001) {
             return $this->error("同步出错");
         }

@@ -73,6 +73,11 @@ return [
         'appsecret' => 'sfiyHsfzDuaoJEVZIKkSD5xQij3CWJ77TC-ObbBecro',
         'agentid' => 1000007
     ),
+    // 通讯录
+    'book' => [
+        'appid' => 'wxdf4be446ff21c5a9',
+        'appsecret' => '5PWyqG3q7a9TTdZBtsZ0B-OUjN8SH8lpU6-G1FVqgDg',
+    ],
     /* UC用户中心配置 */
     'uc_auth_key' => '(.t!)=JTb_OPCkrD:-i"QEz6KLGq5glnf^[{p;je',
 
