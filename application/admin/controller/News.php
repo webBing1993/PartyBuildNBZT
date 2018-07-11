@@ -47,7 +47,7 @@ class News extends Admin {
                 unset($data['id']);
             }
             $newModel = new NewsModel();
-            $info = $newModel->validate('news')->create($data);
+            $info = $newModel->validate('News')->save($data);
             if($info) {
                 if ($data['push'] == 1){
                     $this->push($info['id'],$info['status']);
@@ -79,7 +79,7 @@ class News extends Admin {
             $data = input('post.');
             $data['create_time'] = time();
             $newModel = new NewsModel();
-            $info = $newModel->validate('news')->save($data,['id'=>input('id')]);
+            $info = $newModel->validate('News')->save($data,['id'=>input('id')]);
             if($info){
                 if ($data['push'] == 1){
                     $this->push($info['id'],$info['status']);
