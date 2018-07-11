@@ -71,9 +71,9 @@ class Topic extends Admin
      * 主题  内容 添加 修改
      */
     public function edit(){
+        $Model = new TopicModel();
         if(IS_POST) {
             $data = input('post.');
-            $Model = new TopicModel();
             if ($data['type'] == 1){
                 $model = $Model->validate('Topic.act')->save($data,['id'=> $data['id']]);
             }else{
@@ -94,6 +94,8 @@ class Topic extends Admin
             $msg = TopicModel::get($id);
             $msg['class'] = 2;
             $msg['type'] = input('type');
+            $topic = $Model->where(['type' => 1 ,'status' => ['egt',0]])->order('id')->select();
+            $this->assign('topic',$topic);
             $this->assign('msg',$msg);
 
             return $this->fetch();
