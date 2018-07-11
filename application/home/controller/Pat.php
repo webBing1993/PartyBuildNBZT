@@ -23,7 +23,7 @@ class Pat extends Base {
      * */
     public function index()
     {
-        //$this->anonymous();
+        $this->checkRole();
         $userId = session('userId');
         $res    = WechatUserTag::where(['userid' => $userId , 'tagid' => tagId])->find();
         if ($res){
@@ -210,6 +210,7 @@ class Pat extends Base {
      * */
     public function detail()
     {
+        $this->checkRole();
         $id = input('id/d');
         $msg = Blog::where(['id' => $id,'status' =>0])->find();
         if (empty($msg)){
@@ -259,7 +260,7 @@ class Pat extends Base {
      * */
     public function publish()
     {
-       // $this->anonymous(); // 游客权限
+        $this->checkRole();
         $userId = session('userId');
 
         // 办公室领导  普通员工权限 可以提交
@@ -291,6 +292,7 @@ class Pat extends Base {
      * */
     public function more()
     {
+        $this->checkRole();
         if (IS_POST){//通过年份搜索的
             $year = input('post.year');
             $month = input('month');
@@ -384,6 +386,7 @@ class Pat extends Base {
      * 主页加载更多
      * */
     public function indexMore() {
+        $this->checkRole();
             $data = input('post.');//接受值
             //var_dump($data);exit;
             $userId = session('userId');
