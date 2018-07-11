@@ -336,7 +336,10 @@
         var type = $(".ibox-content").attr("data-type");
         $(".post-add").off('click').on("click",function(){
             var it = $(this);
-
+            if ($("input[name='start_time']").val() >= $("input[name='end_time']").val()){
+                updateAlert('结束时间不大于开始时间', 'error');
+                return false;
+            }
             var data = {
                 type:type,
                 front_cover:$("input[name='front_cover']").val(),
