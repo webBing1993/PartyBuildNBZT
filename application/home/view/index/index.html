@@ -1,216 +1,30 @@
-{extend name="public/pure"}
+{extend name="public/common"}
 
 {block name="style"}
-<title>箬横党建</title>
-<link rel="stylesheet" href="/home/sass/stylesheets/index/index.css">
-<link rel="stylesheet" href="/static/swiper/swiper-3.3.1.min.css">
+<style>
+    a {display: block;color: #333;margin: 25px 0 ;text-align: center;font-size: .5rem;}
+</style>
 {/block}
 
 {block name="body"}
-<div id="refreshContainer" class="mui-content mui-scroll-wrapper">
-    <div class="mui-scroll">
-        <!--banner-->
-        <div class="banner">
-            <img src="/home/images/index/banner.png" alt="首页banner图">
-        </div>
-        <!--图标轮播-->
-        <div class="swiper-container">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <ul class="model clearfix">
-                        <li>
-                            <a href="{:Url('News/index')}">
-                                <img src="/home/images/index/1.png" alt="箬横动态">
-                                <span>箬横动态</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{:Url('Notice/index')}">
-                                <img src="/home/images/index/2.png" alt="通知公告">
-                                <span>通知公告</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{:Url('Structure/index')}">
-                                <img src="/home/images/index/6.png" alt="组织架构">
-                                <span>组织架构</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{:Url('Learn/index')}">
-                                <img src="/home/images/index/3.png" alt="网上党校">
-                                <span>网上党校</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{:Url('Activity/index')}">
-                                <img src="/home/images/index/4.png" alt="支部活动">
-                                <span>支部活动</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{:Url('Volunteer/index')}">
-                                <img src="/home/images/index/5.png" alt="志愿之家">
-                                <span>志愿之家</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!--新闻通知-->
-        <div class="list recommend">
-            <ul>
-                {empty name="$list"}
-                <div class="default"><img src="/home/images/common/nomessage.png"></div>
-                {else/}
-                {volist name="$list" id="lo"}
-                <a {eq name="lo.class" value="1"} href="{:Url('News/detail?type='.$lo['type'].'&id='.$lo['id'])}" {/eq} {eq name="lo.class" value="2"}
-                {eq name="lo.type" value="1"}
-                href="{:Url('Learn/video?id='.$lo['id'])}"
-                {else/}
-                href="{:Url('Learn/article?id='.$lo['id'])}"
-                {/eq}
-                {/eq}
-                {eq name="lo.class" value="3"} href="{:Url('Volunteer/detail?id='.$lo['id'])}"
-                {/eq} data-type="{$lo.class}">
-                    <img src="{$lo.front_cover|get_cover='path'}">
-                    <p>{$lo.title}</p>
-                    {eq name="lo.class" value="1"}
-                    <span>【箬横动态】</span>
-                    {/eq}
-                    {eq name="lo.class" value="2"}
-                    <span>【两学一做】</span>
-                    {/eq}
-                    {eq name="lo.class" value="3"}
-                    <span>【志愿之家】</span>
-                    {/eq}
-                    <span>{$lo.create_time|time_format='Y-m-d'}</span>
-                </a>
-                {/volist}
-                {/empty}
-            </ul>
 
-        </div>
-    </div>
-</div>
+<a href="{:Url('Learn/index')}">党员教育</a>
+<a href="{:Url('News/index')}">第一聚焦</a>
+<a href="{:Url('Book/index')}">队伍管理</a>
+<a href="{:Url('User/index')}">个人中心</a>
+<a href="{:Url('Information/index')}">红色珍藏</a>
+<a href="{:Url('Signin/index')}">会议签到</a>
+<a href="{:Url('Pat/index')}">民情日志</a>
+<a href="{:Url('Snapshot/snapshot')}">随手拍</a>
+<a href="{:Url('Notice/index')}">通知公告</a>
+<a href="{:Url('Review/index')}">消息审核(发布审核)</a>
+<a href="{:Url('Reviews/index')}">消息审核(后台审核)</a>
+<a href="{:Url('Activity/index')}">支部活动</a>
+<a href="{:Url('Topic/index')}">专题模块</a>
+<a href="{:Url('Structure/index')}">组织架构</a>
+
 {/block}
 
 {block name="script"}
-<script src="/static/swiper/swiper-3.3.1.jquery.min.js"></script>
-<script>
-    var mySwiper = new Swiper('.swiper-container', {
-//        loop: true,
-        autoplayDisableOnInteraction: false,
-//        pagination : '.swiper-pagination',
-//        paginationClickable :true
-    });
 
-    window.onload = function(){
-        if($(".recommend ul a").length<7){
-            mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
-        }else{
-            mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
-        }
-    };
-
-    //初始化下拉加载
-    mui.init({
-        pullRefresh: {
-            container: '#refreshContainer',
-            up: {
-                callback: loadScroll
-            }
-        }
-    });
-
-    mui('.clearfix').on('tap', 'a', function(e) {
-        var url = this.getAttribute("href");
-        window.location.href = url;
-    });
-
-
-    //上拉加载更多
-    function loadScroll(){
-        var news_len = $('.recommend a[data-type=1]').length;
-        var learn_len = $('.recommend a[data-type=2]').length;
-        var volunteer_len = $('.recommend a[data-type=3]').length;
-        $.ajax({
-            type:"post",
-            url: "{:Url('Index/moreDataList')}",
-            data:{
-                news: news_len,
-                study: learn_len,
-                volunteer: volunteer_len
-            },
-            beforeSend: function(XMLHttpRequest){
-            },
-            success:function(data){
-                if(data.code == 1){
-                    addLists(data);
-                    var dataLen =data.data.length;
-                    if(data.data.length == 12){
-                        mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
-                    }else{
-                        mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
-                    }
-                }else{
-                    mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
-                }
-            }
-        })
-    }
-    //数据循环
-    function addLists(data){
-        var type;
-        var html = '';
-        var lists = data.data;
-        var len = lists.length;
-        for(var i = 0; i< len;i++){
-            var list = lists[i];
-            var link = '';
-            if(list.class == 1){
-                class_name = '【箬横动态】';
-                link = '/home/news/detail/type/'+list.type+'/id/'+list.id;
-            }else if(list.class == 2){
-                class_name = '【两学一做】';
-                //1视频 2文字
-                if(list.type == 2){
-                    link = '/home/learn/article/id/'+list.id;
-                }else if(list.type == 1){
-                    link = '/home/learn/video/id/'+list.id;
-                }
-            }else if(list.class == 3){
-                class_name = '【志愿之家】';
-                link = '/home/Volunteer/detail/id/'+list.id;
-            }
-            if(list.publisher.length >9){
-                list.publisher = list.publisher.substring(0,9)+'...';
-            }
-            html +=
-                    '<a href="'+link+'" data-type='+list.class+'>'+
-                    '<img src="'+list.path+'" alt="图片">'+
-                    '<p>'+list.title+'</p>'+
-                    '<span>'+class_name+'</span>'+
-                    '<span>'+list.time+'</span>'+
-                    '</a>'
-        }
-        $('.recommend ul').append(html);
-    }
-
-    mui("#refreshContainer").on("touchstart","a",function(){
-        $(this).css("backgroundColor","rgba(0,0,0,.1)");
-    }).on("touchend","a", function () {
-        $(this).css("backgroundColor","#fff");
-    });
-
-
-    //页面点击事件
-    mui("#refreshContainer").on("tap","a",function(){
-        var url = this.getAttribute("href");
-        window.location.href = url;
-    });
-
-
-</script>
 {/block}
