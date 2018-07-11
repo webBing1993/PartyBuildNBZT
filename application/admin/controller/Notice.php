@@ -65,7 +65,7 @@ class Notice extends Admin
                     if ($data['type'] == 1) {
                         return $this->success("添加活动安排成功", Url('Notice/index'));
                     } else {
-                        return $this->success("添加会议纪要成功", Url('Notice/meeting'));
+                        return $this->success("添加活动日志成功", Url('Notice/meeting'));
                     }
                 } else {
                     return $this->error($noticeModel->getError());
@@ -102,7 +102,7 @@ class Notice extends Admin
                     if ($data['type'] == 1) {
                         return $this->success("修改活动安排成功", Url('Notice/index'));
                     } else {
-                        return $this->success("修改会议纪要成功", Url('Notice/meeting'));
+                        return $this->success("修改活动日志成功", Url('Notice/meeting'));
                     }
                 } else {
                     return $this->get_update_error_msg($noticeModel->getError());
@@ -209,7 +209,7 @@ class Notice extends Admin
                     if ($data['type'] == 2) {
                         return $this->success("添加活动展示成功", Url('Notice/show'));
                     } else {
-                        return $this->success("添加固定活动成功", Url('Notice/activity'));
+                        return $this->success("添加主题党日活动成功", Url('Notice/activity'));
                     }
                 } else {
                     return $this->error($noticeModel->getError());
@@ -239,7 +239,7 @@ class Notice extends Admin
                     if ($data['type'] == 2) {
                         return $this->success("修改活动展示成功", Url('Notice/show'));
                     } else {
-                        return $this->success("修改固定活动成功", Url('Notice/activity'));
+                        return $this->success("修改主题党日活动成功", Url('Notice/activity'));
                     }
                 } else {
                     return $this->get_update_error_msg($noticeModel->getError());
