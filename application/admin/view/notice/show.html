@@ -11,7 +11,16 @@
     <div class="col-lg-10">
         <h2>支部活动</h2>
         <ol class="breadcrumb">
-
+            <li>
+                {if condition="($list2 == 2)"}
+                <a href="">活动展示</a>
+                {else /}
+                <a href="">主题党日活动</a>
+                {/if}
+            </li>
+            <li class="active">
+                <strong>列表</strong>
+            </li>
         </ol>
     </div>
     <div class="col-lg-2">
@@ -28,7 +37,7 @@
                     {if condition="($list2 == 2)"}
                     <h5>活动展示&nbsp;列表</h5>
                     {else /}
-                    <h5>固定活动&nbsp;列表</h5>
+                    <h5>主题党日活动&nbsp;列表</h5>
                     {/if}
                     <div class="ibox-tools">
                         <a data-toggle="modal" class="btn btn-sm btn-primary" href="{:Url('Notice/showadd?type='.$list2)}">添加</a>
