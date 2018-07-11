@@ -261,6 +261,10 @@
         $(".post-put").off('click').on("click",function(){
             var it=$(this);
             var type="{$msg.type}";
+            if(type == 1 && $("input[name='title']").val() == ''){
+                updateAlert('主题不能为空', 'error');
+                return false;
+            }
             if($("#container").length>0) {
                 var t_id = $("select[name='type']").val();
                 if (t_id == null){
