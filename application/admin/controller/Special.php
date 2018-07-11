@@ -44,7 +44,7 @@ class Special extends Admin
                 unset($data['id']);
             }
             $data['create_user'] = $_SESSION['think']['user_auth']['id'];
-            $model = $Model->validate('Special')->create($data);
+            $model = $Model->validate('Special')->save($data);
             if($model){
                 if ($data['push'] == 1){
                     $this ->push($model['id'],$model['status']);//发布
