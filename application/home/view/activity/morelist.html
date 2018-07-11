@@ -32,7 +32,7 @@
     $("title").text("三会一课");
     //首页加载是否需要上拉加载
     window.onload = function() {
-        if ($(".list ul a").length < 7) {
+        if ($(".list ul a").length < 12) {
             mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
         } else {
             mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
