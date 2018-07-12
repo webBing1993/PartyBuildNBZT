@@ -94,7 +94,7 @@
   display: inline-block;
   width: 94vw;
   height: 9.1vw;
-  background: rgba(255, 255, 255, 0.8);
+  background: #f0f0f0;
   padding: 0 6vw;
   line-height: 9.1vw;
   color: #666666;
@@ -299,7 +299,7 @@
   height: 10vw;
   /*margin: 0 auto;*/
   padding-left: 3.6vw;
-  background: rgba(255, 255, 255, 0.6);
+  background:#f0f0f0;
   border-bottom: 1px solid #ffffff;
   color: #666666;
   line-height: 10vw;
