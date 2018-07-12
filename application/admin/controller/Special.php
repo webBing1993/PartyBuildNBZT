@@ -47,16 +47,16 @@ class Special extends Admin
             $model = $Model->validate('Special')->save($data);
             if($model){
                 if ($data['push'] == 1){
-                    $this ->push($model['id'],$model['status']);//发布
+                    $this ->push($model,0);//发布
                 }
-                $data = [
+                $datas = [
                     'focus_vice' => null,
                     'create_user' => session('user_auth.username'),
-                    'focus_main' => $model['id'],
+                    'focus_main' => $model,
                     'class' => 1, // 通知公告
                 ];
                 //保存到推送列表
-                Push::create($data);
+                Push::create($datas);
                 return $this->success('新增通知成功',Url('Special/index'));
             }else{
                 return $this->get_update_error_msg($Model->getError());
@@ -78,7 +78,7 @@ class Special extends Admin
             $model = $Model->validate('Special')->save($data,['id'=> $data['id']]);
             if($model){
                 if($data['push'] == 1) {
-                    $this ->push($data['id'],$model['status']);//发布
+                    $this ->push($data['id'],$data['status']);//发布
                 }
                 return $this->success('修改通知成功',Url('Special/index'));
             }else{

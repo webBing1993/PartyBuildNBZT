@@ -398,7 +398,7 @@ class Base extends Controller {
             '法轮功','法轮','FLG','六四','6.4','flg'
         );
         $badword1 = array_combine($badword,array_fill(0,count($badword),'***'));
-        $comment = Comment::where($map)->order('likes desc,create_time desc')->limit($len,7)->select();
+        $comment = Comment::where($map)->order('likes desc,create_time desc')->limit($len,10)->select();
         if($comment) {
             foreach ($comment as $value) {
                 $user = WechatUser::where('userid',$value['uid'])->find();
