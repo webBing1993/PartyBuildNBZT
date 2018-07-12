@@ -51,6 +51,7 @@ body{
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
+    margin-top:2vw;
 }
 p{
     margin-bottom: 0;
@@ -64,6 +65,7 @@ p{
     overflow: hidden;
     text-overflow:ellipsis;
     white-space: nowrap;
+    margin-top:0.3vw;
 }
 .personal-intro .time{
     font-family: "微软雅黑";
