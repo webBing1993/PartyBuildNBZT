@@ -93,9 +93,7 @@
     }
 
     window.onload = function(){
-        if(flag){
-            $(".mui-pull .mui-pull-caption").css("font-size","15px");
-        }
+
         if($(".list").length<7){
             mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
         }else{
@@ -173,19 +171,6 @@
                                 var data = msg.data;
                                 var userid = "'"+data.create_user+"'";
                                 var html = '';
-                                if(flag) {
-                                    html += '<div class="list clear">' +
-                                            '<div class="fl">' +
-                                            '<img src="' + data.header + '" alt="用户头像" class="user" style="width:60px;height:60px;">' +
-                                            '</div>' +
-                                            '<div class="fl mid">' +
-                                            '<div class="name limit" style="margin-left:0;font-size:16px">' + data.nickname + '</div>' +
-                                            '<div class="content" style="padding-left:0;font-size:15px;margin-top:5px;margin-bottom:5px">' + inputValue + '</div>' +
-                                            '<div class="time" style="margin-left:0;font-size:14px;line-height:20px">' + data.time + '</div>' +
-                                            '</div>' +
-                                            '<div class="fr isgood good notvisitor" data-type="0" data-id=' + data.id + '>' + data.likes + '</div>' +
-                                            '</div>';
-                                }else{
                                     html += '<div class="list clear">' +
                                             '<div class="fl">' +
                                             '<img src="' + data.header + '" alt="用户头像" class="user">' +
@@ -197,7 +182,6 @@
                                             '</div>' +
                                             '<div class="fr isgood good notvisitor" data-type="0" data-id=' + data.id + '>' + data.likes + '</div>' +
                                             '</div>';
-                                }
                                 $('.lists' ).prepend(html);
                                 inputValue="";
                                 var sum = $('.sum span' );
@@ -265,17 +249,6 @@
         for(var i = 0; i< len;i++){
             var list = lists[i];
             var userid = "'"+list.create_user+"'";
-            if(flag) {
-                html += '<div class="list clear">' +
-                        '<div class="fl">' +
-                        '<img src="' + list.header + '" alt="用户" class="user" style="width:60px;height:60px;">' +
-                        '</div>' +
-                        '<div class="fl mid">' +
-                        '<div class="name limit"  style="margin-left:0;font-size:16px">' + list.nickname + '</div>' +
-                        '<div class="content"  style="padding-left:0;font-size:15px;margin-top:5px;margin-bottom:5px">' + list.content + '</div>' +
-                        '<div class="time"  style="margin-left:0;font-size:14px;line-height:20px">' + list.time + '</div>' +
-                        '</div>';
-            }else{
                 html += '<div class="list clear">' +
                         '<div class="fl">' +
                         '<img src="' + list.header + '" alt="用户" class="user">' +
@@ -285,7 +258,6 @@
                         '<div class="content">' + list.content + '</div>' +
                         '<div class="time">' + list.time + '</div>' +
                         '</div>';
-            }
             if ({$visit} == 0){
                 if(list.is_like == 0){
                     html+='<div class="fr isgood good notvisitor"  data-type="0" data-id='+list.id+'>'+list.likes+'</div>'
