@@ -50,12 +50,12 @@ class News extends Admin {
             $info = $newModel->validate('News')->save($data);
             if($info) {
                 if ($data['push'] == 1){
-                    $this->push($info['id'],$info['status']);
+                    $this->push($info,0);
                 }
                 $data = [
                     'focus_vice' => null,
                     'create_user' => session('user_auth.username'),
-                    'focus_main' => $info['id'],
+                    'focus_main' => $info,
                     'class' => 2, // 箬横动态
                 ];
                 //保存到推送列表
@@ -82,7 +82,7 @@ class News extends Admin {
             $info = $newModel->validate('News')->save($data,['id'=>input('id')]);
             if($info){
                 if ($data['push'] == 1){
-                    $this->push($info['id'],$info['status']);
+                    $this->push(input('id'),$data['status']);
                 }
                 return $this->success("修改成功",Url("News/index"));
             }else{
