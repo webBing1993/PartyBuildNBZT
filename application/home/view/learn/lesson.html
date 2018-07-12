@@ -118,7 +118,7 @@
             success:function(data){
                 addCourse(data);
                 if(data.code == 1){
-                    if(data.data.length == 7){
+                    if(data.data.length == 10){
                         mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
                     }else{
                         mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);

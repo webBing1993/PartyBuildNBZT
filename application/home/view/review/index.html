@@ -53,7 +53,7 @@
                                     <img src="{$ls.front_cover|get_cover='path'}">
                                     <span>{$ls.title}</span>
                                     {eq name="ls.class" value="1"}
-                                        <p>[会议纪要]</p>
+                                        <p>[活动日志]</p>
                                     {/eq}
                                     {eq name="ls.class" value="2"}
                                     <p>[微心愿]</p>
@@ -83,7 +83,7 @@
 {block name="script"}
 <script src="/home/js/reset.js"></script>
 <script>
-    $("title").text("消息审核");
+    $("title").text("发布审核");
 $(function(){
     c = getCookie("c")?getCookie("c"):0;
     $("#tab a").eq(c).addClass('mui-active');
@@ -168,7 +168,7 @@ function addCourse(data,type) {
         var link ='';
         if(list.class == 1){
             link = '/home/review/detail/id/'+list.id;
-            class_name = "[会议纪要]";
+            class_name = "[活动日志]";
         }else if(list.class == 2) {
             link = '/home/review/details/id/'+list.id;
             class_name = "[微心愿]";

@@ -62,10 +62,7 @@
                                         <p>[通知公告]</p>
                                     {/eq}
                                     {eq name="ls.class" value="2"}
-                                    <p>[箬横动态]</p>
-                                    {/eq}
-                                    {eq name="ls.class" value="4"}
-                                    <p>[流动党员]</p>
+                                    <p>[第一聚焦]</p>
                                     {/eq}
                                     <p>审核人：{$ls.name}</p>
                                     <span>{$ls.review_time}</span>
@@ -89,7 +86,7 @@
 {block name="script"}
 <script src="/home/js/reset.js"></script>
 <script>
-    $("title").text("消息审核");
+    $("title").text("后台审核");
 $(function(){
     c = getCookie("c")?getCookie("c"):0;
     $("#tab a").eq(c).addClass('mui-active');
@@ -167,9 +164,7 @@ function addCourse(data,type) {
         if(list.class == 1){
             class_name = "[通知公告]";
         }else if(list.class == 2) {
-            class_name = "[箬横动态]";
-        }else if(list.class == 4) {
-            class_name = "[流动党员]";
+            class_name = "[第一聚焦]";
         }
         link = '/home/reviews/detail/class/'+list.class+'/id/'+list.id;
         if (type == 0) {
