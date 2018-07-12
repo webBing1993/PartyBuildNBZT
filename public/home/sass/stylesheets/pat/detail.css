@@ -148,6 +148,7 @@ p{
     width: 100%;
     word-wrap: break-word;
     padding: 2vw 3.2vw;
+    line-height: 1.4;
 }
 .imgs {
     margin-top: 4vw;
