@@ -29,13 +29,17 @@ class Comment extends Model {
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      */
-    public function getComment($type,$aid,$uid) {
+    public function getComment($type,$aid,$uid,$opt=false) {
         $map = array(
             'type' => $type,
             'aid' => $aid,
             'status' => 0
         );
-        $comment = $this->where($map)->order('likes desc,create_time desc')->limit(10)->select();
+        if ($opt){
+            $comment = $this->where($map)->order('likes desc,create_time desc')->select();
+        }else{
+            $comment = $this->where($map)->order('likes desc,create_time desc')->limit(10)->select();
+        }
         foreach ($comment as $value) {
             $user = WechatUser::where('userid',$value['uid'])->find();
             $value['nickname'] = $user['name'];
