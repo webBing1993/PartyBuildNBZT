@@ -293,6 +293,10 @@
     });
     //发布
     $(".post-put").off('click').on("click", function () {
+        if ($("input[name='meet_time']").val() >= $("input[name='meet_endtime']").val()){
+            updateAlert('结束时间不早于开始时间', 'error');
+            return false;
+        }
         var it = $(this);
         var data = {
             id: $("input[name='id']").val(),
