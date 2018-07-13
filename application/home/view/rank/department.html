@@ -10,20 +10,20 @@
     .top{height: 50vw;width: 100vw; background: -webkit-linear-gradient(left,#e4672d, #e9ad2c);border-bottom: 2.7vw solid #efeef3;}
     .top .top_top{width: 100%;height: 37vw;font-size: 13px;}
     .top .top_top img{width: 21vw;height: 21vw;border-radius: 50%;margin-top: 3vw;margin-left: 40vw;}
-    .top .top_top p{margin: -6.7vw 0 8vw 0;color: #fff;font-size: 13px;text-align: center;}
+    .top .top_top p{margin: -6.7vw 0 8vw 0;color: #fff;font-size: 0.34rem;text-align: center;}
     .top .top_body{height: 10.6vw;width: 100%;position: relative;}
     .top .top_body ul li{height: 100%;width: 49.5%;float: left;text-align: center;}
     .top .top_body span{width: 0;height: 8.5vw;border-right: 1px solid #fff;position: absolute;left: 49.5%;top: 4px;}
-    .top .top_body p{font-size: 12px;color: #fff;margin-bottom: 3px;line-height: 4vw}
+    .top .top_body p{font-size: 0.32rem;color: #fff;margin-bottom: 3px;line-height: 4vw}
     .top .top_body a{position: absolute;right: 0;top: 0;width: 50%;height: 100%;z-index: 1;}
     #score img{width:5.3vw;height:5.3vw}
     #score span{line-height: 8vw}
     .body{width:100%;border-top: 1px solid #e4e4e4;}
     .body .body_top{margin-bottom: 6.4vw;}
     .body .body_top img{width: 5.3vw;}
-    .body .body_top span{font-size: 12px;color: #666;position: relative;top: 1.3vw;}
+    .body .body_top span{font-size: 0.32rem;color: #666;position: relative;top: 1.3vw;}
     .body .body_body{width: 100%;height: 9.7vw;margin-bottom: 0.5vw}
-    .body .body_body ul li{width: 33.33%;float: left;font-size: 16px;color: #231815;font-weight: 600;text-align: center;}
+    .body .body_body ul li{width: 33.33%;float: left;font-size:0.42rem;color: #231815;font-weight: 600;text-align: center;}
     .body .body_body ul li p{position: relative;padding-bottom: 3.2vw;margin: 0;}
     .body .body_body ul li:first-child{padding-left: 10.7vw;}
     .body .body_body ul li:nth-child(2){padding: 0 5.3vw;}
@@ -32,22 +32,25 @@
     .foot{width: 100vw;}
     .foot .rank{width: 100vw;}
     .foot .rank ul li{width:100vw;line-height: 16vw;border-bottom: 1px solid #ecebeb;color: #231815;font-weight: 500;}
-    .foot .rank ul li .ranking{display:inline-block;width:6.7vw;font-size: 12px;margin-left: 4vw;}
+    .foot .rank ul li .ranking{display:inline-block;width:6.7vw;font-size: 0.32rem;margin-left: 4vw;}
     .foot .rank ul li:first-child .ranking{color: #eba52c;}
     .foot .rank ul li:nth-child(2) .ranking{color: #c5c5c5;}
     .foot .rank ul li:nth-child(3) .ranking{color: #dd8723;}
-    .foot .rank ul li .department{display:inline-block;width:60vw;font-size: 14px;margin-left: 2.7vw;}
-    .foot .rank ul li .int{font-size: 12px;float: right;margin-right: 5.3vw;}
+    .foot .rank ul li .department{display:inline-block;width:60vw;font-size: 0.38rem;margin-left: 2.7vw;}
+    .foot .rank ul li .int{font-size: 0.32rem;float: right;margin-right: 5.3vw;}
     #score{position:relative;top: -70%;right: -49%;color:#fff;}
     #score img{position: relative;top: 0;right:0;}
     #score span{position: relative;top: 7.5vw;right:10vw;}
     .modal-content{background-color: rgba(240, 221, 145, 0.97);width: 95%;}
     #close{margin: 21.3vw auto 0 auto;display: block}
-    #myModalLabel{text-align: center;font-size: 22px;}
+    #myModalLabel{text-align: center;font-size: 0.58rem;}
     .modal-dialog {margin-top: -2%;position: fixed;}
     #myModal{overflow-x: hidden;position: fixed;}
     .overHide{overflow: hidden;height: 100%;}
     .cc{ overflow-y:auto;}
+    #score span{
+        font-size: 0.32rem;
+    }
     @media screen and (max-width: 320px){
         #score span{
             right: 12vw;
@@ -64,10 +67,17 @@
     }
     @media screen and (min-width: 1000px){
         #score span{
-            right: 6vw;
+            right:6vw;
+            top: 3vw;
         }
         h5{line-height: 40px;margin: 0}
     }
+    @media (min-width: 1000px){
+        .modal-dialog {
+            margin: 30px 24%;
+        }
+    }
+
 </style>
 {/block}
 
@@ -113,7 +123,7 @@
          aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <img src="/home/images/rank/close.png" alt="规则" data-dismiss="modal" aria-hidden="true" style="width:12vw;height:12vw" id="close">
-            <div class="modal-content" style="margin:6vw auto">
+            <div class="modal-content" style="margin:6vw auto;font-size: 0.32rem">
                 <div style="width: 0;height: 6.4vw;border-right: 2px solid rgba(237, 218, 145, 0.63);margin: -6.4vw auto 0;"></div>
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel">

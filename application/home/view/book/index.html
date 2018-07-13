@@ -32,7 +32,7 @@
         line-height: 7.46vw;
         height:7.46vw;
         background: url("/home/images/book/search.png") 0 50% no-repeat;
-        background-size: 4.8vw 4.8vw;
+        background-size: 4vw 4vw;
     }
     .search.isClick{
         background: #ffffff;
@@ -57,6 +57,7 @@
         display: inline-block;
         height:6.4vw;
         width:61.33vw;
+        font-size: 0.32rem;
     }
     .search.isClick>.unBtn{
         margin-left: 5.33vw;
@@ -321,7 +322,7 @@
                     }else{
                         html+="<img src='"+lists[i].header+"' alt='头像'>";
                     }
-                    html+="<div>"+lists[i].name+" <span class='fr'></span></div></a></li>";
+                    html+="<div style='font-size: 0.32rem'>"+lists[i].name+" <span class='fr'></span></div></a></li>";
                 }
                 $(".result_box").append(html);
             }

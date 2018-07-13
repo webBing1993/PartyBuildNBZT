@@ -70,11 +70,13 @@
 	text-align: center;
 	line-height: 40px;
 	color:#c1c1c1;
+	font-size: 0.36rem;
 }
 /*加载动画*/
 .loading{
 	width: 100%;
 	height: 40px;
+	font-size: 0.36rem;
 }
 .typing_loader{
 	width: 6px;
@@ -86,6 +88,7 @@
 	position: relative;
 	top: 17px;
 	left: calc( 50vw - 20px );
+	font-size: 0.36rem;
 }
 @-webkit-keyframes typing{
 	0%{

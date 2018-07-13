@@ -17,12 +17,12 @@
 }
 .title{
   text-align: center;
-  font-size: 0.42px;
+  font-size: 0.42rem;
   font-weight: 600;
 }
 .note{
   color: #999999;
-  font-size: 0.32px;
+  font-size: 0.32rem;
   text-align: right;
 }
 .note_{
@@ -54,6 +54,7 @@
 .article .content {
   width: 100%;
   overflow: hidden;
+  font-size: 0.32rem;
 }
 .article .content * {
   max-width: 100%!important;
@@ -161,6 +162,7 @@
   word-break: break-all;
   margin-top: 2vw;
   margin-bottom: 2vw;
+  font-size: 0.32rem;
 }
 .comment .lists .list .mid .time {
   font-size: 0.32rem;
@@ -179,6 +181,16 @@
   -webkit-animation: shake 300ms ease;
   background: url('/home/images/detail/good_.png') 0 0px no-repeat;
 }
+@media screen  and (min-width: 1080px){
+  .comment .lists .list .good {
+    background: url(/home/images/detail/good.png) 0 8px no-repeat;
+  }
+  .comment .lists .list .good_ {
+    animation: shake 300ms ease;
+    -webkit-animation: shake 300ms ease;
+    background: url('/home/images/detail/good_.png') 0 8px no-repeat;
+  }
+}
 .comment .lists .list .isgood {
   background-size: 15px 15px;
   padding-left: 18px;
@@ -189,6 +201,7 @@
   text-align: center;
   line-height: 40px;
   color: #c1c1c1;
+  font-size: 0.36rem;
 }
 /*底部*/
 .bottom {
@@ -252,6 +265,7 @@ input::-webkit-input-placeholder{
 .loading {
   width: 100%;
   height: 40px;
+  font-size: 0.36rem;
 }
 .typing_loader {
   width: 6px;
@@ -262,6 +276,7 @@ input::-webkit-input-placeholder{
   animation: typing 1s linear infinite alternate;
   position: relative;
   top: 17px;
+  font-size: 0.36rem;
   left: calc( 50vw - 20px );
 }
 .fl{
