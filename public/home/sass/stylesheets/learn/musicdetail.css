@@ -256,12 +256,12 @@
 }
 @media screen  and (min-width: 1080px){
   .comment .lists .list .good {
-    background: url(/home/images/detail/good.png) 0 7px no-repeat;
+    background: url(/home/images/detail/good.png) 0 1px no-repeat;
   }
   .comment .lists .list .good_ {
     animation: shake 300ms ease;
     -webkit-animation: shake 300ms ease;
-    background: url('/home/images/detail/good_.png') 0 7px no-repeat;
+    background: url('/home/images/detail/good_.png') 0 1px no-repeat;
   }
   .comment .lists .list .isgood {
     background-size: 0.38rem 0.38rem;
