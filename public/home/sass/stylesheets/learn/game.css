@@ -128,7 +128,12 @@ body{
 	top:95px;
 	left:5px;
 }
-
+@media screen  and (min-width: 1080px){
+	.continue:active{
+		top:250px;
+		left:5px;
+	}
+}
 /*分数页面*/
 .score{
 	width: 86.77vw;
