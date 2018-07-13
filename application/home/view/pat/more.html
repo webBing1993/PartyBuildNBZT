@@ -114,7 +114,24 @@
 {block name="script"}
 <script src="/home/js/reset.js"></script>
 <script>
+    var ua = navigator.userAgent.toLowerCase();
+    var isiOS = (ua.indexOf('iphone') != -1) || (ua.indexOf('ipad') != -1);  // ios终端
+    if(isiOS){
+        /**
+         * 返回刷新页面
+         * */
 
+        function pageshow() {
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) location.reload();    //如果检测到页面是从“往返缓存”中读取的，刷新页面
+            });
+        }
+
+    }
+
+
+
+    pageshow();
     $(function () {
         $('title').text('民情日志');
         // 发布按钮拖拽效果
