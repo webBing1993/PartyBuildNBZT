@@ -46,11 +46,13 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
 <script>
     var	serverId=[],localIds;
+    serverId[0] = [];
     var u = navigator.userAgent;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
     var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+
     wx.config({
-        debug: false,
+        debug: true,
         appId: '{$jsSign.appid}', // 必填，公众号的唯一标识
         timestamp: {$jsSign['timestamp']}, // 必填，生成签名的时间戳，切记时间戳是整数型，别加引号
         nonceStr: '{$jsSign.noncestr}', // 必填，生成签名的随机串
@@ -65,77 +67,87 @@
             'onMenuShareAppMessage',
         ]
     });
-
     wx.ready(function () {
 
     });
-
-
     var imgArr = [];
     var deleteIds=[];
+    deleteIds[0] = [];
     $('.add').on('click',function() {
-        var lens = $('.img').length;
+        var lens = $(this).parent().find('.img').length;
         var imglen = parseInt(3 - lens);
+        var _this = $(this);
         wx.chooseImage({
             count: imglen, // 默认9
             sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
             sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
             success: function (res) {
                 localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
-                if(localIds.length==3){
-                    $('.add').fadeOut();
+                if(localIds.length === 3){
+                    _this.fadeOut();
                 }
-                for(i=0;i<localIds.length;i++){
-                    $('.add').before('<div class="img" style="display: inline-block;position: relative;"><img src=' + localIds[i] + ' data-tab=' + localIds[i] + '></div><span class="closed"></span>');
-                    deleteIds.push(localIds[i]);
-                }
-                syncUpload(localIds);
+
+                localIds.forEach(function(element){
+                    _this.before('<div class="img"><img src=' + element + ' data-tab=' + element + '></div><span class="closed"></span>');
+                    if(_this.attr("class")=="add"){
+                        deleteIds[0].push(element);
+                    }
+                });
+                syncUpload(localIds,_this);
 
                 $('.imgs').off("click",'.closed').on('click','.closed',function () {
                     var that = $(this);
                     var id = that.prev(".img").find("img").attr('data-tab');//每张图片上都有一个自定义属性保存了图片在后台中的id
-                        for (var i = 0; i < deleteIds.length; i++) {
-                            if (deleteIds[i] == id) {
-                                 deleteIds.splice(i, 1);
-                                 serverId.splice(i, 1);
+                    if(_this.attr("class")=="add"){
+                        for (var i = 0; i < serverId[0].length; i++) {
+                            if (serverId[0][i] === id) {
+                                deleteIds[0].splice(i, 1);
+                                serverId[0].splice(i, 1);
                             }
                         }
-                        that.prev(".img").remove();
-                        that.remove();
-                        $('.add').show();
+                    }
+                    that.prev(".img").remove();
+                    that.remove();
+                    _this.show();
                 });
                 var len = $('.imgs .img').length;
-                if(len==3){
-                    $('.add').fadeOut();
+                if(len === 3){
+                    _this.fadeOut();
                 }
             }
         });
     });
-
     //用户选好图片后,点击图片进行预览
     $('.imgs').on('click','.img',function () {
         var currentSrc = $(this).find("img").attr("data-tab");
+        var add = $(this).parent().find(".add").attr("class");
         //调用预览图片的接口
-        wx.previewImage({
-            current:currentSrc,//当前显示图片的http连接
-            urls: deleteIds//需要预览图片的http连接列表
-        });
+        if(add == "add"){
+            wx.previewImage({
+                current:currentSrc,//当前显示图片的http连接
+                urls: deleteIds[0]//需要预览图片的http连接列表
+            });
+        }
+
     });
 
 
-    var syncUpload = function(localIds){
+    var syncUpload = function(localIds,_this){
         var localId = localIds.shift();
+        var has = _this;
         wx.uploadImage({
             localId: localId,
             success: function (res) {
-                serverId.push(res.serverId); // 返回图片的服务器端ID
+                if(has.hasClass("add")){
+                    serverId[0].push(res.serverId); // 返回图片的服务器端ID
+                }
                 //其他对serverId做处理的代码
                 if(localIds.length > 0){
                     if(isiOS){
-                        syncUpload(localIds);
+                        syncUpload(localIds,_this);
                     }else{
                         setTimeout(function(){
-                            syncUpload(localIds);
+                            syncUpload(localIds,_this);
                         },500)
                     }
 
@@ -160,10 +172,11 @@ $(".goreview").click(function(){
         });
         return false;
     }
-    if(content!==''||serverId.length!=0) {
+
+    if(content!==''||serverId[0].length!=0) {
         var data = {
             content: content,
-            images: serverId
+            images: serverId[0]
         };
         if (flag){
             flag = false;
