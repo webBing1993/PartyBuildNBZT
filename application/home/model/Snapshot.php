@@ -68,8 +68,14 @@ class Snapshot extends Model
             return self::$userMessage[$uid];
         } else {
             $user = WechatUser::where('userid', $uid)->field('name,department,header,avatar')->find();
-            $department = WechatDepartment::where('id', $user['department'])->field('name')->find();
-            $user['department'] = $department['name'];
+            if (is_int($user['department'])){
+                $department = WechatDepartment::where('id', $user['department'])->field('name')->find();
+                $user['department'] = $department['name'];
+            }else{
+                $temp = json_decode($user['department']);
+                $department = WechatDepartment::where('id', $temp[0])->field('name')->find();
+                $user['department'] = $department['name'];
+            }
             self::$userMessage[$uid] = $user;
             return self::$userMessage[$uid];
         }
