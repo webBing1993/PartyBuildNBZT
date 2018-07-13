@@ -405,9 +405,9 @@ class Pat extends Base {
         $msg['userid'] = $User['userid'];
 
         // 默认 党政办公室
-        $list = Db::table('pb_wechat_department_user')->where('departmentid',$data['depart_id'])->field('userid')->limit($data['length'],5)->select();  // 获取 用户列表
+        $list = Db::table('pb_wechat_department_user')->where('departmentid',$data['depart_id'])->field('userid')->limit($data['length'],4)->select();  // 获取 用户列表
         //部门  下拉菜单
-        $deps = Db::name('wechat_department')->where(['id' => ['not in' , [1,2]]])->order(['order'=>'desc','id'])->field('id,name')->select();
+        $deps = Db::name('wechat_department')->order(['order'=>'desc','id'])->field('id,name')->select();
         foreach($list as $key => $value){
             $User = Db::table('pb_wechat_user')->where('userid',$value['userid'])->find();
             $list[$key]['name'] = $User['name'];  // 名字

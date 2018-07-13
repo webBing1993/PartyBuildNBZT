@@ -74,7 +74,6 @@
             setCookie("id",id);
         });
     });
-
     var ajax = function(title){
         $.ajax({
             type:"post",
@@ -141,7 +140,7 @@
                 addCourse(data);
                 if(data.code == 1){
                     var dataLen =data.data.length;
-                    if(data.data.length == 6){
+                    if(data.data.length == 4){
                         mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
                     }else{
                         mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
