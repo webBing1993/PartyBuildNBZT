@@ -13,6 +13,9 @@
         margin-left: -4vw;
         margin-top: -3vw;
     }
+    textarea {
+        padding-left: 0.4rem;
+    }
 </style>
 {/block}
 {block name="body"}
@@ -146,6 +149,19 @@
 var flag = true;
 $(".goreview").click(function(){
     var content = $("textarea[name='content']").val();
+    if(content.length>400){
+        swal({
+            title: "字数超过400字",
+            type: 'warning',
+            timer:2000,
+            showCancelButton: false,
+            confirmButtonText: "确定",
+            allowOutsideClick: false
+        });
+        return false;
+    }
+    console.log(content.length)
+    return false
     if(content!==''||serverId.length!=0) {
         var data = {
             content: content,
