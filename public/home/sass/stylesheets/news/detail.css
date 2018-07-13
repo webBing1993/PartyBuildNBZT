@@ -54,7 +54,12 @@
 .article .content {
   width: 100%;
   overflow: hidden;
-  font-size: 0.32rem;
+  font-size: 0.4rem;
+  color: #333;
+}
+.article .content p{
+  font-size: 0.4rem;
+  color: #333;
 }
 .article .content * {
   max-width: 100%!important;
@@ -174,28 +179,38 @@
   color: #999999;
 }
 .comment .lists .list .good {
-  background: url('/home/images/detail/good.png') 0 0px no-repeat;
+  background: url('/home/images/detail/good.png') 0 1.4px no-repeat;
 }
 .comment .lists .list .good_ {
   animation: shake 300ms ease;
   -webkit-animation: shake 300ms ease;
-  background: url('/home/images/detail/good_.png') 0 0px no-repeat;
+  background: url('/home/images/detail/good_.png') 0 1.4px no-repeat;
+}
+.comment .lists .list .isgood {
+  background-size: 15px 15px;
+  padding-left:18px;
+  padding-top: 1vw;
+  height: 5vw;
+  font-size: 0.32rem;
 }
 @media screen  and (min-width: 1080px){
   .comment .lists .list .good {
-    background: url(/home/images/detail/good.png) 0 8px no-repeat;
+    background: url(/home/images/detail/good.png) 0 7px no-repeat;
   }
   .comment .lists .list .good_ {
     animation: shake 300ms ease;
     -webkit-animation: shake 300ms ease;
-    background: url('/home/images/detail/good_.png') 0 8px no-repeat;
+    background: url('/home/images/detail/good_.png') 0 7px no-repeat;
+  }
+  .comment .lists .list .isgood {
+    background-size: 2vw 2vw;
+    padding-left: 2.5vw;
+    padding-top: 1vw;
+    height: 5vw;
+    font-size: 0.32rem;
   }
 }
-.comment .lists .list .isgood {
-  background-size: 15px 15px;
-  padding-left: 18px;
-  padding-top: 1vw;
-}
+
 .comment .tip {
   height: 40px;
   text-align: center;
