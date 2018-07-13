@@ -365,7 +365,7 @@
             var it=$(this);
             var type = $(".ibox-content").attr("data-type");
             if ($("input[name='start_time']").val() >= $("input[name='end_time']").val()){
-                updateAlert('结束时间不大于开始时间', 'error');
+                updateAlert('结束时间不早于开始时间', 'error');
                 return false;
             }
             var data = {
