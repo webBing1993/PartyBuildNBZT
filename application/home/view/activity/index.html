@@ -149,19 +149,19 @@
     window.onload = function(){
         moveanyway();
         if(c==0){
-            if($(".meeting .list a").length<10){
+            if($(".meeting .list a").length<12){
                 mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
             }else{
                 mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
             }
         }else if(c==1){
-            if($(".summary .list a").length<10){
+            if($(".summary .list a").length<12){
                 mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
             }else{
                 mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
             }
         }else if( c==2 ){
-            if($(".fixed .list a").length<10){
+            if($(".fixed .list a").length<12){
                 mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
             }else{
                 mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
@@ -198,7 +198,7 @@
             success:function(data){
                 if(data.code == 1){
                     addMeets(data,c);
-                    if(data.data.length == 10){
+                    if(data.data.length == 12){
                         mui('#refreshContainer').pullRefresh().endPullupToRefresh(false);
                     }else{
                         mui('#refreshContainer').pullRefresh().endPullupToRefresh(true);
@@ -271,21 +271,21 @@
         mui('#refreshContainer').pullRefresh().refresh(true);
         c = this.getAttribute("data-index");
         if(c==0){
-            if($(".meeting .list a").length<10){
+            if($(".meeting .list a").length<12){
                 mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
             }else{
                 mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
             }
             $("#publish").hide()
         }else if(c==1){
-            if($(".summary .list a").length<10){
+            if($(".summary .list a").length<12){
                 mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
             }else{
                 mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
             }
             $("#publish").show()
         }else if(c==2){
-            if($(".fixed .list a").length<10){
+            if($(".fixed .list a").length<12){
                 mui('#refreshContainer').pullRefresh().disablePullupToRefresh();
             }else{
                 mui('#refreshContainer').pullRefresh().enablePullupToRefresh();
