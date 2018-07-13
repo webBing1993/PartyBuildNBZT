@@ -472,6 +472,8 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  height: 6vw;
+  line-height: 6vw;
 }
 
 #item3mobile .lists .list .content .note {

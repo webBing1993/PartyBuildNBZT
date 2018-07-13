@@ -235,12 +235,12 @@
     font-size: 0.32rem;
 }
 .comment .lists .list .good {
-    background: url('/home/images/detail/good.png') 0 center no-repeat;
+    background: url('/home/images/detail/good.png') 0 0 no-repeat;
 }
 .comment .lists .list .good_ {
     animation: shake 300ms ease;
     -webkit-animation: shake 300ms ease;
-    background: url('/home/images/detail/good_.png') 0 center no-repeat;
+    background: url('/home/images/detail/good_.png') 0 0 no-repeat;
 }
 .comment .lists .list .isgood {
     height:0.38rem;
@@ -249,7 +249,27 @@
     position: absolute;
     top:0.29rem;
     right:0;
+    line-height: 4.5vw;
 }
+@media screen  and (min-width: 1080px){
+    .comment .lists .list .good {
+        background: url(/home/images/detail/good.png) 0 7px no-repeat;
+    }
+    .comment .lists .list .good_ {
+        animation: shake 300ms ease;
+        -webkit-animation: shake 300ms ease;
+        background: url('/home/images/detail/good_.png') 0 7px no-repeat;
+    }
+    .comment .lists .list .isgood {
+        background-size: 2vw 2vw;
+        padding-left: 2.5vw;
+        padding-top: 1vw;
+        height: 5vw;
+        font-size: 0.32rem;
+        line-height: 1.8vw;
+    }
+}
+
 /*底部*/
 .bottom {
     position: fixed;
