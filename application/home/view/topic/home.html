@@ -3,16 +3,28 @@
 {block name="style"}
 <title>特色活动</title>
 <link rel="stylesheet" href="/home/sass/stylesheets/theory/index1.css">
+<style>
+    .default img {
+        width: 16vw;
+        position: absolute;
+        left: 50%;
+        margin-top: 50%;
+        margin-left: -8vw;
+    }
+</style>
 {/block}
 {block name="body"}
 <div class="content">
+    {empty name="list"}
+    <div class="default"><img src="/home/images/common/nomessage.png" alt="暂无消息"> </div>
+    {else/}
     {volist name="$list" id="v"}
     <a href="{:Url('Topic/index?id='.$v['id'])}" class="pic">
         <span>{$v.title}</span>
         <img src="{$v.front_cover|get_cover='path'}">
     </a>
     {/volist}
-
+    {/empty}
 </div>
 <div class="tip"></div>
 <div class="loading hidden">
