@@ -44,7 +44,9 @@
 {/block}
 {block name="script"}
 <script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script type="text/javascript" src="/home/js/vconsole.min.js"></script>
 <script>
+    var vConsole = new VConsole();
     var	serverId=[],localIds;
     var u = navigator.userAgent;
     var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
@@ -88,7 +90,7 @@
                 alert(localIds)
                 for(i=0;i<localIds.length;i++){
                     $('.add').before('<div class="img" style="display: inline-block;position: relative;"><img src=' + localIds[i] + ' data-tab=' + localIds[i] + '></div><span class="closed"></span>');
-                    alert( localIds[i])
+                    console.log('<img src=' + localIds[i] + ' data-tab=' + localIds[i] + '>')
                     deleteIds.push(localIds[i]);
                 }
                 syncUpload(localIds);
