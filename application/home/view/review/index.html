@@ -27,7 +27,7 @@
                                 <a {eq name="$lo.class" value="1"} href="{:Url('Review/detail?id='.$lo['id'])}"  {else/} href="{:Url('Review/details?id='.$lo['id'])}"{/eq} class="list clear">
                                     <img src="{$lo.front_cover|get_cover='path'}">
                                     <span>{$lo.title}</span>
-                                    <span>{eq name="$lo.class" value="1"}[会议纪要]{/eq} {eq name="$lo.class" value="2"}[微心愿]{/eq} {eq name="$lo.class" value="3"}[志愿招募]{/eq} 发布人：{$lo.userid|get_name}</span>
+                                    <span>{eq name="$lo.class" value="1"}[活动日志]{/eq} {eq name="$lo.class" value="2"}[微心愿]{/eq} {eq name="$lo.class" value="3"}[志愿招募]{/eq} 发布人：{$lo.userid|get_name}</span>
                                     <span>{$lo.create_time|time_format=''}</span>
                                     <span class="mui-icon mui-icon-forward"></span>
                                     <i class="fail" data-id="{$lo.id}" data-class="{$lo.class}">不通过</i><i class="pass" data-id="{$lo.id}" data-class="{$lo.class}" >通&nbsp;过</i>
