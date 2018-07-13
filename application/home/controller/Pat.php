@@ -125,7 +125,7 @@ class Pat extends Base {
                 $list = Db::table('pb_wechat_department_user')->where('departmentid',2)->field('userid')->limit(4)->select();   // 获取 用户列表
                 //部门  下拉菜单
 
-                $deps = Db::name('wechat_department')->where(['id' => ['not in' , [1]]])->order('id','asc')->field('id,name')->select();
+                $deps = Db::name('wechat_department')->order('id','asc')->field('id,name')->select();
                 //return var_dump($deps);
                 foreach($list as $key => $value){
                     $User = Db::table('pb_wechat_user')->where('userid',$value['userid'])->find();

@@ -229,11 +229,16 @@
                         '<div class="content">'+list.content+'</div>'+
                         '<div class="imgs">';
                 var imglen = list.img.length;
-                for(var j = 0 ;j<imglen ;j++){
-                    html+=
-                            '<div class="img">'+
-                            '<img src='+list.img[j]+' alt="评论图" data-original="">'+
-                            '</div>';
+                if (imglen > 0){
+                    var tem = list.img;
+                    for(var j = 0 ;j<imglen ;j++){
+                        if(tem[j]){
+                            html+=
+                                '<div class="img">'+
+                                '<img src='+tem[j].path+' alt="评论图" data-original="">'+
+                                '</div>';
+                        }
+                    }
                 }
                 var good = list.is_like == 0?'good':'good_';
                 html +=
