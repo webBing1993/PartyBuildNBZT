@@ -172,6 +172,41 @@
         background: url("/home/images/book/right.png") right center no-repeat;
         background-size: 1.6vw 3.2vw;
     }
+    .list>li{
+        box-sizing: border-box;
+        font-size: 0.37rem;
+        color: #666;
+    }
+    .list a{
+        padding-left: 4vw;
+        display: flex;
+        align-items: center;
+        height:14.4vw;
+        font-size: 0.37rem;
+        color: #333;
+        line-height: 14.4vw;
+        box-sizing: border-box;
+        justify-content: space-between;
+    }
+    .list a img{
+        width:8vw;
+        height:8vw;
+        margin-right: 5.33vw;
+    }
+    .list a div{
+        border-bottom: 1px solid #f1f1f1;
+        width:82.66vw;
+    }
+    .list a .fr{
+        box-sizing: border-box;
+        width:13.33vw;
+        height:14.4vw;
+        text-align: right;
+        margin-right: 4vw;
+        color: #999;
+        background: url("/home/images/book/right.png") right center no-repeat;
+        background-size: 1.6vw 3.2vw;
+    }
 
 
 </style>
@@ -203,6 +238,24 @@
             </a>
         </li>
         {/volist}
+        <ul class="list">
+            {volist name="lists" id="lo"}
+            <li>
+                {eq name="visit" value="0"}
+                <a href="/home/book/userinfo/id/{$lo.id}/did/{$did}">
+                    {else/}
+                    <a href="">
+                        {/eq}
+                        {empty name="$lo.header"}
+                        <img src="/home/images/book/pb.png" alt="头像">
+                        {else/}
+                        <img src="{$lo.header}" alt="头像">
+                        {/empty}
+                        <div>{$lo.name}<span class="fr"></span></div>
+                    </a>
+            </li>
+            {/volist}
+        </ul>
     </ul>
 </div>
 {/block}

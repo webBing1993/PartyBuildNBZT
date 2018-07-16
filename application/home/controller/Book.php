@@ -54,10 +54,27 @@ class Book extends Base
         $did = input('get.did/d');   // 获取部门列表
         $list = Db::table('pb_wechat_department')->where('parentid',$did)->order('id desc')->field('id,name')->select();
         if ($list){
+            $lists = Db::table('pb_wechat_department_user')->where('departmentid',$did)->order('id desc')->field('userid')->select();  // 获取 用户列表
+            foreach($lists as $key => $value){
+                $User = Db::table('pb_wechat_user')->where('userid',$value['userid'])->field('id,header,name,avatar')->find();
+                $lists[$key]['name'] = $User['name'];
+                $lists[$key]['id'] = $User['id'];
+                if (empty($User['header'])){   //  头像
+                    if (empty($User['avatar'])){
+                        $lists[$key]['header'] = '';
+                    }else{
+                        $lists[$key]['header'] = $User['avatar'];
+                    }
+                }else{
+                    $lists[$key]['header'] = $User['header'];
+                }
+            }
             $department = Db::table('pb_wechat_department')->field('name')->find($did);
             $this->assign('list',$list);
+            $this->assign('did',$did);
+            $this->assign('lists',$lists);
             $this->assign('depart',$department['name']);
-            return $this->fetch('');
+            return $this->fetch();
         }else{
             $department = Db::table('pb_wechat_department')->field('name')->find($did);
             $list = Db::table('pb_wechat_department_user')->where('departmentid',$did)->order('id desc')->field('userid')->select();  // 获取 用户列表
