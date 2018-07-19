@@ -286,6 +286,12 @@ class Notice extends Admin
         if ($list['start_time']){
             $list['start_time'] = date('Y-m-d H:i',$list['start_time']);
         }
+        if (!empty($list['userid'])) {
+            $list5 = Db::table('pb_wechat_user')->where('userid', $list['userid'])->find();
+            $list['userid'] = $list5['name'];
+        } else {
+            $list['userid'] = $list['publisher'];
+        }
         $this->assign('list',$list);
         return $this->fetch();
     }
