@@ -273,5 +273,21 @@ class Notice extends Admin
         $this->assign('list', $list);
         return $this->fetch('notice/show');
     }
+    /**
+     * 新闻通知预览
+     */
+    public function preview(){
+        $Model = new NoticeModel();
+        $id = input('id');
+        $list = $Model::get($id);
+        if ($list['images']){
+            $list['images'] = json_decode($list['images']);
+        }
+        if ($list['start_time']){
+            $list['start_time'] = date('Y-m-d H:i',$list['start_time']);
+        }
+        $this->assign('list',$list);
+        return $this->fetch();
+    }
     
 }

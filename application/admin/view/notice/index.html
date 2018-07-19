@@ -77,7 +77,11 @@
                                 <td>{$vo.status_text}</td>
                                 <td>{$vo.create_time|time_format='Y-m-d'}</td>
                                 <td>
-                                    <a href="{:Url('Notice/indexedit?id='.$vo['id'])}">修改</a>
+                                    {empty name="vo.userid"}
+                                    <a href="{:Url('Notice/indexedit?id='.$vo['id'])}">修改</a>&emsp;
+                                    {else/}
+                                    <a href="javascript:showIframe({$vo.id})">预览</a>&emsp;
+                                    {/empty}
                                     <a href="{:Url('Notice/del?id='.$vo['id'])}" class="confirm ajax-del">删除</a>
                                 </td>
                             </tr>
@@ -97,14 +101,14 @@
         </div>
     </div>
 </div>
-<iframe id="iframe" src="" style="height: 80%;width: 392px;z-index: 99;position: absolute;top: 10%;border: 0;left: 32%;background: #fff;display: none;" scrolling="auto" seamless></iframe>
+<iframe id="iframe" src="" style="height: 80%;width: 592px;z-index: 99;position: absolute;top: 10%;border: 0;left: 32%;background: #fff;display: none;" scrolling="auto" seamless></iframe>
 <div class="shadow" style="display: none"></div>
 {/block}
 
 {block name="script"}
 <script src="/admin/js/plugins/iCheck/icheck.min.js"></script>
 <script>
-    if ({$list2['type']}==1){
+    if ("$list2['type']" ==1){
         $(document).ready(function(){
             highlight_subnav("{:Url('Notice/index')}");
             $('.i-checks').iCheck({
@@ -121,6 +125,21 @@
             });
         });
 
+    }
+    function showIframe(myid){
+        var iframe = $("#iframe");
+        var url = "/admin/Notice/preview/id/" + myid;
+        iframe.attr("src",url);
+        iframe.show();
+        $(".shadow").show();
+        $(".wrapper").css("z-index",0);
+        close(iframe);
+    }
+    function close(ele){
+        $(".shadow").on('click',function(){
+            $(this).hide();
+            ele.hide();
+        });
     }
 </script>
 
