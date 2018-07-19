@@ -51,8 +51,11 @@
         </div>
         <!--文章-->
         <div class="col-xs-12 col-md-12 text">
+            <div class="z_text" >时间：{$list.start_time}</div>
+            <div class="z_text" >地点：{$list.address}</div>
+            <div class="z_text" >参会人：{$list.attendee}</div>
+            <div class="z_text" >内容：</div>
             <div class="z_text" >{$list.content}</div>
-            <div class="z_text" >{$list.text}</div>
             {notempty name="list.images"}
             {volist name="list.images" id="li"}
             <img src="{$li|get_cover='path'}">
