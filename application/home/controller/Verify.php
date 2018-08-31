@@ -20,37 +20,26 @@ class Verify extends Controller{
         $result = $Wechat->getUserId(input('code'), config('user.agentid'));
         if(isset($result['UserId'])) {
             $user = $Wechat->getUserInfo($result['UserId']);
-            $user['department'] = json_encode($user['department']);
-            /*
-             * array(10) {
-                  ["errcode"] => int(0)
-                  ["errmsg"] => string(2) "ok"
-                  ["userid"] => string(15) ""
-                  ["name"] => string(9) ""
-                  ["department"] => array(1) {
-                    [0] => int(493)
-                  }
-                  ["mobile"] => string(11) ""
-                  ["gender"] => string(1) ""
-                  ["avatar"] => string(82) ""
-                  ["status"] => int()
-                  ["extattr"] => array(1) {
-                    ["attrs"] => array(0) {
-                    }
-                  }
-            }
-             */
+            $data = [
+                'userid' => $user['userid'],
+                'name' => $user['name'],
+                'mobile' => $user['mobile'],
+                'gender' => $user['gender'],
+                'avatar' => $user['avatar'],
+                'department' => json_encode($user['department']),
+                'status' => $user['status'],
+            ];
             if (isset($user['extattr'])){
-                $user['extattr'] = json_encode($user['extattr']);
+                $data['extattr'] = json_encode($user['extattr']);
             }
-            $user['order'] = json_encode($user['order']);
+            $data['order'] = (isset($user['order'])) ? json_encode($user['order']) : "";
             // 添加本地数据
             $UserAPI = new APIIndex();
             $localUser = $UserAPI->checkWechatUser($result['UserId']);
             if($localUser) {
-                $UserAPI->updateWechatUser($user);
+                $UserAPI->updateWechatUser($data);
             } else {
-                $UserAPI->addWechatUser($user);
+                $UserAPI->addWechatUser($data);
             }
             session("userId", $result['UserId']);
             //存在url则跳转，不存在则回主页
