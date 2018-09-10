@@ -30,7 +30,7 @@ class Snapshot extends Admin
         if ($msg['front_cover']){
             $pic = json_decode($msg['front_cover'],true);
             foreach ($pic as $item){
-                $path[] = get_covers($item);
+                $path[] = get_cover($item)['path'];
             }
         }else{
             $path = '';
